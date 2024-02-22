@@ -1,5 +1,5 @@
 django>=4.1.0
-djangorestframework
+djangorestframework~=3.14.0
 pyyaml
-requests
+requests~=2.31.0
 django-cors-headers
