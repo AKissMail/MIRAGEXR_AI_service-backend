@@ -2,6 +2,7 @@ import requests
 '''
 This is a simple Test script to test if the TTS endpoint is working properly. 
 '''
+print("Testing TTS endpoint")
 endpoint = "http://localhost:8000/speak/"  # TTS-Endpoint
 
 data = {"speakOut": "Hi, jeg heter Andreas", "voice": "default", "model": "default", "speed": 0.5}
