@@ -1,8 +1,9 @@
 from transformers import pipeline
 from rest_framework import serializers
+from .audioTransformator import AudioTransformator
 
 
-class WhisperNBAiLabSerializer(serializers):
+class WhisperNBAiLabSerializer(serializers.Serializer):
     """
     Serializer for validating and serializing data for automatic speech recognition.
     Attributes:
@@ -25,7 +26,8 @@ class WhisperNBAiLabSerializer(serializers):
     pipelineTask = serializers.CharField(default="automatic-speech-recognition")
 
 
-def whisperNBAiLab(data):
+def whisper_nb_ai_lab(data):
+    print("whisper_nb_ai_lab")
     """
      Transcribes audio files using the fine-tuned Whisper model from the NB-AI-Lab after validating the data through
      WhisperNBAiLabSerializer.
@@ -37,16 +39,20 @@ def whisperNBAiLab(data):
      """
     serializer = WhisperNBAiLabSerializer(data=data)
     if serializer.is_valid():
+        print(serializer.is_valid)
+        model_str = "NbAiLabBeta/" + serializer.validated_data['subModel'] + "-" + serializer.validated_data['mode']
         model = pipeline(
             serializer.validated_data['pipelineTask'],
-            "NbAiLabBeta/" + serializer.validated_data['subModel'] + "-" + serializer.validated_data['mode']
+            model_str
         )
+        transformed_audio = AudioTransformator.transform(serializer.validated_data['audio'])
         return model(
-            serializer.validated_data['audio'],
+            transformed_audio,
             generate_kwargs={
                 'task': serializer.validated_data['task'],
                 'language': serializer.validated_data['language']
             }
         )
     else:
+        print(serializer.errors)
         return serializer.errors

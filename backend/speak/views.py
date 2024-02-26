@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
-from .openAI import speakOpenAI
+from .openAI import speak_open_ai
 
 
 class SpeakSerializer(serializers.Serializer):
@@ -33,7 +33,7 @@ def speak(request):
     serializer = SpeakSerializer(data=request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ("openAI", "default"):
-            r = speakOpenAI(serializer.validated_data)
+            r = speak_open_ai(serializer.validated_data)
             return HttpResponse(r, content_type='audio/mpeg')
         else:
             return Response({"message": "'model' not found"}, status=400)

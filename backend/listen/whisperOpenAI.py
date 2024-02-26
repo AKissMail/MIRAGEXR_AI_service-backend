@@ -1,30 +1,32 @@
 from openai import OpenAI
 from rest_framework import serializers
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.http import JsonResponse
+import requests
+
 
 
 class WhisperOpenAISerializer(serializers.Serializer):
     """
     Serializer for validating and serializing data for automatic speech recognition.
     Attributes:
-        audio (FileField): The audio file to be transcribed.
-        subModel (CharField): Specifies the sub-model. Possible: @todo
+        audio (FileField): The audio file to be transcribed. Must be less than 25 MB.
+        subModel (CharField): Specifies the sub-model. Possible: "whisper-1"
             Defaults to "whisper-1".
-        response_format (CharField): Specifies the format of the transcription response. Possible @todo
-            Defaults to "verbose_json".
-        timestamp_granularities (CharField): Specifies the granularity of timestamps. Possible @todo
-            Defaults to "word".
+        response_format (CharField): Specifies the format of the transcription response. Possible:json, text, srt,
+            verbose_json, or vtt. Defaults to "verbose_json.
         prompt (CharField): An optional prompt that can be provided to the model.
-            Defaults to an empty string and can be change to any given value.
+            Defaults to an empty string and can be changed to any given value.
     """
 
     audio = serializers.FileField()
     subModel = serializers.CharField(default="whisper-1")
     response_format = serializers.CharField(default="verbose_json")
-    timestamp_granularities = serializers.CharField(default="word")
     prompt = serializers.CharField(default="")
 
 
-def whisperOpenAI(data):
+def whisper_open_ai(data):
+    print(" whisper_open_ai")
     """
     Transcribes an audio file using OpenAI's Whisper model after validating the data
     through WisperOpenAISerializer.
@@ -36,14 +38,20 @@ def whisperOpenAI(data):
     """
     client = OpenAI()
     serializer = WhisperOpenAISerializer(data=data)
+    print(serializer.is_valid())
     if serializer.is_valid():
+        print("Validating the data")
+        audio_file: InMemoryUploadedFile = serializer.validated_data['audio']
+        audio_content = audio_file.read()
+        print(serializer.validated_data['audio'])
         transcript = client.audio.transcriptions.create(
             model=serializer.validated_data['subModel'],
-            file=serializer.validated_data['audio'],
+            file=audio_content,
             response_format=serializer.validated_data['response_format'],
-            timestamp_granularities=serializer.validated_data['timestamp_granularities'],
+            timestamp_granularities=["word"],
             prompt=serializer.validated_data['prompt']
         )
         return transcript
     else:
+        print(serializer.errors)
         return serializer.errors

@@ -1,26 +1,24 @@
 import requests
 
-''' todo hier muss alles nochmal angepasst werden! '''
-
-# Simple Test script to test the STT endpoint functionality
 print("Testing STT endpoint")
-endpoint = "http://localhost:8000/upload-audio/"  # STT-Endpoint
+endpoint = "http://localhost:8000/listen/"  # STT-Endpoint
 
-# Hier musst du den Pfad zu deiner Audiodatei angeben
-audio_file_path = 'path/to/your/audio_file.wav'
-model = 'dein_gewünschtes_stt_modell'
+audio_file_path = "audio_king.mp3"
+#model = ['whisper', 'default', 'whisperNBAiLab']
+model = ['whisper', 'default']
+for m in model:
+    print('Test for: ' + m)
+    with open(audio_file_path, 'rb') as f:
+        # Correctly separate the file and the data to be sent
+        files = {'audio': (audio_file_path, f, 'audio/mp3')}
+        data = {'model': m}
 
-# Öffne die Audiodatei im Binärmodus
-with open(audio_file_path, 'rb') as f:
-    files = {'audio_file': (audio_file_path, f, 'audio/wav')}
-    data = {'model': model}
-    response = requests.post(endpoint, files=files, data=data)
+        # Make the request with both the 'files' for the file upload and 'data' for the other form data
+        response = requests.post(endpoint, files=files, data=data)
 
-# Überprüfe den Statuscode der Antwort
-if response.status_code == 200:
-    print("Response received successfully.")
-    # Hier könntest du die Antwort verarbeiten, z.B. die transkribierte Textausgabe anzeigen
-    print(response.json())
-else:
-    print(f"Error: {response.status_code}")
-    print(response.text)
+    if response.status_code == 200:
+        print("Response received successfully.")
+        print(response.json())
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)

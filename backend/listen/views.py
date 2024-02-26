@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .whisperOpenAI import whisperOpenAI
-from .whisperNBAiLab import whisperNBAiLab
+from .whisperOpenAI import whisper_open_ai
+from .whisperNBAiLab import whisper_nb_ai_lab
 
 
 class ListenSerializer(serializers.Serializer):
@@ -31,9 +31,10 @@ def listen(request):
         serializer = ListenSerializer(data=request.data)
         if serializer.is_valid():
             if serializer.validated_data['model'] in ("whisper", "default"):
-                return whisperOpenAI(serializer.data)
+                print("view")
+                return Response(whisper_open_ai(serializer.validated_data))
             if serializer.validated_data['model'].strip() == "whisperNBAiLab":
-                return whisperNBAiLab(serializer.validated_data)
+                return Response(whisper_nb_ai_lab(serializer.validated_data))
             else:
                 return Response({"message": "'model' not found"}, status=400)
         else:

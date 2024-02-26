@@ -6,6 +6,8 @@ from rest_framework import serializers
 '''
 This it the wrapper for the OpenAI API, which allows you to crate an Voice based on a given String.
 '''
+
+
 class SpeakOpenAISerializer(serializers.Serializer):
     """
        Serializer for validating request data for the speakOpenAI methode.
@@ -19,7 +21,7 @@ class SpeakOpenAISerializer(serializers.Serializer):
     speed = serializers.FloatField(default=1, min_value=0.25, max_value=4)
 
 
-def speakOpenAI(data):
+def speak_open_ai(data):
     """
     Generates voice audio from text using OpenAI's Text-to-Speech (TTS) API based on the provided parameters.
 
@@ -69,6 +71,7 @@ def speakOpenAI(data):
                     for chunk in response.iter_content(chunk_size=1024):
                         print(f"Chunk size: {len(chunk)}")
                         yield chunk
+
                 return StreamingHttpResponse(
                     streaming_content=generate(),
                     content_type="audio/mpeg"
@@ -78,4 +81,4 @@ def speakOpenAI(data):
         else:
             return "Voice not found! I know: 'alloy', 'echo', 'fable', 'onyx', 'nova', and 'shimmer'"
     else:
-        return serializer.errors
+        return serializer.errors + data
