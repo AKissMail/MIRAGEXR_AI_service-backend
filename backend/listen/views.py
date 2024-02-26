@@ -1,27 +1,39 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .wisperOpenAI import wisperOpenAI
-from .whisperNationalLibraryofNorway import whisperNationalLibraryofNorway
-
-'''This View implements the listen endpoint, checks the send data for the correct format, pass it on to the 
-correct model or returns an error to the client.'''
+from .whisperOpenAI import whisperOpenAI
+from .whisperNBAiLab import whisperNBAiLab
 
 
 class ListenSerializer(serializers.Serializer):
+    """
+    Serializer for validating request data for the listen endpoint.
+    Attributes:
+        model (CharField): A string field for specifying the model: Can be either wisper or
+        audio (FileField): A file field for uploading the audio file to be processed.
+    """
+
     model = serializers.CharField()
     audio = serializers.FileField()
 
 
 @api_view(['POST'])
 def listen(request):
+    """
+     Processes POST requests sent to the listen endpoint, validates the request data,
+     and routes the audio file to the specified model for processing and returns the results.
+     Parameters:
+         request (Request): The REST framework request object containing the model identifier and the audio file.
+     Returns:
+         Response: A REST framework response object containing the transcription result or an error message.
+     """
     if request.method == 'POST':
         serializer = ListenSerializer(data=request.data)
         if serializer.is_valid():
-            if serializer.data['model'] in ("wisper", "default"):
-                return wisperOpenAI(serializer.data)
-            if serializer.data['model'] in "norwegian ":
-                return whisperNationalLibraryofNorway(serializer.data)
+            if serializer.validated_data['model'] in ("whisper", "default"):
+                return whisperOpenAI(serializer.data)
+            if serializer.validated_data['model'].strip() == "whisperNBAiLab":
+                return whisperNBAiLab(serializer.validated_data)
             else:
                 return Response({"message": "'model' not found"}, status=400)
         else:
