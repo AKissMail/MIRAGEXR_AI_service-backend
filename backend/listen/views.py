@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .whisperOpenAI import whisper_open_ai
+from .whisperOpenAI import whisper_open_ai_remote, wisper_open_ai_local
 from .whisperNBAiLab import whisper_nb_ai_lab
 
 
@@ -32,7 +32,7 @@ def listen(request):
         if serializer.is_valid():
             if serializer.validated_data['model'] in ("whisper", "default"):
                 print("view")
-                return Response(whisper_open_ai(serializer.validated_data))
+                return Response(wisper_open_ai_local(serializer.validated_data))
             if serializer.validated_data['model'].strip() == "whisperNBAiLab":
                 return Response(whisper_nb_ai_lab(serializer.validated_data))
             else:

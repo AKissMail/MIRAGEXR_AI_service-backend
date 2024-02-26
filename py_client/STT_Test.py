@@ -1,11 +1,11 @@
 import requests
 
 print("Testing STT endpoint")
-endpoint = "http://localhost:8000/listen/"  # STT-Endpoint
+endpoint = "http://localhost:8001/listen/"  # STT-Endpoint
 
-audio_file_path = "audio_king.mp3"
-#model = ['whisper', 'default', 'whisperNBAiLab']
-model = ['whisper', 'default']
+audio_file_path = "/Users/andreas/PycharmProjects/MIRAGE-XR_TTS-STT/py_client/audio_king.mp3"
+# model = ['whisperNBAiLab']
+model = ['whisper']
 for m in model:
     print('Test for: ' + m)
     with open(audio_file_path, 'rb') as f:

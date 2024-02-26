@@ -10,3 +10,4 @@ numpy~=1.26.4
 soundfile~=0.12.1
 torch
 tensorflow
+whisper~=1.1.10
