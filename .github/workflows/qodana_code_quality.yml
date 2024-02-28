@@ -1,20 +1,34 @@
-name: Qodana
+name: Django CI
+
 on:
-  workflow_dispatch:
-  pull_request:
   push:
-    branches:
-      - master
-      - 3-listen
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  qodana:
+  build:
+
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2023.3
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Run migrations
+      run: python manage.py migrate
+    - name: Run tests
+      run: python manage.py test
+    - name: Lint with flake8
+      run: |
+        # Halt workflow if flake8 finds Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings. GitHub Actions will turn warnings into errors if flake8 finds anything
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
