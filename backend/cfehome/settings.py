@@ -44,8 +44,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'speak',
     'listen',
-    'think'
+    'think',
+    'rag'
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
