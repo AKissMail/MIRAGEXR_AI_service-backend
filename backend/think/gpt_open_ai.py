@@ -5,7 +5,6 @@ import logging
 
 class ThinkOpenAISerializer(serializers.Serializer):
     model = serializers.CharField()
-    response_format = serializers.CharField(default="json_object")
     message = serializers.CharField()
     context = serializers.CharField()
 
@@ -23,13 +22,12 @@ def gpt(data):
             client = OpenAI()
             response = client.chat.completions.create(
                 model=serializer.validated_data['model'],
-                #response_format=response_format_template,
                 messages=message_template
             )
             return response.choices[0].message.content
         except Exception as e:
-            # Log the OpenAI API error
-            return {"error": "An error occurred while processing your request."}
+
+            return {"error": "An error occurred while processing your request." + e.__str__()}
     else:
         # todo  logger.error(f"Validation error: {serializer.errors}")
         return {"error": "Input data is invalid.", "details": serializer.errors}
