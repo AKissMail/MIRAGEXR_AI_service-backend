@@ -1,6 +1,9 @@
+import os
+import tempfile
 from openai import OpenAI
 from rest_framework import serializers
 from transformers import pipeline
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from .audio_transformator import AudioTransformator
 
@@ -24,13 +27,25 @@ class WhisperOpenAiRemoteSerializer(serializers.Serializer):
     prompt = serializers.CharField(default="")
 
 
-# todo fixing the OpenAI api and come up with a local universal solution. Good for now.
+class WhisperOpenAiLocalSerializer(serializers.Serializer):
+    """
+     Serializer for configuring and validating inputs for local Whisper audio processing tasks.
+     Attributes:
+         audio (FileField): A required file field that takes an audio file.
+         subModel (CharField): Optional; specifies the Whisper model variant to use.
+         task (CharField): Optional; defines the type of task to perform ("transcribe", "Translate")
+         language (CharField): Optional; specifies the language of the audio content. Defaults to "no"
+         pipelineTask (CharField): Optional
+
+     """
+    audio = serializers.FileField()
+    subModel = serializers.CharField(default="medium")
+    task = serializers.CharField(default="transcribe")
+    language = serializers.CharField(default="no")
+    pipelineTask = serializers.CharField(default="automatic-speech-recognition")
+
+
 def whisper_open_ai_remote(data):
-    return wisper_open_ai_local(data)
-
-
-def whisper_open_ai_remote2(data):
-    print(" whisper_open_ai")
     """
     Transcribes an audio file using OpenAI's Whisper model after validating the data
     through WisperOpenAISerializer.
@@ -42,35 +57,43 @@ def whisper_open_ai_remote2(data):
     """
     client = OpenAI()
     serializer = WhisperOpenAiRemoteSerializer(data=data)
-    print(serializer.is_valid())
     if serializer.is_valid():
-        print("Validating the data")
         audio_file = serializer.validated_data['audio']
-        audio_content = audio_file.read()
-        file = (audio_content, audio_content, "audio/mp3")
-
-        # print(audio_content)
-        transcript = client.audio.transcriptions.create(
-            model=serializer.validated_data['subModel'],
-            file=file,
-            response_format=serializer.validated_data['response_format'],
-            timestamp_granularities=["word"],
-            prompt=serializer.validated_data['prompt']
-        )
-        return transcript
-    else:
-        return serializer.errors.__str__()
-
-
-class WhisperOpenAiLocalSerializer(serializers.Serializer):
-    audio = serializers.FileField()
-    subModel = serializers.CharField(default="medium")
-    task = serializers.CharField(default="transcribe")
-    language = serializers.CharField(default="no")
-    pipelineTask = serializers.CharField(default="automatic-speech-recognition")
+        if isinstance(audio_file, InMemoryUploadedFile):
+            file_extension = os.path.splitext(audio_file.name)[1]
+            if not file_extension:
+                file_extension = '.mp3'
+            with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as tmp_file:
+                for chunk in audio_file.chunks():
+                    tmp_file.write(chunk)
+                tmp_file.flush()
+                with open(tmp_file.name, 'rb') as file_to_upload:
+                    transcription = client.audio.transcriptions.create(
+                        model="whisper-1",
+                        file=file_to_upload
+                    )
+        else:
+            transcription = client.audio.transcriptions.create(
+                model="whisper-1",
+                file=audio_file
+            )
+        return transcription.text
 
 
 def wisper_open_ai_local(data):
+    """
+    Processes local transcription of an audio file using the Whisper model based on validated serializer data.
+    Parameters:
+        data (dict): A dictionary containing the input data for the transcription task. Expected keys are:
+            'audio' (the audio file to be transcribed),
+            'subModel' (the Whisper model variant to use),
+            'task' (the type of task, typically 'transcribe'),
+            'language' (the language of the audio),
+            'pipelineTask' (the ASR pipeline task to be performed).
+
+    Returns:
+        dict containing the transcription results or serializers.ValidationError
+    """
     serializer = WhisperOpenAiLocalSerializer(data=data)
     if serializer.is_valid():
         model_str = "openai/whisper-" + serializer.validated_data['subModel']
