@@ -11,12 +11,12 @@ class ThinkOpenAISerializer(serializers.Serializer):
 
 def gpt(data):
     serializer = ThinkOpenAISerializer(data=data)
+    print(serializer.is_valid())
     if serializer.is_valid():
         message_template = [
             {"role": "system", "content": serializer.validated_data["context"]},
             {"role": "user", "content": serializer.validated_data["message"]}
         ]
-        response_format_template = [{type: serializer.validated_data["response_format"]}]
 
         try:
             client = OpenAI()

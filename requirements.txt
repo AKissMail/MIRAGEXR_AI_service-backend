@@ -12,3 +12,7 @@ torch
 tensorflow
 whisper~=1.1.10
 PyPDF2~=3.0.1
+nltk~=3.8.1
+langdetect~=1.0.9
+textstat~=0.7.3
+beautifulsoup4~=4.12.3

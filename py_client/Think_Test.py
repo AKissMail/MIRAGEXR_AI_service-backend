@@ -6,13 +6,16 @@ This is a simple Test script to test if the TTS endpoint is working properly.
 print("Testing thnk endpoint")
 endpoint = "http://localhost:8000/think/"
 
-data = {"message": "Hier ist eine Satez uidn ivcjh mavcj e ", "context": " Hallo! Ja klar, ich kann dir helfen. Bitte sende mir den Satz oder die Sätze, bei denen du dir unsicher bist, und ich werde sie für dich überprüfen.Du bist ein Deutschlehrer der auf deutsch generate antwortet", "model": "gpt-4-turbo-preview"}
+data = {"message": "What is the V2? Can you give me an example?", "context": "You are an Norvigan teacher. Page 2 "
+                                                                             "section 254",
+        "model": "norwegian-on-the-web"}
 response = requests.post(endpoint, json=data)
 
 if response.status_code == 200:
-    print(f"Error: {response.status_code}")
+    print(f"Success: {response.status_code}")
+    print(response.headers)
+    print(response.content)
     print(response.text)
-    print(response)
 else:
     print(f"Error: {response.status_code}")
     print(response.text)

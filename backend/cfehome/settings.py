@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'speak',
     'listen',
     'think',
-    'rag'
+    'rag',
 ]
 
 
