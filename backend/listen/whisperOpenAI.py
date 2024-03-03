@@ -2,7 +2,7 @@ from openai import OpenAI
 from rest_framework import serializers
 from transformers import pipeline
 
-from backend.listen.audio_transformator import AudioTransformator
+from .audio_transformator import AudioTransformator
 
 
 class WhisperOpenAiRemoteSerializer(serializers.Serializer):

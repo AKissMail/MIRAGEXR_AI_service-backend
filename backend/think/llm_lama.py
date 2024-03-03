@@ -1,0 +1,2 @@
+def lama():
+    return None
