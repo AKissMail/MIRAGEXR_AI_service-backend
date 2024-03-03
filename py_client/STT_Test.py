@@ -1,7 +1,7 @@
 import requests
 
 print("Testing STT endpoint")
-endpoint = "http://localhost:8001/listen/"  # STT-Endpoint
+endpoint = "http://localhost:8000/listen/"  # STT-Endpoint
 
 audio_file_path = "/Users/andreas/PycharmProjects/MIRAGE-XR_TTS-STT/py_client/audio_king.mp3"
 # model = ['whisperNBAiLab']

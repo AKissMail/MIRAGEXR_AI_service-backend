@@ -31,10 +31,11 @@ def listen(request):
         serializer = ListenSerializer(data=request.data)
         if serializer.is_valid():
             if serializer.validated_data['model'] in ("whisper", "default"):
-                print("view")
-                return Response(wisper_open_ai_local(serializer.validated_data))
+                return Response(whisper_open_ai_remote(serializer.validated_data))
             if serializer.validated_data['model'].strip() == "whisperNBAiLab":
                 return Response(whisper_nb_ai_lab(serializer.validated_data))
+            if serializer.validated_data['model'].strip() == "whisperOpenAILocal":
+                return Response(wisper_open_ai_local(serializer.validated_data))
             else:
                 return Response({"message": "'model' not found"}, status=400)
         else:
