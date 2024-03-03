@@ -59,37 +59,24 @@ def whisper_open_ai_remote(data):
     serializer = WhisperOpenAiRemoteSerializer(data=data)
     if serializer.is_valid():
         audio_file = serializer.validated_data['audio']
-
         if isinstance(audio_file, InMemoryUploadedFile):
-            # Determine the file extension, if possible
             file_extension = os.path.splitext(audio_file.name)[1]
             if not file_extension:
-                # Default to .wav if the file extension is unknown
-                # This is a fallback. You might want to handle this differently.
-                file_extension = '.wav'
-
-            # Use a temporary file with the correct file extension
+                file_extension = '.mp3'
             with tempfile.NamedTemporaryFile(suffix=file_extension, delete=False) as tmp_file:
-                # Write the audio file's content to the temporary file
                 for chunk in audio_file.chunks():
                     tmp_file.write(chunk)
-                tmp_file.flush()  # Ensure all data is written to disk
-
-                # Reopen the temporary file in binary read mode to pass to the API
+                tmp_file.flush()
                 with open(tmp_file.name, 'rb') as file_to_upload:
                     transcription = client.audio.transcriptions.create(
                         model="whisper-1",
                         file=file_to_upload
                     )
-
         else:
-            # If the file is already in a suitable format or path, handle accordingly
-            # This part should be adjusted based on your application's requirements
             transcription = client.audio.transcriptions.create(
                 model="whisper-1",
-                file=audio_file  # Assuming this is a file path or file-like object
+                file=audio_file
             )
-
         return transcription.text
 
 
