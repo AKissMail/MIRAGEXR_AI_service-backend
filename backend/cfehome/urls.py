@@ -23,4 +23,5 @@ urlpatterns = [
     path('listen/', include('listen.urls')),
     path('think/', include('think.urls')),
     path('', include('rag.urls'))
+    path('options/', include('options.urls'))
 ]
