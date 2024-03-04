@@ -4,9 +4,19 @@ from io import BytesIO
 
 
 class AudioTransformator:
-
+    """
+       A utility class for transforming audio file witch provides a method to read and transform audio files, into
+       mono audio files.
+    """
     @staticmethod
     def transform(file):
+        """
+             Parameters:
+             - file: A file-like object with the audio file.
+
+             Returns:
+             - numpy.ndarray: A one-dimensional numpy array with the mono audio data.
+             """
         file_buffer = BytesIO(file.read())
         data, sample_rate = soundfile.read(file_buffer, dtype='float32')
         if len(data.shape) > 1 and data.shape[1] > 1:

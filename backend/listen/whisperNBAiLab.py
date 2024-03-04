@@ -1,30 +1,6 @@
 from transformers import pipeline
-from rest_framework import serializers
 from .audio_transformator import AudioTransformator
-
-
-class WhisperNBAiLabSerializer(serializers.Serializer):
-    """
-    Serializer for validating and serializing data for automatic speech recognition.
-    Attributes:
-        audio (FileField): The audio file to be transcribed.
-        subModel (CharField): Specifies the sub-model. Possible: tiny, base, small, medium, and large.
-            Default to "nb-whisper-medium".
-        mode (CharField): Indicates the transcription mode. Possible values: verbatim (a model for exact transcriptions)
-            semantic (a model for semantic transcription with error correction) Defaults to "verbatim".
-            In a new release deprecate.
-        task (CharField): The task to be performed. It is either translate (to eng) or transcribe.
-        Defaults to "transcribe".
-        language (CharField): Specifies the language of the audio. It is either "no" for dialects closer to
-            Bokmål. "nn" for dialects closer to Nynorsk or "en" for english. Defaults to "no".
-        pipelineTask (CharField): Specifies the pipeline task to be used. Defaults to "automatic-speech-recognition".
-    """
-    audio = serializers.FileField()
-    subModel = serializers.CharField(default="nb-whisper-medium")
-    # mode = serializers.CharField(default="verbatim")
-    task = serializers.CharField(default="transcribe")
-    language = serializers.CharField(default="no")
-    pipelineTask = serializers.CharField(default="automatic-speech-recognition")
+from .serializers import WhisperNBAiLabSerializer
 
 
 def whisper_nb_ai_lab(data):

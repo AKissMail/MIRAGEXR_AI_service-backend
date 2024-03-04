@@ -1,48 +1,11 @@
 import os
 import tempfile
 from openai import OpenAI
-from rest_framework import serializers
+from .serializers import WhisperOpenAiRemoteSerializer, WhisperOpenAiLocalSerializer
 from transformers import pipeline
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from .audio_transformator import AudioTransformator
-
-
-class WhisperOpenAiRemoteSerializer(serializers.Serializer):
-    """
-    Serializer for validating and serializing data for automatic speech recognition.
-    Attributes:
-        audio (FileField): The audio file to be transcribed. Must be less than 25 MB.
-        subModel (CharField): Specifies the sub-model. Possible: "whisper-1"
-            Defaults to "whisper-1".
-        response_format (CharField): Specifies the format of the transcription response. Possible:json, text, srt,
-            verbose_json, or vtt. Defaults to "verbose_json.
-        prompt (CharField): An optional prompt that can be provided to the model.
-            Defaults to an empty string and can be changed to any given value.
-    """
-
-    audio = serializers.FileField()
-    subModel = serializers.CharField(default="whisper-1")
-    response_format = serializers.CharField(default="verbose_json")
-    prompt = serializers.CharField(default="")
-
-
-class WhisperOpenAiLocalSerializer(serializers.Serializer):
-    """
-     Serializer for configuring and validating inputs for local Whisper audio processing tasks.
-     Attributes:
-         audio (FileField): A required file field that takes an audio file.
-         subModel (CharField): Optional; specifies the Whisper model variant to use.
-         task (CharField): Optional; defines the type of task to perform ("transcribe", "Translate")
-         language (CharField): Optional; specifies the language of the audio content. Defaults to "no"
-         pipelineTask (CharField): Optional
-
-     """
-    audio = serializers.FileField()
-    subModel = serializers.CharField(default="medium")
-    task = serializers.CharField(default="transcribe")
-    language = serializers.CharField(default="no")
-    pipelineTask = serializers.CharField(default="automatic-speech-recognition")
 
 
 def whisper_open_ai_remote(data):

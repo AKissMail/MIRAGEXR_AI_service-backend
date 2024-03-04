@@ -1,19 +1,8 @@
-from rest_framework import serializers
+from .serializers import SpeakSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
 from .openAI import speak_open_ai
-
-
-class SpeakSerializer(serializers.Serializer):
-    """
-       Serializer for validating request data for the speak endpoint.
-       Attributes:
-           speakOut (CharField): The text content to be converted into speech.
-           model (CharField): Specifies the speech synthesis model to be used. Defaults to "openAI"
-       """
-    speakOut = serializers.CharField(required=True)
-    model = serializers.CharField(default="openAI")
 
 
 @api_view(['POST'])

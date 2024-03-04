@@ -1,19 +1,23 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import serializers
+from .serializers import ThinkSerializer
 from .gpt_open_ai import gpt
 from .rag_manager import rag_manager
 
 
-class ThinkSerializer(serializers.Serializer):
-    model = serializers.CharField(default="gpt-3.5")
-    message = serializers.CharField()
-    context = serializers.CharField()
-
-
-
 @api_view(['POST'])
 def think(request):
+    """
+       API view that processes incoming requests to generate responses using specified AI models. This view accepts
+       POST requests and verifies the containing data before it passes the request on to the specific handler
+       (GPT or RAG manager) to generate a response.
+
+       Parameters:
+       - request (Request): The REST framework request object containing the data.
+       Returns:
+       - Response: A REST framework response object containing the generated response from the AI model or
+         an error message.
+    """
     serializer = ThinkSerializer(data=request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ('gpt-3.5-turbo', 'gpt-4-turbo-preview'):
