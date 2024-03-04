@@ -1,16 +1,23 @@
 from openai import OpenAI
-from rest_framework import serializers
-import logging
-
-
-class ThinkOpenAISerializer(serializers.Serializer):
-    model = serializers.CharField()
-    message = serializers.CharField()
-    context = serializers.CharField()
+from .serializers import ThinkSerializer
 
 
 def gpt(data):
-    serializer = ThinkOpenAISerializer(data=data)
+    """
+      Processes input data to generate a response using the OpenAI GPT model.
+      Parameters:
+      - data (dict): Input data containing the context, message, and model to be used
+        for generating a response.
+        Expected keys:
+            - 'context': The context of the request.
+            - 'message': The message of the request.
+            - 'model': The model to be in the request.
+
+      Returns:
+      - dict or str: If successful, returns the generated message as a string. If an
+        error occurs or the input is invalid, returns an error.
+      """
+    serializer = ThinkSerializer(data=data)
     print(serializer.is_valid())
     if serializer.is_valid():
         message_template = [
@@ -29,5 +36,4 @@ def gpt(data):
 
             return {"error": "An error occurred while processing your request." + e.__str__()}
     else:
-        # todo  logger.error(f"Validation error: {serializer.errors}")
         return {"error": "Input data is invalid.", "details": serializer.errors}

@@ -12,7 +12,7 @@ def get_options(request):
         Response: A DRF Response object containing the parsed JSON data with a 200 OK status.
     """
     if request.method == 'GET':
-        file_path = os.path.join(os.path.dirname(__file__), 'options.json')
+        file_path = os.path.join(os.path.dirname(__file__), '../config/options.json')
         with open(file_path, 'r', encoding='utf-8') as file:
             config = json.load(file)
         return Response(config, status=200)

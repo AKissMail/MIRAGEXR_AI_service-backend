@@ -1,20 +1,23 @@
+import json
+import os
 from .gpt_open_ai import gpt
-from .llm_lama import lama
-from rest_framework import serializers
 from .models import Document
-
-
-class ThinkRAGSerializer(serializers.Serializer):
-    model = serializers.CharField()
-    message = serializers.CharField()
-    context = serializers.CharField()
+from .serializers import ThinkSerializer
 
 
 def jaccard_index(prompt, corpus_document):
-    # Check if corpus_document is None
+    """
+    Calculate the Jaccard Index between a prompt and a document as a statistical measure of
+    the similarity between two sets.
+    Parameters:
+        - prompt (str): The user's input prompt.
+        - corpus_document (str): The document text from the corpus.
+    Returns:
+        - float: The Jaccard similarity score between zero (no similarity) and 1 (the same content).
+        Returns 0 if the corpus_document is None.
+    """
     if corpus_document is None:
-        return 0  # Return a default score of 0 or consider throwing an exception
-
+        return 0
     query = prompt.lower().split(" ")
     document = corpus_document.lower().split(" ")
     intersection = set(query).intersection(set(document))
@@ -23,8 +26,16 @@ def jaccard_index(prompt, corpus_document):
 
 
 def get_best_document(validated_data):
+    """
+      Identifies the document with the highest Jaccard Index score based on the user's prompt.
+      Parameters:
+      - validated_data (dict): Containing the 'message'.
+      Returns:
+      - dict: Contains the user's prompt, the highest Jaccard score, and the text of the most similar
+              document, or if no document was found with a score higher than 0 the sting "No document found".
+      """
     prompt = validated_data.get("message")
-    best_document = ["Kein Dokument gefunden", 0]
+    best_document = ["No document found", 0]
     for document in Document.objects.all():
         current_score = jaccard_index(prompt, document.content)
         if best_document[1] < current_score:  # Compare scores correctly
@@ -38,36 +49,34 @@ def get_best_document(validated_data):
 
 
 def norwegian_on_the_web(validated_data):
+    """
+    Processes input data using a specific configuration to enhance the prompt for the GPT model.
+
+    This function loads a configuration file, calculates the best document match based on the
+    Jaccard Index, and constructs a new prompt incorporating the original message, context,
+    and the best matching document and the Configuration
+
+    Parameters:
+    - validated_data (dict): Contains the 'message' and 'context' for generating the response.
+    Returns:
+    - The response from the GPT model based on the enhanced prompt.
+    """
+    file_path = os.path.join(os.path.dirname(__file__), '../config/now.json')
+    with open(file_path, 'r', encoding='utf-8') as file:
+        config = json.load(file)
+
     best_document = get_best_document(validated_data)
     gpt_prompt = validated_data
     gpt_prompt['message'] = (
-        "Using the user input provided as 'User Input', along with the surrounding 'User Context', your task is to "
-        "generate a comprehensive response as a Norwegan Teacher. Leverages information from the 'document' field. "
-        "This document contains details out of a Norwegan Textbook that relevant to the user's query, specifically "
-        "found within a designated page and chapter. It's imperative to accurately incorporate these details into "
-        "your response. Ensure that the information from the specified page and chapter is clearly referenced and "
-        "seamlessly integrated into your answer. Aim to provide a well-rounded and informed response that directly "
-        "addresses the user's initial query.\n\n"
-        "User Message: {}\n\n"
-        "User Context: {}\n\n"
-        "Databases Document: {}\n\n"
-        "Please incorporate the above details into your response, focusing on extracting and utilizing the most "
-        "relevant information from the specified sections of the document to address the user's needs effectively."
-        "Your answer must be in Norwegian or in Englisch depending on the User Message language."
+            config['prompt_start'] +
+            "User Message: {}\n\n"
+            "User Context: {}\n\n"
+            "Databases Document: {}\n\n" +
+            config['prompt_end']
     ).format(validated_data['message'], validated_data['context'], best_document['best_document_text'])
     gpt_prompt['context'] = (
-        "In this task, you are required to synthesize information from multiple sources to provide a detailed "
-        "and relevant response to the user's query. The user has provided specific input that outlines their "
-        "question or need. Accompanying this is a contextual background that gives additional insight into the "
-        "user's situation or the nature of their inquiry. Furthermore, you have access to a document containing "
-        "key information pertinent to addressing the user's query. This document includes critical details located "
-        "within a specified page and chapter, which are especially relevant to the user's request."
-        "Your response should integrate the user's input, the contextual background, and the targeted information "
-        "from the document. It is essential to accurately reference and incorporate the relevant details from the "
-        "designated page and chapter of the document. This comprehensive approach will ensure that the generated "
-        "response is not only well-informed and precise but also tailored to the user's specific context and query."
-        "The goal is to utilize the synthesis of these elements to provide a clear, concise, and informative answer "
-        "that directly addresses the user's needs."
+        config['context_start'] +
+        config['context_end']
     )
     gpt_prompt['model'] = 'gpt-3.5-turbo'
     result = gpt(gpt_prompt)
@@ -76,7 +85,14 @@ def norwegian_on_the_web(validated_data):
 
 
 def rag_manager(data):
-    serializer = ThinkRAGSerializer(data=data)
+    """
+      Manages the RAG processing flow by validating input data and directing it to the appropriate handler.
+      Parameters:
+      - data (dict): The input data to be processed.
+      Returns:
+      - dict or str: The result of the processing, which could be an error message or the generated response.
+      """
+    serializer = ThinkSerializer(data=data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in 'norwegian-on-the-web':
             return norwegian_on_the_web(serializer.validated_data)

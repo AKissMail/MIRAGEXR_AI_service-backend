@@ -1,10 +1,16 @@
 import csv
 import PyPDF2
 from bs4 import BeautifulSoup
-from django.contrib.sites import requests
 
 
 def parse_pdf(file_path):
+    """
+     Extracts and returns the text from a PDF file.
+     Parameters:
+     - file_path (str): The path to the PDF file to be parsed.
+     Returns:
+     - str: The extracted text from the PDF file.
+     """
     with open(file_path, 'rb') as file:
         pdf_reader = PyPDF2.PdfReader(file)
         text = ''
@@ -14,6 +20,13 @@ def parse_pdf(file_path):
 
 
 def parse_csv(file_path):
+    """
+     Extracts and returns the text from a CSV file.
+     Parameters:
+     - file_path (str): The path to the CSV file to be parsed.
+     Returns:
+     - str: The extracted text from the PDF file.
+     """
     with open(file_path, 'r', encoding='utf-8', errors='replace') as file:
         csv_reader = csv.reader(file)
         text = ''
@@ -23,32 +36,31 @@ def parse_csv(file_path):
 
 
 def parse_html(file_path):
-    '''
-    with open(file_path, 'r', encoding='utf-8', errors='replace') as file:
-        content = file.read()
-        soup = BeautifulSoup(content, 'html.parser')
-        return soup.get_text()
-    '''
+    """
+     Extracts and returns the text from an HTML file.
+     Parameters:
+     - file_path (str): The path to the HTML file to be parsed.
+     Returns:
+     - str: The extracted text from the PDF file.
+     """
     with open(file_path, 'r', encoding='utf-8', errors='replace') as file:
         content = file.read()
         soup = BeautifulSoup(content, 'html.parser')
 
-        # Optional: Entfernen von Skript- und Stil-Tags
         for script_or_style in soup(["script", "style"]):
             script_or_style.decompose()
 
-        # Den Text extrahieren und zusätzlichen Whitespace entfernen
         text = ' '.join(soup.get_text().split())
         return text
 
 
-def pars_url(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    para = [p.text for p in soup.find_all('p')]
-    return '\n'.join(para)
-
-
 def pars_txt(file_path):
+    """
+    Reads and returns the entire content of a text file.
+    Parameters:
+        - file_path (str): The path to the text file to be read.
+    Returns:
+        - str: The content of the text file.
+    """
     with open(file_path, 'r') as file:
         return file.read()
