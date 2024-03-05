@@ -32,6 +32,10 @@ a corpus, making it a versatile tool for dialogue management in XR environments.
 - Processes and stores content from PDF, TXT, and CSV files in a database, making it accessible for the RAG Model. 
 - All documents in /data/ will be processed. With the command `data` the data will be processed and uploaded to the database. An additional analysis can be run with the command `analyze_data`. 
 
+### Database 
+
+![db.png](db.png)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
