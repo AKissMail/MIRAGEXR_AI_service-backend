@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .serializers import ThinkSerializer
 from .gpt_open_ai import gpt
@@ -6,6 +7,7 @@ from .rag_manager import rag_manager
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def think(request):
     """
        API view that processes incoming requests to generate responses using specified AI models. This view accepts

@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .whisperOpenAI import whisper_open_ai_remote, wisper_open_ai_local
 from .whisperNBAiLab import whisper_nb_ai_lab
@@ -18,6 +19,7 @@ class ListenSerializer(serializers.Serializer):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def listen(request):
     """
      Processes POST requests sent to the listen endpoint, validates the request data,

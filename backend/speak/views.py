@@ -1,11 +1,14 @@
+from rest_framework.permissions import IsAuthenticated
+
 from .serializers import SpeakSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import HttpResponse
 from .openAI import speak_open_ai
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def speak(request):
     """
        Processes POST requests sent to the speak endpoint, validates the request data, and uses the specified

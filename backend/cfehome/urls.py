@@ -6,5 +6,5 @@ urlpatterns = [
     path('speak/', include('speak.urls')),
     path('listen/', include('listen.urls')),
     path('think/', include('think.urls')),
-    path('options/', include('options.urls'))
+    path('options/', include('options.urls')),
 ]
