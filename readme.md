@@ -50,7 +50,7 @@ various documents within a corpus, making it a versatile tool for dialogue manag
 9. Deposit documents in the data folder (backend/data). This can include PDF, HTML, and CSV files.
 10. Run the data pipeline with `python manage.py data` to import the files
 11. and `python manage.py analyze_data` to process them.
-12. Send your request (e.g., via Postman) and include the key in the `Authorization` header as `Token $key`.
+12. Send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
 
 
 ## License
