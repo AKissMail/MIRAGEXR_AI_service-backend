@@ -41,7 +41,7 @@ various documents within a corpus, making it a versatile tool for dialogue manag
 ### Set up
 1. Clone the project.
 2. Install with pip all the dependencies: `pip install -r requirements.txt`
-3. Set up an environment: Create a .env file with the field `OPENAI_API_KEY=$your_key`.
+3. Set up an environment: Create a backend/.env file with the field `OPENAI_API_KEY=$your_key`.
 4. Run the Django server with `python backend/manage.py runserver 8000 &`.
 5. Set up the database with `python manage.py makemigrations`
 6. and `python manage.py migrate`.
