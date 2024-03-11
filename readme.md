@@ -40,15 +40,17 @@ various documents within a corpus, making it a versatile tool for dialogue manag
 
 ### Set up
 1. Clone the project.
-2. Install with pip all the dependencies and set up an environment.
-3. Create a .env file with the field `OPENAI_API_KEY=$your_key`.
-4. Run the Django server with `python manage.py runserver 8000`.
-5. Set up the database with `python manage.py makemigrations` and `python manage.py migrate`.
-6. Create a Superuser with `python manage.py createsuperuser`.
-7. In the backend, create a user and a key. Open the endpoint admin, and create a user and a user key for the API request.
-8. Fill up the data folder (backend/data) with your data including PDF, HTML, and CSV files.
-9. Run the data pipeline with `python manage.py data` and `python manage.py analyze_data`.
-10. Send your request (e.g., via Postman) and include the key in the `Authorization` header as `Token $key`.
+2. Install with pip all the dependencies: `pip install -r requirements.txt`
+3. Set up an environment: Create a .env file with the field `OPENAI_API_KEY=$your_key`.
+4. Run the Django server with `python backend/manage.py runserver 8000 &`.
+5. Set up the database with `python manage.py makemigrations`
+6. and `python manage.py migrate`.
+7. Create a superuser with `python manage.py createsuperuser`.
+8. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
+9. Deposit documents in the data folder (backend/data). This can include PDF, HTML, and CSV files.
+10. Run the data pipeline with `python manage.py data` to import the files
+11. and `python manage.py analyze_data` to process them.
+12. Send your request (e.g., via Postman) and include the key in the `Authorization` header as `Token $key`.
 
 
 ## License
