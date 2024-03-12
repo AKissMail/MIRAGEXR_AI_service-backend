@@ -1,4 +1,4 @@
-name: Django CI
+name: Qodana Code Quality
 
 on:
   workflow_dispatch:
