@@ -69,10 +69,7 @@
 					"raw": "http://localhost:8000/admin/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -138,10 +135,7 @@
 					"raw": "http://localhost:8000/admin/authtoken/tokenproxy/add/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -162,7 +156,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"value": "Token {{Token}}",
 						"type": "text"
 					}
 				],
@@ -170,10 +164,7 @@
 					"raw": "http://localhost:8000/options/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -204,7 +195,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"value": "Token {{Token}}",
 						"type": "text"
 					}
 				],
@@ -232,10 +223,7 @@
 					"raw": "http://localhost:8000/speak/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -265,7 +253,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"value": "Token {{Token}}",
 						"type": "text"
 					}
 				],
@@ -288,10 +276,7 @@
 					"raw": "http://localhost:8000/think/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -309,7 +294,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"value": "Token {{Token}}",
 						"type": "text"
 					}
 				],
@@ -332,10 +317,7 @@
 					"raw": "http://localhost:8000/listen/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
