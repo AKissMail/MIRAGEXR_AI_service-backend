@@ -30,9 +30,9 @@ jobs:
         echo $OPENAIKEY > backend/.env
         cd backend
     - name: Run migrations
-      run: python manage.py migrate
+      run: python ./manage.py migrate
     - name: Run tests
-      run: python manage.py test
+      run: python ./manage.py test
     - name: Lint with flake8
       run: |
         # Halt workflow if flake8 finds Python syntax errors or undefined names
