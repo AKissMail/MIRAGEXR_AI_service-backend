@@ -1,197 +1,196 @@
 {
-	"info": {
-		"name": "MirageXR AI service backend",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-	},
-	"item": [
-		{
-			"name": "options",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Token $Token",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "http://127.0.0.1:8000/options/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"options",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "speak",
-			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Token $Token",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "speakOut",
-							"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
-							"type": "text"
-						},
-						{
-							"key": "voice",
-							"value": "alloy",
-							"type": "text"
-						},
-						{
-							"key": "model",
-							"value": "default",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/speak/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"speak",
-						""
-					],
-					"query": [
-						{
-							"key": "message",
-							"value": "[\"This field is required.\"],\"\":[\"This field is required.\"]}",
-							"disabled": true
-						},
-						{
-							"key": "context",
-							"value": null,
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "think",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Token $Token",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "message",
-							"value": "\"Test\"",
-							"type": "text"
-						},
-						{
-							"key": "context",
-							"value": "\"Test\"",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/think/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"think",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-		{
-			"name": "listen",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Token $Token",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "model",
-							"value": "default",
-							"type": "text"
-						},
-						{
-							"key": "audio",
-							"type": "file",
-							"src": []
-						}
-					]
-				},
-				"url": {
-					"raw": "http://127.0.0.1:8000/listen/",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "8000",
-					"path": [
-						"listen",
-						""
-					]
-				}
-			},
-			"response": []
-		}
-	]
+    "info": {
+        "name": "MirageXR AI service backend",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "options",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Token $Token",
+                        "type": "text"
+                    }
+                ],
+                "url": {
+                    "raw": "http://127.0.0.1:8000/options/",
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "options",
+                        ""
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "speak",
+            "request": {
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "",
+                            "type": "string"
+                        }
+                    ]
+                },
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Token $Token",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "speakOut",
+                            "value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
+                            "type": "text"
+                        },
+                        {
+                            "key": "voice",
+                            "value": "alloy",
+                            "type": "text"
+                        },
+                        {
+                            "key": "model",
+                            "value": "default",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://127.0.0.1:8000/speak/",
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "speak",
+                        ""
+                    ],
+                    "query": [
+                        {
+                            "key": "message",
+                            "value": "[\"This field is required.\"],\"\":[\"This field is required.\"]}",
+                            "disabled": true
+                        },
+                        {
+                            "key": "context",
+                            "value": null,
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "think",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Token $Token",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "message",
+                            "value": "\"Test\"",
+                            "type": "text"
+                        },
+                        {
+                            "key": "context",
+                            "value": "\"Test\"",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://127.0.0.1:8000/think/",
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "think",
+                        ""
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "listen",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Token $Token",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "model",
+                            "value": "default",
+                            "type": "text"
+                        },
+                        {
+                            "key": "audio",
+                            "type": "file",
+                            "src": []
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://127.0.0.1:8000/listen/",
+                    "protocol": "http",
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000",
+                    "path": [
+                        "listen",
+                        ""
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
 }
