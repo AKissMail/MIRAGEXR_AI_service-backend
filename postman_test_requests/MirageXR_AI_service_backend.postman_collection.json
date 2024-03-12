@@ -59,12 +59,12 @@
 					"formdata": [
 						{
 							"key": "speakOut",
-							"value": " \"This field is required.\"",
+							"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
 							"type": "text"
 						},
 						{
 							"key": "voice",
-							"value": "default",
+							"value": "alloy",
 							"type": "text"
 						},
 						{
@@ -148,6 +148,7 @@
 			},
 			"response": []
 		},
+		{
 		{
 			"name": "listen",
 			"request": {

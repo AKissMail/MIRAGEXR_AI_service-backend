@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import SpeakSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from django.http import HttpResponse
+from django.http import StreamingHttpResponse
 from .openAI import speak_open_ai
 
 
@@ -25,8 +25,10 @@ def speak(request):
     serializer = SpeakSerializer(data=request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ("openAI", "default"):
-            r = speak_open_ai(serializer.validated_data)
-            return HttpResponse(r, content_type='audio/mpeg')
+            r = speak_open_ai(request)
+            if isinstance(r, dict):
+                return Response(r, status=400)
+            return StreamingHttpResponse(r, content_type='audio/mpeg')
         else:
             return Response({"message": "'model' not found"}, status=400)
     else:
