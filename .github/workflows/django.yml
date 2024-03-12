@@ -37,6 +37,10 @@ jobs:
       run: |
         cd backend
         python manage.py test
+    - name: Run server
+      run: |
+        cd backend
+        python manage.py runserver 8000 &
     - name: Lint with flake8
       run: |
         # Halt workflow if flake8 finds Python syntax errors or undefined names
