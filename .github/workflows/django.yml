@@ -40,7 +40,7 @@ jobs:
     - name: Create superuser
       run: |
         cd backend
-        /usr/bin/expect -c 'spawn python manage.py createsuperuser; expect "Username:"; send "admin\r"; expect "Email:"; send "fnord@fnord.org\r"; expect "Password:"; send "test12345\r"; expect "Password (again):"; send "test12345\r"; interact'
+        /usr/bin/expect -c 'spawn python manage.py create superuser; expect "Username:"; send "admin\r"; expect "Email:"; send "fnord@fnord.org\r"; expect "Password:"; send "test12345\r"; expect "Password (again):"; send "test12345\r"; interact'
     - name: Run server
       run: |
         cd backend
@@ -54,4 +54,5 @@ jobs:
     - name: Run postman tests
       uses: matt-ball/newman-action@master
       with:
-        collection: postman_test_requests/MirageXR_AI_service_backend.postman_collection.json
+        collection: postman_test_requests/postman_collection.json
+        environment: postman_test_requests/postman_environment.json
