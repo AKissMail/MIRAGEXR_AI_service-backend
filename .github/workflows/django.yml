@@ -37,6 +37,10 @@ jobs:
       run: |
         cd backend
         python manage.py test
+    - name: Create superuser
+      run: |
+        cd backend
+        /usr/bin/expect -c 'spawn python manage.py createsuperuser; expect "Username:"; send "admin\r"; expect "Email:"; send "fnord@fnord.org\r"; expect "Password:"; send "test12345\r"; expect "Password (again):"; send "test12345\r"; interact'
     - name: Run server
       run: |
         cd backend
