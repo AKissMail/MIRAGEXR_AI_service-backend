@@ -66,7 +66,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/admin/",
+					"raw": "http://localhost:8000/admin/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -135,7 +135,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/admin/authtoken/tokenproxy/add/",
+					"raw": "http://localhost:8000/admin/authtoken/tokenproxy/add/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -167,7 +167,7 @@
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:8000/options/",
+					"raw": "http://localhost:8000/options/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -229,7 +229,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/speak/",
+					"raw": "http://localhost:8000/speak/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -285,7 +285,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/think/",
+					"raw": "http://localhost:8000/think/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -329,7 +329,7 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/listen/",
+					"raw": "http://localhost:8000/listen/",
 					"protocol": "http",
 					"host": [
 						"127",
