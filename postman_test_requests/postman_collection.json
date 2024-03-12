@@ -55,7 +55,7 @@
 					"formdata": [
 						{
 							"key": "username",
-							"value": "fridolin",
+							"value": "admin",
 							"type": "text"
 						},
 						{
