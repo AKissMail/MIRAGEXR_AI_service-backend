@@ -1,0 +1,350 @@
+{
+	"info": {
+		"_postman_id": "e7ec3f31-2dee-400a-aa15-09b09ce049b8",
+		"name": "Thesis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33527578",
+		"_collection_link": "https://universal-comet-48377.postman.co/workspace/New-Team-Workspace~44662ba6-ea7b-4b34-a137-c7db68932f6c/collection/18323610-e7ec3f31-2dee-400a-aa15-09b09ce049b8?action=share&source=collection_link&creator=33527578"
+	},
+	"item": [
+		{
+			"name": "admin login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var xsrfCookie = postman.getResponseCookie(\"csrftoken\"); ",
+							"postman.setEnvironmentVariable('csrftoken', xsrfCookie.value);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					},
+					{
+						"key": "username",
+						"value": "fridolin",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "test12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "fridolin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "test12345",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/admin/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"admin",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.text();",
+							"let mToken = response.match(/href=\\\"\\/admin\\/authtoken\\/tokenproxy\\/1\\/change\\/\\\">(.*?)<\\/a>/g)[0].slice(45,85);",
+							"postman.setEnvironmentVariable('Token', mToken);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					},
+					{
+						"key": "csrfmiddlewaretoken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					},
+					{
+						"key": "_save",
+						"value": "Save",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "_save",
+							"value": "Save",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/admin/authtoken/tokenproxy/add/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"admin",
+						"authtoken",
+						"tokenproxy",
+						"add",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "options",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://127.0.0.1:8000/options/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"options",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "speak",
+			"protocolProfileBehavior": {
+				"maxRedirects": 100
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "speakOut",
+							"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
+							"type": "text"
+						},
+						{
+							"key": "voice",
+							"value": "onyx",
+							"type": "text"
+						},
+						{
+							"key": "model",
+							"value": "default",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/speak/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"speak",
+						""
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "[\"This field is required.\"],\"\":[\"This field is required.\"]}",
+							"disabled": true
+						},
+						{
+							"key": "context",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "think",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message",
+							"value": "\"Test\"",
+							"type": "text"
+						},
+						{
+							"key": "context",
+							"value": "\"Test\"",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/think/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"think",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listen",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token 7629c106768d437b5f00ada183d4884f4a9cc266",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "model",
+							"value": "default",
+							"type": "text"
+						},
+						{
+							"key": "audio",
+							"type": "file",
+							"src": "/Users/andreas/PycharmProjects/MIRAGE-XR_TTS-STT/postman_test_requests/audio_king.mp3"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/listen/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"listen",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
