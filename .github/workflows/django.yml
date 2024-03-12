@@ -37,6 +37,9 @@ jobs:
       run: |
         cd backend
         python manage.py test
+    - name: Install expect
+      run: |
+        sudo apt-get install -y expect
     - name: Create superuser
       run: |
         cd backend
