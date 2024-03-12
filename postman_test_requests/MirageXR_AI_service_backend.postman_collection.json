@@ -170,7 +170,7 @@
                         {
                             "key": "audio",
                             "type": "file",
-                            "src": []
+                            "src": [py_client/audio_king.mp3]
                         }
                     ]
                 },
