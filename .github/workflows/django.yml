@@ -30,15 +30,20 @@ jobs:
         echo $OPENAIKEY > backend/.env
         cd backend
     - name: Run migrations
-      run: python manage.py migrate
+      run: |
+        cd backend
+        python manage.py migrate
     - name: Run tests
-      run: python manage.py test
+      run: |
+        cd backend
+        python manage.py test
     - name: Lint with flake8
       run: |
         # Halt workflow if flake8 finds Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings. GitHub Actions will turn warnings into errors if flake8 finds anything
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - uses: matt-ball/newman-action@master
+    - name: Run postman tests
+      uses: matt-ball/newman-action@master
       with:
         collection: postman_test_requests/MirageXR_AI_service_backend.postman_collection.json
