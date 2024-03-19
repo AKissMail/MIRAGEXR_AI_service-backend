@@ -1,3 +1,17 @@
 {
-  "Test": 43
+  "listen/":
+  {
+    "name" : "listen/",
+    "models": ["whisper", "default", "whisperNBAiLab", "whisperOpenAILocal"]
+  },
+  "speak/" :
+  {
+    "name" : "speak/",
+    "models": ["openAI", "default"]
+  },
+  "think/" :
+  {
+    "name" : "think/",
+    "models": ["gpt-3.5-turbo", "gpt-4-turbo-preview", "norwegian-on-the-web"]
+  }
 }
