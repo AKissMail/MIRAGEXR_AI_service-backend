@@ -55,6 +55,9 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings. GitHub Actions will turn warnings into errors if flake8 finds anything
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Download Audio File for Tests
+      run: | 
+        curl -L https://github.com/AKissMail/MIRAGEXR_AI_service-backend/raw/master/postman_test_requests/audio_king.mp3 --output postman_test_requests/audio_king.mp3
     - name: Run postman tests
       uses: matt-ball/newman-action@master
       with:
