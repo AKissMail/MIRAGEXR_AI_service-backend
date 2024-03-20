@@ -1,10 +1,11 @@
 name: Django CI
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ master, develop ]
   pull_request:
-    branches: [ main ]
+    branches: [ master, develop ]
 
 jobs:
   build:
@@ -13,22 +14,52 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.8
+        python-version: 3.11
+        cache: 'pip'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Create API key file
+      env: 
+        OPENAIKEY: ${{ secrets.OPENAIKEY }}
+      run: |
+        echo $OPENAIKEY > backend/.env
+        cd backend
     - name: Run migrations
-      run: python manage.py migrate
+      run: |
+        cd backend
+        python manage.py migrate
     - name: Run tests
-      run: python manage.py test
+      run: |
+        cd backend
+        python manage.py test
+    - name: Install expect
+      run: |
+        sudo apt-get install -y expect
+    - name: Create superuser
+      run: |
+        cd backend
+        expect -c 'spawn python manage.py createsuperuser; expect "Username:"; send "admin\r"; expect "Email:"; send "fnord@fnord.org\r"; expect "Password:"; send "test12345\r"; expect "Password (again):"; send "test12345\r"; interact'
+    - name: Run server
+      run: |
+        cd backend
+        python manage.py runserver 8000 &
     - name: Lint with flake8
       run: |
         # Halt workflow if flake8 finds Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # Exit-zero treats all errors as warnings. GitHub Actions will turn warnings into errors if flake8 finds anything
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Download Audio File for Tests
+      run: | 
+        curl -L https://github.com/AKissMail/MIRAGEXR_AI_service-backend/raw/master/postman_test_requests/audio_king.mp3 --output postman_test_requests/audio_king.mp3
+    - name: Run postman tests
+      uses: matt-ball/newman-action@master
+      with:
+        collection: postman_test_requests/postman_collection.json
+        environment: postman_test_requests/postman_environment.json
