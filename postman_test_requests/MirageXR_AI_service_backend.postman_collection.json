@@ -76,7 +76,7 @@
 						},
 						{
 							"key": "password",
-							"value": "test12345",
+							"value": "test12345\r",
 							"type": "text"
 						}
 					]
