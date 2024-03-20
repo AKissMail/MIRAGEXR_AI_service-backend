@@ -1,28 +1,278 @@
 {
 	"info": {
-		"name": "MirageXR AI service backend",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"_postman_id": "ac8be26c-ac90-4b8c-8abe-1ba90ca41125",
+		"name": "Thesis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18323610"
 	},
 	"item": [
 		{
+			"name": "authentication",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let test = false; ",
+							"let jsonData = pm.response.json();",
+							"",
+							"console.log(\"Test for authentication with good data\")",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"      console.log(\"Pass\")",
+							"      console.log(\"Got token: \" + pm.response.json())",
+							"      pm.environment.set(\"AuthToken\", jsonData.token);",
+							"      console.log(\"set token\")",
+							"      test = true",
+							"});",
+							"",
+							"if(!test){",
+							"    console.log(\"Test for authentication with good data - Fail!\"); ",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": true,
+				"followAuthorizationHeader": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "csrfmiddlewaretoken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "test12345",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/authentication/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"authentication",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "authentication fail",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Test authentication with bad data\")",
+							"let test = false; ",
+							"",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"      console.log(\"Pass\")",
+							"      test = true",
+							"});",
+							"",
+							"if(!test){",
+							"    console.log(\"Test authentication with bad data - Fail!\"); ",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": true,
+				"followAuthorizationHeader": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "csrfmiddlewaretoken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "test1234567",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/authentication/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"authentication",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "options",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let test = false; ",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    console.log(\"Options with good token\");",
+							"    console.log(\"Got options data: \" + pm.response.json());",
+							"    console.log(\"Pass\"); ",
+							"    test = true; ",
+							"});",
+							"",
+							"if(!test){",
+							" console.log(\"'Options with good token' - fail\")",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token $Token",
+						"value": "Token {{AuthToken}}",
 						"type": "text"
 					}
 				],
 				"url": {
-					"raw": "http://127.0.0.1:8000/options/",
+					"raw": "http://localhost:8000/options/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"options",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "options fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let test = false; ",
+							"",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"    console.log(\"Options with bad token\");",
+							"    console.log(\"Pass\"); ",
+							"    test = true; ",
+							"});",
+							"",
+							"if(!test){",
+							" console.log(\"'Options fail' - fail\")",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token demo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/options/",
+					"protocol": "http",
+					"host": [
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -35,6 +285,36 @@
 		},
 		{
 			"name": "speak",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let test = true; ",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    console.log(\"Pass\")",
+							"    console.log(\"Got options data: \" + pm.response.json());",
+							"    test = false; ",
+							"});",
+							"if(test){",
+							"    pm.test(\"Status code is 500\", function(){",
+							"        pm.response.to.have.status(500); ",
+							"        let jsonData = pm.response.json();",
+							"        console.log(\"Status 500\"); ",
+							"        console.log(\"Do you have the environment set up?\"); ",
+							"        console.log(jsonData.error); ",
+							"    })",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"maxRedirects": 100
+			},
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -50,7 +330,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token $Token",
+						"value": "Token {{AuthToken}}",
 						"type": "text"
 					}
 				],
@@ -64,7 +344,7 @@
 						},
 						{
 							"key": "voice",
-							"value": "alloy",
+							"value": "onyx",
 							"type": "text"
 						},
 						{
@@ -75,13 +355,97 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/speak/",
+					"raw": "http://localhost:8000/speak/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"speak",
+						""
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "[\"This field is required.\"],\"\":[\"This field is required.\"]}",
+							"disabled": true
+						},
+						{
+							"key": "context",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "speak fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Speak with bad token\");",
+							"",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"maxRedirects": 100
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token Demo ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "speakOut",
+							"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
+							"type": "text"
+						},
+						{
+							"key": "voice",
+							"value": "onyx",
+							"type": "text"
+						},
+						{
+							"key": "model",
+							"value": "default",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/speak/",
+					"protocol": "http",
+					"host": [
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -106,12 +470,39 @@
 		},
 		{
 			"name": "think",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let test = true; ",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    console.log(\"Pass\")",
+							"    console.log(\"Got options data: \" + pm.response.json());",
+							"    test = false; ",
+							"});",
+							"if(test){",
+							"    pm.test(\"Status code is 500\", function(){",
+							"        pm.response.to.have.status(500); ",
+							"        let jsonData = pm.response.json();",
+							"        console.log(\"Status 500\"); ",
+							"        console.log(\"Do you have the environment set up?\"); ",
+							"        console.log(jsonData.error); ",
+							"    })",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token $Token",
+						"value": "Token {{AuthToken}}",
 						"type": "text"
 					}
 				],
@@ -131,13 +522,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/think/",
+					"raw": "http://localhost:8000/think/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
 					],
 					"port": "8000",
 					"path": [
@@ -149,14 +537,105 @@
 			"response": []
 		},
 		{
-		{
-			"name": "listen",
+			"name": "think fail",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Speak with bad token\");",
+							"",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token $Token",
+						"value": "Token Demo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message",
+							"value": "\"Test\"",
+							"type": "text"
+						},
+						{
+							"key": "context",
+							"value": "\"Test\"",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/think/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"think",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listen",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let test = true; ",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    console.log(\"Pass\")",
+							"    console.log(\"Got options data: \" + pm.response.json());",
+							"    test = false; ",
+							"});",
+							"if(test){",
+							"    pm.test(\"Status code is 400\", function(){",
+							"        pm.response.to.have.status(400); ",
+							"        let jsonData = pm.response.json();",
+							"        console.log(\"Status 400\"); ",
+							"        console.log(\"Do you have send the MP3?\"); ",
+							"        console.log(jsonData.error);",
+							"        test = false;",
+							"    })",
+							"}",
+							"if(test){",
+							"    pm.test(\"Status code is 500\", function(){",
+							"        pm.response.to.have.status(500); ",
+							"        console.log(\"Status 500\"); ",
+							"        console.log(\"Do you have setup the .env?\"); ",
+							"    })",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{AuthToken}}",
 						"type": "text"
 					}
 				],
@@ -171,18 +650,78 @@
 						{
 							"key": "audio",
 							"type": "file",
-							"src": []
+							"src": "/Users/andreas/PycharmProjects/MIRAGE-XR_TTS-STT/postman_test_requests/audio_king.mp3",
+							"disabled": true
+						},
+						{
+							"key": "audio",
+							"type": "file",
+							"src": "/Users/andreas/PycharmProjects/MIRAGEXR_AI_service-backend/py_client/audio_king.mp3"
 						}
 					]
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/listen/",
+					"raw": "http://localhost:8000/listen/",
 					"protocol": "http",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"listen",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listen fial",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(\"Listen with bad token\");",
+							"",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token Demo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "model",
+							"value": "default",
+							"type": "text"
+						},
+						{
+							"key": "audio",
+							"type": "file",
+							"src": "/Users/andreas/PycharmProjects/MIRAGE-XR_TTS-STT/postman_test_requests/audio_king.mp3"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/listen/",
+					"protocol": "http",
+					"host": [
+						"localhost"
 					],
 					"port": "8000",
 					"path": [

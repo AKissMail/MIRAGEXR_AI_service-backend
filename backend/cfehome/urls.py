@@ -7,4 +7,5 @@ urlpatterns = [
     path('listen/', include('listen.urls')),
     path('think/', include('think.urls')),
     path('options/', include('options.urls')),
+    path('authentication/', include('authentication.urls')),
 ]
