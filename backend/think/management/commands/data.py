@@ -20,6 +20,7 @@ def ltx(text):
     lix_score = (num_words / num_sentences) + ((long_words / num_words) * 100)
     return round(lix_score, 4)
 
+
 class Command(BaseCommand):
     help = 'Process and load documents into the database'
 

@@ -42,5 +42,5 @@ def listen(request):
             return Response({"error": "'model' not found"}, status=400)
     else:
         return Response({"error": "Data is not correctly formatted."
-                                    " Follow this pattern: 'model': $preferred model or "
-                                    "'default', 'audio': your payload as MP3"}, status=400)
+                                  " Follow this pattern: 'model': $preferred model or "
+                                  "'default', 'audio': your payload as MP3"}, status=400)

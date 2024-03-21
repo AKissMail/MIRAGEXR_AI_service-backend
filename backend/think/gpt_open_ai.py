@@ -32,9 +32,8 @@ def gpt(data):
                 model=serializer.validated_data['model'],
                 messages=message_template
             )
-            return Response(response.choices[0].message.content,status=200)
+            return Response(response.choices[0].message.content, status=200)
         except Exception as e:
-
             return Response({"error": "An error occurred while processing your request."},  status=500)
     else:
         return Response({"error": "Input data is invalid.", "details": serializer.errors}, status=400)

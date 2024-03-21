@@ -650,13 +650,13 @@
 						{
 							"key": "audio",
 							"type": "file",
-							"src": "/Users/andreas/PycharmProjects/MIRAGE-XR_TTS-STT/postman_test_requests/audio_king.mp3",
-							"disabled": true
+							"src": "postman_test_requests/audio_king.mp3"
 						},
 						{
 							"key": "audio",
 							"type": "file",
-							"src": "/Users/andreas/PycharmProjects/MIRAGEXR_AI_service-backend/py_client/audio_king.mp3"
+							"src": "postman_test_requests/audio_king.mp3",
+							"disabled": true
 						}
 					]
 				},
@@ -713,7 +713,7 @@
 						{
 							"key": "audio",
 							"type": "file",
-							"src": "/Users/andreas/PycharmProjects/MIRAGE-XR_TTS-STT/postman_test_requests/audio_king.mp3"
+							"src": "postman_test_requests/audio_king.mp3"
 						}
 					]
 				},

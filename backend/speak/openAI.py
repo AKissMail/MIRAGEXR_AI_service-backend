@@ -2,7 +2,6 @@ import requests
 from django.http import StreamingHttpResponse
 from django.conf import settings
 from .serializers import SpeakOpenAISerializer
-from openai import OpenAI
 
 '''
 This it the wrapper for the OpenAI API, which allows you to crate an Voice based on a given String.
