@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "ac8be26c-ac90-4b8c-8abe-1ba90ca41125",
+		"_postman_id": "f27895c0-4816-45e5-98ff-07005670725f",
 		"name": "Thesis",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18323610"
@@ -13,7 +13,8 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							""
+							"console.log(\"Send Headers:\",pm.request.headers.all());",
+							"console.log(\"Send Body raw:\", pm.request.body);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -55,13 +56,13 @@
 				"header": [
 					{
 						"key": "X-CSRFToken",
-						"value": "{{csrftoken}}",
+						"value": "{{AuthToken}}",
 						"type": "text",
 						"disabled": true
 					},
 					{
 						"key": "csrfmiddlewaretoken",
-						"value": "{{csrftoken}}",
+						"value": "{{AuthToken}}",
 						"type": "text",
 						"disabled": true
 					}
@@ -141,13 +142,13 @@
 				"header": [
 					{
 						"key": "X-CSRFToken",
-						"value": "{{csrftoken}}",
+						"value": "{{AuthToken}}",
 						"type": "text",
 						"disabled": true
 					},
 					{
 						"key": "csrfmiddlewaretoken",
-						"value": "{{csrftoken}}",
+						"value": "{{AuthToken}}",
 						"type": "text",
 						"disabled": true
 					}
