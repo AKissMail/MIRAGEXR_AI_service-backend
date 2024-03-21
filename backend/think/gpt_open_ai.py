@@ -1,4 +1,5 @@
 from openai import OpenAI
+
 from .serializers import ThinkSerializer
 from rest_framework.response import Response
 
@@ -33,7 +34,8 @@ def gpt(data):
                 messages=message_template
             )
             return Response(response.choices[0].message.content, status=200)
-        except Exception as e:
-            return Response({"error": "An error occurred while processing your request."},  status=500)
+
+        except Exception as _:
+            return Response({"error": "An unexpected error occurred."}, status=500)
     else:
         return Response({"error": "Input data is invalid.", "details": serializer.errors}, status=400)

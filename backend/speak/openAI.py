@@ -15,7 +15,7 @@ def speak_open_ai(request):
         data (dict): A dictionary containing the following keys:
             - speakOut (str): The text to be converted into speech.
             - voice (str): The voice model to use for the speech. Valid options are "alloy", "echo", "fable",
-                           "onyx", "nova", and "shimmer". If default is send as a option it will use the onyx voice.
+                           "onyx", "nova", and "shimmer". If default is send as an option it will use the onyx voice.
             - Speed (float): The speed at which the speech should be delivered. Affects the pace of the resulting audio.
 
     Returns:
