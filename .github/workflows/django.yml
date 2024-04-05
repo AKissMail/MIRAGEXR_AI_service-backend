@@ -63,3 +63,4 @@ jobs:
       with:
         collection: postman_test_requests/MirageXR_AI_service_backend.postman_collection.json
         environment: postman_test_requests/postman_environment.json
+        timeout: 300000
