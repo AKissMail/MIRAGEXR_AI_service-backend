@@ -43,4 +43,4 @@ def listen(request):
     else:
         return Response({"error": "Data is not correctly formatted."
                                   " Follow this pattern: 'model': $preferred model or "
-                                  "'default', 'audio': your payload as MP3"}, status=400)
+                                  "'default', 'audio': your payload as mp3, wav or ogg"}, status=400)

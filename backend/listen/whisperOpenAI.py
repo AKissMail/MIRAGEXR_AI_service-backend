@@ -40,7 +40,6 @@ def whisper_open_ai_remote(data):
                 model="whisper-1",
                 file=audio_file
             )
-        print(transcription.text)
         return transcription.text
 
 
