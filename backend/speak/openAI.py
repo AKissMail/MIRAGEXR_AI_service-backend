@@ -26,7 +26,7 @@ def speak_open_ai(request):
         On fail:
             - str: A string with an errormessage.
     """
-    serializer = SpeakOpenAISerializer(data=request.data)
+    serializer = SpeakOpenAISerializer(data=request)
     if serializer.is_valid():
         if serializer.validated_data['voice'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer", "default"):
             if serializer.validated_data['voice'] == "default":
@@ -59,4 +59,5 @@ def speak_open_ai(request):
             return {
                 "error": "Error: Voice not found! I know: 'alloy', 'echo', 'fable', 'onyx', 'nova', and 'shimmer'"}
     else:
+
         return serializer.errors + request

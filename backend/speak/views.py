@@ -7,11 +7,11 @@ from django.http import StreamingHttpResponse
 from .openAI import speak_open_ai
 
 
-@api_view(['POST'])
+@api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def speak(request):
     """
-       Processes POST requests sent to the speak endpoint, validates the request data, and uses the specified
+       Processes GET requests sent to the speak endpoint, validates the request data, and uses the specified
        speech synthesis model to generate speech from text.
        Parameters:
            request (Request): The REST framework request object containing the parameters for speech synthesis.
@@ -22,10 +22,16 @@ def speak(request):
            validation or if an unsupported model is specified.
        """
 
-    serializer = SpeakSerializer(data=request.data)
+    data = {
+        'model': request.headers.get('model', "openAI"),
+        'voice': request.headers.get('voice', 'onyx'),
+        'speakOut': request.headers.get('speakOut'),
+        'speed': request.headers.get('speed', 1)
+    }
+    serializer = SpeakSerializer(data=data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ("openAI", "default"):
-            r = speak_open_ai(request)
+            r = speak_open_ai(data)
             if isinstance(r, dict):
                 return Response(r, status=400)
             return StreamingHttpResponse(r, content_type='audio/mpeg')
