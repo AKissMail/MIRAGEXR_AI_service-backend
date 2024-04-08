@@ -33,7 +33,7 @@ def speak(request):
         if serializer.validated_data['model'] in ("openAI", "default"):
             r = speak_open_ai(data)
             if isinstance(r, dict):
-                return Response(r, status=400)
+                return Response(r, status=500)
             return StreamingHttpResponse(r, content_type='audio/mpeg')
         else:
             return Response({"message": "'model' not found"}, status=400)

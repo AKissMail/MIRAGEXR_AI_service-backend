@@ -1,9 +1,8 @@
+import nltk
 from django.core.management.base import BaseCommand
 from pathlib import Path
 from ...data_integration import (save_pdf_data, save_html_data, save_csv_data, save_txt_data)
 from ...models import Document
-
-import nltk
 from langdetect import detect
 from textstat import textstat
 
@@ -19,6 +18,7 @@ def ltx(text):
 
     lix_score = (num_words / num_sentences) + ((long_words / num_words) * 100)
     return round(lix_score, 4)
+
 
 class Command(BaseCommand):
     help = 'Process and load documents into the database'
@@ -80,5 +80,5 @@ class Command(BaseCommand):
     def get_language(self):
         try:
             return detect(self)
-        except:
+        except Exception as _:
             return None

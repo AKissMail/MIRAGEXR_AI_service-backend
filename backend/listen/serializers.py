@@ -57,7 +57,7 @@ class WhisperOpenAiLocalSerializer(serializers.Serializer):
 
      """
     audio = serializers.FileField()
-    subModel = serializers.CharField(default="medium")
+    subModel = serializers.CharField(default="tiny")
     task = serializers.CharField(default="transcribe")
     language = serializers.CharField(default="no")
     pipelineTask = serializers.CharField(default="automatic-speech-recognition")

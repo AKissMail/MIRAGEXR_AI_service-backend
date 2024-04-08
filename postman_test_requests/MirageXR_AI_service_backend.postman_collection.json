@@ -31,8 +31,9 @@
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"      console.log(\"Pass\")",
-							"      console.log(\"Got token: \" + pm.response.json())",
+							"      console.log(\"Got token: \" + jsonData.token)",
 							"      pm.environment.set(\"AuthToken\", jsonData.token);",
+							"      console.log(jsonData.token)",
 							"      console.log(\"set token\")",
 							"      test = true",
 							"});",
@@ -292,10 +293,10 @@
 					"script": {
 						"exec": [
 							"let test = true; ",
+							"",
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
-							"    console.log(\"Pass\")",
-							"    console.log(\"Got options data: \" + pm.response.json());",
+							"    console.log(\"Pass5655\")",
 							"    test = false; ",
 							"});",
 							"if(test){",
