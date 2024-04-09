@@ -23,7 +23,9 @@ def think(request):
     serializer = ThinkSerializer(data=request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ('gpt-3.5-turbo', 'gpt-4-turbo-preview'):
-            return Response(gpt(serializer.validated_data))
+            i = gpt(serializer.validated_data)
+            print(i)
+            return i
         if serializer.validated_data['model'] in 'norwegian-on-the-web':
             return Response(rag_manager(serializer.validated_data))
         else:

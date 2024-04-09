@@ -29,19 +29,18 @@ def listen(request):
      Returns:
          Response: A REST framework response object containing the transcription result or an error message.
      """
-    if request.method == 'POST':
-        serializer = ListenSerializer(data=request.data)
-        if serializer.is_valid():
-            if serializer.validated_data['model'] in ("whisper", "default"):
-                return Response(whisper_open_ai_remote(serializer.validated_data))
-            if serializer.validated_data['model'].strip() == "whisperNBAiLab":
-                return Response(whisper_nb_ai_lab(serializer.validated_data))
-            if serializer.validated_data['model'].strip() == "whisperOpenAILocal":
-                return Response(wisper_open_ai_local(serializer.validated_data))
-            else:
-                return Response({"message": "'model' not found"}, status=400)
+    serializer = ListenSerializer(data=request.data)
+    if serializer.is_valid():
+        if serializer.validated_data['model'] in ("whisper", "default"):
+            i = whisper_open_ai_remote(serializer.validated_data)
+            return Response(i)
+        if serializer.validated_data['model'].strip() == "whisperNBAiLab":
+            return Response(whisper_nb_ai_lab(serializer.validated_data))
+        if serializer.validated_data['model'].strip() == "whisperOpenAILocal":
+            return Response(wisper_open_ai_local(serializer.validated_data))
         else:
-            return Response({"message": "Data is not correctly formatted."
-                                        " Follow this pattern: 'model': $preferred model or "
-                                        "'default', 'audio': your payload as MP3"}, status=400)
-    return Response({"message": "POST-Request only!"}, status=405)
+            return Response({"error": "'model' not found"}, status=400)
+    else:
+        return Response({"error": "Data is not correctly formatted."
+                                  " Follow this pattern: 'model': $preferred model or "
+                                  "'default', 'audio': your payload as mp3, wav or ogg"}, status=400)

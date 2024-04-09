@@ -18,8 +18,6 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 BACKEND_API_KEY = os.getenv('BACKEND_API_KEY')
 DJANGO_BASE_KEY = os.getenv('DJANGO_BASE_KEY')
 
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'authentication',
     'speak',
     'listen',
     'think',
