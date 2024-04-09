@@ -23,10 +23,8 @@ def think(request):
     serializer = ThinkSerializer(data=request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ('gpt-3.5-turbo', 'gpt-4-turbo-preview'):
-            i = gpt(serializer.validated_data)
-            print(i)
-            return i
-        if serializer.validated_data['model'] in 'norwegian-on-the-web':
+            return Response(gpt(serializer.validated_data))
+        if serializer.validated_data['model'] in ('norwegian-on-the-jaccard', 'norwegian-on-the-vector'):
             return Response(rag_manager(serializer.validated_data))
         else:
             return Response({"error": "Invalid model"}, status=400)

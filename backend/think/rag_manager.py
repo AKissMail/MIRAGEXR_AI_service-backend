@@ -1,5 +1,9 @@
 import json
 import os
+import random
+
+import chromadb
+
 from .gpt_open_ai import gpt
 from .models import Document
 from .serializers import ThinkSerializer
@@ -25,6 +29,23 @@ def jaccard_index(prompt, corpus_document):
     return len(intersection) / len(union)
 
 
+def vector_DB(validated_data):
+    """
+    Retrieves the content of a randomly selected document from a "NorwegianGPT" collection based on a search query.
+    Parameters: - validated_data (dict): Contains the search query with the key "message". Returns: - str: Content of
+    the selected document or a blank string if no match is found. Note: Uses `chromadb.PersistentClient` for database
+    operations. Assumes the database and collection are correctly configured.
+    """
+    query = validated_data.get("message")
+    client = chromadb.PersistentClient(path="data/v_DB")
+    collection = client.get_collection("NorwegianGPT")
+    results = collection.query(query_texts=[query])
+    result = Document.objects.get(pk=random.choice(results['ids'][0]))
+    if result is None:
+        return " "
+    return result.content
+
+
 def get_best_document(validated_data):
     """
       Identifies the document with the highest Jaccard Index score based on the user's prompt.
@@ -35,7 +56,7 @@ def get_best_document(validated_data):
               document, or if no document was found with a score higher than 0 the sting "No document found".
       """
     prompt = validated_data.get("message")
-    best_document = ["No document found", 0]
+    best_document = [" ", 0]
     for document in Document.objects.all():
         current_score = jaccard_index(prompt, document.content)
         if best_document[1] < current_score:  # Compare scores correctly
@@ -45,10 +66,10 @@ def get_best_document(validated_data):
         'best_jaccard_score': best_document[1],
         'best_document_text': best_document[0]
     }
-    return best_jaccard
+    return best_jaccard.content
 
 
-def norwegian_on_the_web(validated_data):
+def norwegian_on_the_web(validated_data, mode):
     """
     Processes input data using a specific configuration to enhance the prompt for the GPT model.
 
@@ -64,8 +85,11 @@ def norwegian_on_the_web(validated_data):
     file_path = os.path.join(os.path.dirname(__file__), '../config/now.json')
     with open(file_path, 'r', encoding='utf-8') as file:
         config = json.load(file)
-
-    best_document = get_best_document(validated_data)
+    if mode == "jaccard":
+        final_document = get_best_document(validated_data)
+    if mode == "vector":
+        print(vector_DB(validated_data))
+        final_document = vector_DB(validated_data)
     gpt_prompt = validated_data
     gpt_prompt['message'] = (
             config['prompt_start'] +
@@ -73,10 +97,10 @@ def norwegian_on_the_web(validated_data):
             "User Context: {}\n\n"
             "Databases Document: {}\n\n" +
             config['prompt_end']
-    ).format(validated_data['message'], validated_data['context'], best_document['best_document_text'])
+    ).format(validated_data['message'], validated_data['context'], final_document)
     gpt_prompt['context'] = (
-        config['context_start'] +
-        config['context_end']
+            config['context_start'] +
+            config['context_end']
     )
     gpt_prompt['model'] = 'gpt-3.5-turbo'
     result = gpt(gpt_prompt)
@@ -94,8 +118,10 @@ def rag_manager(data):
       """
     serializer = ThinkSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['model'] in 'norwegian-on-the-web':
-            return norwegian_on_the_web(serializer.validated_data)
+        if serializer.validated_data['model'] in 'norwegian-on-the-jaccard':
+            return norwegian_on_the_web(serializer.validated_data, "jaccard")
+        if serializer.validated_data['model'] in 'norwegian-on-the-vector':
+            return norwegian_on_the_web(serializer.validated_data, "vector")
         else:
             return {"error": "RAG model not found"}
     else:
