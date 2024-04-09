@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "f27895c0-4816-45e5-98ff-07005670725f",
-		"name": "Thesis",
+		"_postman_id": "ea351779-3dcd-4dd6-b98a-fbf7b196f31b",
+		"name": "MirageXR AI Services",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "18323610"
 	},
@@ -84,10 +84,13 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/authentication/",
+					"raw": "http://127.0.0.1:8000/authentication/",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"127",
+						"0",
+						"0",
+						"1"
 					],
 					"port": "8000",
 					"path": [
@@ -286,7 +289,7 @@
 			"response": []
 		},
 		{
-			"name": "speak",
+			"name": "speak(get)",
 			"event": [
 				{
 					"listen": "test",
@@ -315,7 +318,8 @@
 				}
 			],
 			"protocolProfileBehavior": {
-				"maxRedirects": 100
+				"maxRedirects": 100,
+				"disableBodyPruning": true
 			},
 			"request": {
 				"auth": {
@@ -328,11 +332,26 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
 						"value": "Token {{AuthToken}}",
+						"type": "text"
+					},
+					{
+						"key": "speakOut",
+						"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
+						"type": "text"
+					},
+					{
+						"key": "voice",
+						"value": "alloy",
+						"type": "text"
+					},
+					{
+						"key": "model",
+						"value": "openAI",
 						"type": "text"
 					}
 				],
@@ -342,17 +361,20 @@
 						{
 							"key": "speakOut",
 							"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "voice",
 							"value": "onyx",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "model",
 							"value": "default",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						}
 					]
 				},
@@ -384,14 +406,12 @@
 			"response": []
 		},
 		{
-			"name": "speak fail",
+			"name": "speak(get) Fail",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(\"Speak with bad token\");",
-							"",
 							"pm.test(\"Status code is 401\", function () {",
 							"    pm.response.to.have.status(401);",
 							"});"
@@ -402,7 +422,8 @@
 				}
 			],
 			"protocolProfileBehavior": {
-				"maxRedirects": 100
+				"maxRedirects": 100,
+				"disableBodyPruning": true
 			},
 			"request": {
 				"auth": {
@@ -415,11 +436,26 @@
 						}
 					]
 				},
-				"method": "POST",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Token Demo ",
+						"value": "Token Demo",
+						"type": "text"
+					},
+					{
+						"key": "speakOut",
+						"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
+						"type": "text"
+					},
+					{
+						"key": "voice",
+						"value": "alloy",
+						"type": "text"
+					},
+					{
+						"key": "model",
+						"value": "openAI",
 						"type": "text"
 					}
 				],
@@ -429,17 +465,20 @@
 						{
 							"key": "speakOut",
 							"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "voice",
 							"value": "onyx",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						},
 						{
 							"key": "model",
 							"value": "default",
-							"type": "text"
+							"type": "text",
+							"disabled": true
 						}
 					]
 				},
@@ -513,12 +552,17 @@
 					"formdata": [
 						{
 							"key": "message",
-							"value": "\"Test\"",
+							"value": "\"Jeg hetter Andreas\"",
 							"type": "text"
 						},
 						{
 							"key": "context",
 							"value": "\"Test\"",
+							"type": "text"
+						},
+						{
+							"key": "model",
+							"value": "norwegian-on-the-vector",
 							"type": "text"
 						}
 					]
@@ -652,13 +696,7 @@
 						{
 							"key": "audio",
 							"type": "file",
-							"src": "postman_test_requests/audio_king.mp3",
-							"disabled": true
-						},
-						{
-							"key": "audio",
-							"type": "file",
-							"src": "postman_test_requests/audio_king.mp3"
+							"src": "postman-cloud:///1eef32d4-b150-4250-9889-f3dd8a0f9970"
 						}
 					]
 				},
@@ -711,11 +749,6 @@
 							"key": "model",
 							"value": "default",
 							"type": "text"
-						},
-						{
-							"key": "audio",
-							"type": "file",
-							"src": "postman_test_requests/audio_king.mp3"
 						}
 					]
 				},
