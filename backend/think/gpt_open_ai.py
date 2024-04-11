@@ -2,6 +2,7 @@ from openai import OpenAI
 
 from .serializers import ThinkSerializer
 from rest_framework.response import Response
+from django.http import HttpResponse
 
 
 def gpt(data):
@@ -20,20 +21,27 @@ def gpt(data):
         error occurs or the input is invalid, returns an error.
       """
     serializer = ThinkSerializer(data=data)
-    print(serializer.is_valid())
     if serializer.is_valid():
+
         message_template = [
             {"role": "system", "content": serializer.validated_data["context"]},
             {"role": "user", "content": serializer.validated_data["message"]}
         ]
-
+        if serializer.validated_data["model"] in ["gpt-4-turbo-preview"]:
+            model = "gpt-4-turbo-preview"
+        else:
+            model = "gpt-3.5-turbo"
         try:
             client = OpenAI()
             response = client.chat.completions.create(
-                model=serializer.validated_data['model'],
+                model=model,
                 messages=message_template
             )
-            return Response(response.choices[0].message.content, status=200)
+            try:
+                response =HttpResponse(response.choices[0].message.content, status=200)
+                return response
+            except Exception as e:
+                return Response({"error": str(e)}, status=500)
 
         except Exception as _:
             return Response({"error": "An unexpected error occurred."}, status=500)
