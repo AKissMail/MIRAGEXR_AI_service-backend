@@ -61,12 +61,12 @@ def get_best_document(validated_data):
         current_score = jaccard_index(prompt, document.content)
         if best_document[1] < current_score:  # Compare scores correctly
             best_document = [document.content, current_score]
-    best_jaccard = {
-        'user_prompt': prompt,
-        'best_jaccard_score': best_document[1],
-        'best_document_text': best_document[0]
-    }
-    return best_jaccard.content
+        best_jaccard = {
+            'user_prompt': prompt,
+            'best_jaccard_score': best_document[1],
+            'best_document_text': best_document[0]
+        }
+    return best_jaccard['best_document_text']
 
 
 def norwegian_on_the_web(validated_data, mode):
@@ -88,7 +88,6 @@ def norwegian_on_the_web(validated_data, mode):
     if mode == "jaccard":
         final_document = get_best_document(validated_data)
     if mode == "vector":
-        print(vector_DB(validated_data))
         final_document = vector_DB(validated_data)
     gpt_prompt = validated_data
     gpt_prompt['message'] = (
@@ -104,7 +103,6 @@ def norwegian_on_the_web(validated_data, mode):
     )
     gpt_prompt['model'] = 'gpt-3.5-turbo'
     result = gpt(gpt_prompt)
-    print(result)
     return result
 
 
