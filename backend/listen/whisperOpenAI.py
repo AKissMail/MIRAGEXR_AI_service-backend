@@ -21,7 +21,7 @@ def whisper_open_ai_remote(data):
     client = OpenAI()
     serializer = WhisperOpenAiRemoteSerializer(data=data)
     if serializer.is_valid():
-        audio_file = serializer.validated_data['audio']
+        audio_file = serializer.validated_data['message']
         if isinstance(audio_file, InMemoryUploadedFile):
             file_extension = os.path.splitext(audio_file.name)[1]
             if not file_extension:
@@ -63,7 +63,7 @@ def wisper_open_ai_local(data):
         model = pipeline(
             "automatic-speech-recognition", model=model_str
         )
-        transformed_audio = AudioTransformator.transform(serializer.validated_data['audio'])
+        transformed_audio = AudioTransformator.transform(serializer.validated_data['message'])
         return model(
             transformed_audio,
             chunk_length_s=28,

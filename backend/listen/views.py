@@ -1,34 +1,42 @@
-from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .whisperOpenAI import whisper_open_ai_remote, wisper_open_ai_local
+
+from .serializers import ListenSerializer
 from .whisperNBAiLab import whisper_nb_ai_lab
-
-
-class ListenSerializer(serializers.Serializer):
-    """
-    Serializer for validating request data for the listen endpoint.
-    Attributes:
-        model (CharField): A string field for specifying the model: Can be either wisper or
-        audio (FileField): A file field for uploading the audio file to be processed.
-    """
-
-    model = serializers.CharField()
-    audio = serializers.FileField()
+from .whisperOpenAI import whisper_open_ai_remote, wisper_open_ai_local
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def listen(request):
     """
-     Processes POST requests sent to the listen endpoint, validates the request data,
-     and routes the audio file to the specified model for processing and returns the results.
-     Parameters:
-         request (Request): The REST framework request object containing the model identifier and the audio file.
-     Returns:
-         Response: A REST framework response object containing the transcription result or an error message.
-     """
+    Handles the POST request to listen.
+
+    @api_view: Specifies that this view is used for handling API requests.
+                The allowed methods for this view are specified in the list within the square brackets.
+
+    @permission_classes: Specifies the permission classes that control access to this view.
+                            In this case, only authenticated users are allowed access.
+
+    Parameters:
+        - request: The HTTP request object containing the incoming request data.
+
+    Returns:
+        - If the request data is valid and the specified model is "whisper" or "default",
+          it calls the whisper_open_ai_remote function with the validated data and returns the response.
+
+        - If the specified model is "whisperNBAiLab", it calls the whisper_nb_ai_lab function with the validated data
+          and returns the response.
+
+        - If the specified model is "whisperOpenAILocal", it calls the wisper_open_ai_local function with the validated data
+          and returns the response.
+
+        - If the specified model is not found, it returns a response with an error message and status code 400.
+
+        - If the request data is not correctly formatted, it returns a response with an error message
+          containing the expected pattern for the data and status code 400.
+    """
     serializer = ListenSerializer(data=request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ("whisper", "default"):
@@ -43,4 +51,4 @@ def listen(request):
     else:
         return Response({"error": "Data is not correctly formatted."
                                   " Follow this pattern: 'model': $preferred model or "
-                                  "'default', 'audio': your payload as mp3, wav or ogg"}, status=400)
+                                  "'default', 'message': your payload as mp3, wav or ogg"}, status=400)

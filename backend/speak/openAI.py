@@ -13,7 +13,7 @@ def speak_open_ai(request):
     Generates voice audio from a text using OpenAI's Text-to-Speech (TTS) API based on the provided parameters.
         Parameters:
         data (dict): A dictionary containing the following keys:
-            - speakOut (str): The text to be converted into speech.
+            - message (str): The text to be converted into speech.
             - voice (str): The voice model to use for the speech. Valid options are "alloy", "echo", "fable",
                            "onyx", "nova", and "shimmer". If default is send as an option it will use the onyx voice.
             - Speed (float): The speed at which the speech should be delivered. Affects the pace of the resulting audio.
@@ -27,17 +27,17 @@ def speak_open_ai(request):
     """
     serializer = SpeakOpenAISerializer(data=request)
     if serializer.is_valid():
-        if serializer.validated_data['voice'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer", "default"):
-            if serializer.validated_data['voice'] == "default":
-                serializer.validated_data['voice'] = "onyx"
+        if serializer.validated_data['submodel'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer", "default"):
+            if serializer.validated_data['submodel'] == "default":
+                serializer.validated_data['submodel'] = "onyx"
             url = "https://api.openai.com/v1/audio/speech"
             headers = {
                 "Authorization": f'Bearer {settings.OPENAI_API_KEY}',
             }
             data = {
                 "model": "tts-1",
-                "input": serializer.validated_data['speakOut'],
-                "voice": serializer.validated_data['voice'],
+                "input": serializer.validated_data['message'],
+                "voice": serializer.validated_data['submodel'],
                 "speed": serializer.validated_data['speed']
             }
 
@@ -56,7 +56,8 @@ def speak_open_ai(request):
                 return {"error": f"Error: {response.status_code} - {response.text}"}
         else:
             return {
-                "error": "Error: Voice not found! I know: 'alloy', 'echo', 'fable', 'onyx', 'nova', and 'shimmer'"}
+                "error": "Error: Submodel not found! Options that are available are 'alloy', 'echo', 'fable', "
+                         "'onyx', 'nova', and 'shimmer'"}
     else:
 
         return serializer.errors + request

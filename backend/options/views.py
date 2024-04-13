@@ -9,9 +9,16 @@ from rest_framework.response import Response
 @permission_classes([IsAuthenticated])
 def get_options(request):
     """
-    Handles GET requests to retrieve configuration options from './options.json'.
+    Retrieves the options from the configuration file.
+
+    Parameters:
+    - request: HttpRequest object representing the incoming request.
+
     Returns:
-        Response: A DRF Response object containing the parsed JSON data with a 200 OK status.
+    - If the request has the appropriate permissions, retrieves the options from the configuration file and returns a
+      JSON response containing the options with a status code of 200 (OK).
+    - If the request does not have the appropriate permissions, returns a JSON response with an error message and a
+      status code of 405 (Method Not Allowed).
     """
     if permission_classes:
         file_path = os.path.join(os.path.dirname(__file__), '../config/options.json')

@@ -20,7 +20,7 @@ def whisper_nb_ai_lab(data):
             serializer.validated_data['pipelineTask'],
             model_str
         )
-        transformed_audio = AudioTransformator.transform(serializer.validated_data['audio'])
+        transformed_audio = AudioTransformator.transform(serializer.validated_data['message'])
         return model(
             transformed_audio,
             chunk_length_s=28,

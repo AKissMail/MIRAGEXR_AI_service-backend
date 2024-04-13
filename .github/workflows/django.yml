@@ -17,19 +17,22 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: 3.11
+        python-version: 3.12
         cache: 'pip'
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
     - name: Create API key file
-      env: 
+      env:
         OPENAIKEY: ${{ secrets.OPENAIKEY }}
       run: |
         echo $OPENAIKEY > backend/.env
         cd backend
+    - name: Check Python version
+      run: python --version | grep -q "Python 3.12" || echo "Unexpected Python version! Exiting." && exit 1
     - name: Run migrations
       run: |
         cd backend
@@ -59,10 +62,7 @@ jobs:
       run: | 
         curl -L https://github.com/AKissMail/MIRAGEXR_AI_service-backend/raw/master/postman_test_requests/audio_king.mp3 --output postman_test_requests/audio_king.mp3
     - name: Run postman tests
-      run: |
-        curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-    - name: Login to Postman CLI
-      run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-    - name: Run API tests
-      run: |
-        postman collection run "18323610-f27895c0-4816-45e5-98ff-07005670725f" -e "18323610-af623a1c-f200-43eb-993a-4f501bcf45a4"
+      uses: matt-ball/newman-action@master
+      with:
+        collection: test/collection.json
+        environment: test/environment.json

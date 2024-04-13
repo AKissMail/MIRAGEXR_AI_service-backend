@@ -18,6 +18,9 @@ OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 BACKEND_API_KEY = os.getenv('BACKEND_API_KEY')
 DJANGO_BASE_KEY = os.getenv('DJANGO_BASE_KEY')
 
+# Setting for the Tokenizer
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+'
+SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+' # todo set a new one!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # todo set to false before deployment

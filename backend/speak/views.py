@@ -24,8 +24,8 @@ def speak(request):
 
     data = {
         'model': request.headers.get('model', "openAI"),
-        'voice': request.headers.get('voice', 'onyx'),
-        'speakOut': request.headers.get('speakOut'),
+        'submodel': request.headers.get('voice', 'onyx'),
+        'message': request.headers.get('message'),
         'speed': request.headers.get('speed', 1)
     }
     serializer = SpeakSerializer(data=data)
@@ -39,5 +39,5 @@ def speak(request):
             return Response({"message": "'model' not found"}, status=400)
     else:
         return Response({"message": "Data is not correctly formatted. Follow this pattern: "
-                                    "'speakOut': $Content, 'voice': $preferred voice or 'default', "
+                                    "'message': $Content, 'submodel': $preferred voice or 'default', "
                                     "'model': $preferred model or 'default', 'speed': $speech speed"}, status=400)
