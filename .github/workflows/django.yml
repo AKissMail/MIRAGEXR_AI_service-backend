@@ -24,7 +24,6 @@ jobs:
         OPENAIKEY: ${{ secrets.OPENAIKEY }}
       run: |
         echo $OPENAIKEY > .env
-        cd backend
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
