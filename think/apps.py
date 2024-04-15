@@ -11,4 +11,4 @@ class ThinkConfig(AppConfig):
 
     """
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'backend.think'
+    name = 'think'

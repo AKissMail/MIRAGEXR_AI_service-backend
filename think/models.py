@@ -19,6 +19,8 @@ class Document(models.Model):
         - Word_count (models.IntegerField): Storing the Wordcount.
         - Sentences_count (models.IntegerField): Storing the sentences count.
     """
+    class Meta:
+        app_label = 'think'
     objects = None
     SOURCE_CHOICES = (
         ('pdf', 'PDF'),
@@ -55,6 +57,9 @@ class Content(models.Model):
            - Body_text (models.TextField): The body text of this content section.
            - Section_number (models.IntegerField): ID for a section within the document.
     """
+    class Meta:
+        app_label = 'think'
+
     document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='content_items')
     heading = models.CharField(max_length=255, blank=True, null=True)
     body_text = models.TextField(blank=True, null=True)

@@ -40,10 +40,19 @@ def vector_DB(validated_data):
     client = chromadb.PersistentClient(path="data/v_DB")
     collection = client.get_collection("NorwegianGPT")
     results = collection.query(query_texts=[query])
-    result = Document.objects.get(pk=random.choice(results['ids'][0]))
-    if result is None:
+
+    if not results['ids']:
         return " "
-    return result.content
+
+    document_id = random.choice(results['ids'][0])
+
+    try:
+        document = Document.objects.get(pk=document_id)
+    except Document.DoesNotExist:
+        return " "
+
+    return document.content
+
 
 
 def get_best_document(validated_data):
@@ -57,15 +66,22 @@ def get_best_document(validated_data):
       """
     prompt = validated_data.get("message")
     best_document = [" ", 0]
+    best_jaccard = {
+        'user_prompt': prompt,
+        'best_jaccard_score': 0,
+        'best_document_text': "No document found"
+    }
+
     for document in Document.objects.all():
         current_score = jaccard_index(prompt, document.content)
         if best_document[1] < current_score:  # Compare scores correctly
             best_document = [document.content, current_score]
-        best_jaccard = {
-            'user_prompt': prompt,
-            'best_jaccard_score': best_document[1],
-            'best_document_text': best_document[0]
-        }
+            best_jaccard = {
+                'user_prompt': prompt,
+                'best_jaccard_score': best_document[1],
+                'best_document_text': best_document[0],
+            }
+
     return best_jaccard['best_document_text']
 
 

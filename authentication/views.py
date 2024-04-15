@@ -17,4 +17,4 @@ def authentication(request):
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
     else:
-        return Response({'error': 'Leave me alone'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'error': 'Login data not valid'}, status=status.HTTP_401_UNAUTHORIZED)

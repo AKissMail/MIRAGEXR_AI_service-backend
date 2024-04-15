@@ -26,4 +26,4 @@ def get_options(request):
             config = json.load(file)
         return Response(config, status=200)
     else:
-        return Response({"message": "GET-Request only!"}, status=405)
+        return Response({"message": "GET-Request only!"}, status=401)

@@ -24,7 +24,7 @@ def speak(request):
 
     data = {
         'model': request.headers.get('model', "openAI"),
-        'submodel': request.headers.get('voice', 'onyx'),
+        'submodel': request.headers.get('submodel', 'onyx'),
         'message': request.headers.get('message'),
         'speed': request.headers.get('speed', 1)
     }

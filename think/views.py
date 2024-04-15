@@ -29,4 +29,4 @@ def think(request):
         else:
             return Response({"error": "Invalid model"}, status=400)
     else:
-        return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=402)

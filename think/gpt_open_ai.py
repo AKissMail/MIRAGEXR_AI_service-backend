@@ -46,4 +46,4 @@ def gpt(data):
         except Exception as _:
             return Response({"error": "An unexpected error occurred."}, status=500)
     else:
-        return Response({"error": "Input data is invalid.", "details": serializer.errors}, status=400)
+        return Response({"error": "Input data is invalid.", "details": serializer.errors}, status=403)
