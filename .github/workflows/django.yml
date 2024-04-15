@@ -32,14 +32,12 @@ jobs:
         if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
     - name: Run migrations
       run: |
-        cd backend
         python manage.py migrate
     - name: Install expect
       run: |
         sudo apt-get install -y expect
     - name: Run server
       run: |
-        cd backend
         python manage.py runserver 8000 &
     - name: Lint with flake8
       run: |
