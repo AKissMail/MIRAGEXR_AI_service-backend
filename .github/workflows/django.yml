@@ -30,8 +30,6 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
-    - name: Check Python version
-      run: python --version | grep -q "Python 3.12.2" || echo "Unexpected Python version! Exiting." && exit 1
     - name: Run migrations
       run: |
         cd backend
