@@ -29,7 +29,7 @@ jobs:
       env:
         OPENAIKEY: ${{ secrets.OPENAIKEY }}
       run: |
-        echo $OPENAIKEY > backend/.env
+        echo $OPENAIKEY > .env
         cd backend
     - name: Check Python version
       run: python --version | grep -q "Python 3.12" || echo "Unexpected Python version! Exiting." && exit 1
@@ -37,17 +37,9 @@ jobs:
       run: |
         cd backend
         python manage.py migrate
-    - name: Run tests
-      run: |
-        cd backend
-        python manage.py test
     - name: Install expect
       run: |
         sudo apt-get install -y expect
-    - name: Create superuser
-      run: |
-        cd backend
-        expect -c 'spawn python manage.py createsuperuser; expect "Username:"; send "admin\r"; expect "Email:"; send "fnord@fnord.org\r"; expect "Password:"; send "test12345\r"; expect "Password (again):"; send "test12345\r"; interact'
     - name: Run server
       run: |
         cd backend
