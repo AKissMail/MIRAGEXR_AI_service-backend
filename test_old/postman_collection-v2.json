@@ -1,0 +1,540 @@
+{
+	"info": {
+		"_postman_id": "e7ec3f31-2dee-400a-aa15-09b09ce049b8",
+		"name": "Thesis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33527578",
+		"_collection_link": "https://universal-comet-48377.postman.co/workspace/New-Team-Workspace~44662ba6-ea7b-4b34-a137-c7db68932f6c/collection/18323610-e7ec3f31-2dee-400a-aa15-09b09ce049b8?action=share&source=collection_link&creator=33527578"
+	},
+	"item": [
+		{
+			"name": "fetch login cookie",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var xsrfCookie = postman.getResponseCookie(\"csrftoken\"); ",
+							"postman.setEnvironmentVariable('csrftoken', xsrfCookie.value);",
+							"pm.environment.set(\"csrftoken\", xsrfCookie.value);",
+							"console.log(xsrfCookie);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"followOriginalHttpMethod": true,
+				"followAuthorizationHeader": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "csrfmiddlewaretoken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "test12345",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "X-CSRFToken",
+							"value": "{{csrftoken}}",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "csrfmiddlewaretoken",
+							"value": "{{csrftoken}}",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/admin/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"admin",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin login",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//var xsrfCookie = postman.getResponseCookie(\"csrftoken\"); ",
+							"//postman.setEnvironmentVariable('csrftoken', xsrfCookie.value);",
+							"//pm.environment.set('csrftoken', xsrfCookie.value);",
+							"//console.log(xsrfCookie);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"followOriginalHttpMethod": false,
+				"followAuthorizationHeader": false,
+				"disableCookies": false,
+				"disableUrlEncoding": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "{{csrftoken}}",
+						"type": "text"
+					},
+					{
+						"key": "csrfmiddlewaretoken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "test12345",
+							"type": "text"
+						},
+						{
+							"key": "csrfmiddlewaretoken",
+							"value": "{{csrftoken}}",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "next",
+							"value": "/admin/",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/admin/login/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"admin",
+						"login",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Authenticate\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"generate mToken and parse it\", function () {",
+							"    const response = pm.response.text();",
+							"    let mToken = response.match(/href=\\\".*\\/admin\\/authtoken\\/tokenproxy\\/1\\/change\\/\\\">(.*?)<\\/a>/g);",
+							"    mToken = mToken[0].slice(45, 85);",
+							"    pm.environment.set(\"Token\", mToken);",
+							"    console.log(\"Token: \" + pm.environment.get(\"Token\"));",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-CSRFToken",
+						"value": "rxgFxbK0TZAqXS1BZxlGrDtXs6ZOuLmH",
+						"type": "text"
+					},
+					{
+						"key": "csrfmiddlewaretoken",
+						"value": "{{csrftoken}}",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "username",
+						"value": "admin",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "test12345",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "_save",
+							"value": "Save",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/admin/authtoken/tokenproxy/add/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"admin",
+						"authtoken",
+						"tokenproxy",
+						"add",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "options",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"check response\", function () {",
+							"    let jsonData = pm.response.json();",
+							"    pm.expect(jsonData[1].name).equals(\"speak/\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{Token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8000/options/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"options",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "speak",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"maxRedirects": 100
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "speakOut",
+						"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
+						"type": "text"
+					},
+					{
+						"key": "voice",
+						"value": "onyx",
+						"type": "text"
+					},
+					{
+						"key": "model",
+						"value": "openAI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "speakOut",
+							"value": "Hi jeg hetter OpenAI og jeg snakker norsk!",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "voice",
+							"value": "alloy",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "model",
+							"value": "openAI",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "speed",
+							"value": "1",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/speak/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"speak",
+						""
+					],
+					"query": [
+						{
+							"key": "message",
+							"value": "[\"This field is required.\"],\"\":[\"This field is required.\"]}",
+							"disabled": true
+						},
+						{
+							"key": "context",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "think",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "message",
+						"value": "\\\"Jeg hetter Andreas\\\"",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "context",
+						"value": "\\\"Test\\\"",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "model",
+						"value": "norwegian-on-the-vector",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "message",
+							"value": "\"Jeg hetter Andreas\"",
+							"type": "text"
+						},
+						{
+							"key": "context",
+							"value": "\"Test\"",
+							"type": "text"
+						},
+						{
+							"key": "model",
+							"value": "norwegian-on-the-vector",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/think/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"think",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "listen",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{Token}}",
+						"type": "text"
+					},
+					{
+						"key": "model",
+						"value": "default",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "model",
+							"value": "default",
+							"type": "text"
+						},
+						{
+							"key": "audio",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/listen/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"listen",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

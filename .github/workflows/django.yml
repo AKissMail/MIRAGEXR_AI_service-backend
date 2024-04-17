@@ -19,38 +19,28 @@ jobs:
       with:
         python-version: 3.12
         cache: 'pip'
+    - name: Create API key file
+      env:
+        OPENAIKEY: ${{ secrets.OPENAIKEY }}
+      run: |
+        echo $OPENAIKEY > .env
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
-    - name: Create API key file
-      env:
-        OPENAIKEY: ${{ secrets.OPENAIKEY }}
+    - name: Run makemigrations
       run: |
-        echo $OPENAIKEY > backend/.env
-        cd backend
-    - name: Check Python version
-      run: python --version | grep -q "Python 3.12" || echo "Unexpected Python version! Exiting." && exit 1
+        python manage.py makemigrations
     - name: Run migrations
       run: |
-        cd backend
         python manage.py migrate
-    - name: Run tests
-      run: |
-        cd backend
-        python manage.py test
     - name: Install expect
       run: |
         sudo apt-get install -y expect
-    - name: Create superuser
-      run: |
-        cd backend
-        expect -c 'spawn python manage.py createsuperuser; expect "Username:"; send "admin\r"; expect "Email:"; send "fnord@fnord.org\r"; expect "Password:"; send "test12345\r"; expect "Password (again):"; send "test12345\r"; interact'
     - name: Run server
       run: |
-        cd backend
         python manage.py runserver 8000 &
     - name: Lint with flake8
       run: |
@@ -60,4 +50,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run Tests
       run: |
+        44-naming-conventions
         python manage.py test
