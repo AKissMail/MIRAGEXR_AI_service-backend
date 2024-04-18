@@ -4,6 +4,7 @@ from authentication.views import authentication
 from options.views import get_options
 from listen.views import listen
 from speak.views import speak
+from dokument.views import dokument
 
 
 class TestUrls(SimpleTestCase):
@@ -24,7 +25,6 @@ class TestUrls(SimpleTestCase):
         url = reverse("speak")
         self.assertEqual(resolve(url).func, speak)
 
-
-
-
-
+    def test_dokuments_url(self):
+        url = reverse("dokument")
+        self.assertEqual(resolve(url).func, dokument)

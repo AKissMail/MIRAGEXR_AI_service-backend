@@ -9,6 +9,31 @@ from dokument.models import Document
 
 
 def saveDocument(text, type, request):
+    """Save a document with the given text, type, and request.
+
+    Args:
+        text (str): The text content of the document.
+        type (str): The type of the document.
+        request (dict): The request data for the document.
+
+    Returns:
+        None
+
+    Example usage:
+        saveDocument("This is a test document.", "document", {'name': 'test_document', 'database': 'documents'})
+
+    Note:
+        This method performs the following actions:
+            - Detects the language of the document using the 'detect' function.
+            - Creates a new document object with the provided title, source type, and content.
+            - Tokenizes the document into sentences and words using the 'ToktokTokenizer'.
+            - Updates various properties of the document, including language, word count, and sentence count.
+            - Saves the document.
+            - Checks if the Chroma database exists and creates it if not.
+            - Retrieves or creates a collection in the Chroma database.
+            - Adds the document to the collection with the relevant metadata.
+
+    """
     print(type, request)
     language = detect(text)
     print(language)
@@ -76,6 +101,19 @@ def saveDocument(text, type, request):
 
 
 def ltx(text):
+    """
+    Calculate the Lix score of the given text.
+
+    Parameters:
+        text (str): The text to calculate the Lix score for.
+
+    Returns:
+        float: The Lix score rounded to 4 decimal places.
+
+    Example:
+        >>> ltx("This is a sample sentence.")
+        16.6667
+    """
     words = text.split()
     num_words = len(text.split())
     num_sentences = text.count('.') + text.count('!') + text.count('?')

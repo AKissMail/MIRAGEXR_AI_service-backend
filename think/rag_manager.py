@@ -2,6 +2,8 @@ import json
 import os
 import random
 
+from rest_framework import status
+from rest_framework.response import Response
 import chromadb
 
 from .gpt_open_ai import gpt
@@ -36,9 +38,14 @@ def vector_DB(validated_data):
     the selected document or a blank string if no match is found. Note: Uses `chromadb.PersistentClient` for database
     operations. Assumes the database and collection are correctly configured.
     """
+
     query = validated_data.get("message")
     client = chromadb.PersistentClient(path="data/v_DB")
-    collection = client.get_collection("default")
+    try:
+        collection = client.get_collection(validated_data.get("subModel"))
+    except Exception as e:
+        return Response("Couldn't retrieve the subModel. {}".format(e), status=status.HTTP_400_BAD_REQUEST)
+
     results = collection.query(query_texts=[query])
 
     if not results['ids']:
@@ -52,7 +59,6 @@ def vector_DB(validated_data):
         return " "
 
     return document.content
-
 
 
 def get_best_document(validated_data):
@@ -85,7 +91,7 @@ def get_best_document(validated_data):
     return best_jaccard['best_document_text']
 
 
-def norwegian_on_the_web(validated_data, mode):
+def prompt_with_configuration(validated_data, final_document):
     """
     Processes input data using a specific configuration to enhance the prompt for the GPT model.
 
@@ -98,13 +104,11 @@ def norwegian_on_the_web(validated_data, mode):
     Returns:
     - The response from the GPT model based on the enhanced prompt.
     """
+    if isinstance(final_document, Response):
+        return final_document
     file_path = os.path.join(os.path.dirname(__file__), '../config/now.json')
     with open(file_path, 'r', encoding='utf-8') as file:
         config = json.load(file)
-    if mode == "jaccard":
-        final_document = get_best_document(validated_data)
-    if mode == "vector":
-        final_document = vector_DB(validated_data)
     gpt_prompt = validated_data
     gpt_prompt['message'] = (
             config['prompt_start'] +
@@ -118,8 +122,8 @@ def norwegian_on_the_web(validated_data, mode):
             config['context_end']
     )
     gpt_prompt['model'] = 'gpt-3.5-turbo'
-    result = gpt(gpt_prompt)
-    return result
+
+    return gpt(gpt_prompt)
 
 
 def rag_manager(data):
@@ -132,11 +136,10 @@ def rag_manager(data):
       """
     serializer = ThinkSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['model'] in 'norwegian-on-the-jaccard':
-            return norwegian_on_the_web(serializer.validated_data, "jaccard")
-        if serializer.validated_data['model'] in 'norwegian-on-the-vector':
-            return norwegian_on_the_web(serializer.validated_data, "vector")
+        if serializer.validated_data['subModel'] in 'jaccard':
+            return prompt_with_configuration(serializer.validated_data, get_best_document(serializer.validated_data))
         else:
-            return {"error": "RAG model not found"}
+            return prompt_with_configuration(serializer.validated_data, vector_DB(serializer.validated_data))
     else:
-        return {"error": "Input data is invalid.", "details": serializer.errors}
+        return Response("Error: Input data is invalid! Details :" + serializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)

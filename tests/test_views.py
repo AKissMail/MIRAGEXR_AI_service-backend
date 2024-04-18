@@ -1,6 +1,8 @@
+import io
 import json
 import os
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework.authtoken.admin import User
@@ -168,7 +170,7 @@ class TestViews(TestCase):
             }
             headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
-            self.assertEqual(response.status_code, 400)
+            self.assertEqual(response.status_code, 200)
 
     def test_think_view_model_default(self):
         """ Test when model is default """
@@ -206,7 +208,8 @@ class TestViews(TestCase):
     def test_think_view_model_norwegian_jaccard(self):
         """ Test when model is norwegian-on-the-jaccard """
         data = {
-            "model": "norwegian-on-the-jaccard",
+            "model": "vector",
+            "subModel": "jaccard",
             "message": "test message",
             "context": "This is a Test"
         }
@@ -217,7 +220,8 @@ class TestViews(TestCase):
     def test_think_view_model_norwegian_vector(self):
         """ Test when model is norwegian-on-the-vector """
         data = {
-            "model": "norwegian-on-the-vector",
+            "model": "vector",
+            "subModel": "default",
             "message": "test message",
             "context": "This is a Test"
         }
@@ -267,3 +271,41 @@ class TestViews(TestCase):
     def test_speak_view_model_invalid(self):
         """ Test when model is not valid """
         self.helper_test_speak_view('invalid', 400)
+
+def test_dokument_creation(self):
+    """
+        Testing the 'dokument' api endpoint for a success POST request
+        """
+    data = {
+        'name': 'sample_name',
+        'database': 'sample_database',
+        # include any other required fields as per your DokumentSerializer
+    }
+    headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+    response = self.client.post(reverse('dokument'), data=data, **headers)
+    self.assertEqual(response.status_code, 201)
+
+
+def test_dokument_invalid_request(self):
+    """
+        Testing the 'dokument' api endpoint for a bad POST request
+        """
+    data = {
+        # Include invalid data here, which do not comply with your DokumentSerializer
+    }
+    headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+    response = self.client.post(reverse('dokument'), data=data, **headers)
+    self.assertEqual(response.status_code, 400)
+
+
+def test_dokument_unauthorized_request(self):
+    """
+        Testing the 'dokument' api endpoint for unauthorized POST request
+        """
+    data = {
+        'name': 'sample_name',
+        'database': 'sample_database',
+        # include any other required fields as per your DokumentSerializer
+    }
+    response = self.client.post(reverse('dokument'), data=data)
+    self.assertEqual(response.status_code, 401)

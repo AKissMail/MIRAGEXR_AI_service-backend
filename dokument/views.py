@@ -1,17 +1,27 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from .serializers import DokumentSerializer
 from .handelData import handelDokument
-
+from .serializers import DokumentSerializer
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAdminUser])
 def dokument(request):
+    """
+    Create a new document.
+
+    Parameters:
+    - request: HTTP request object
+
+    Returns:
+    - Response object
+
+    Raises:
+    - None
+    """
     print(request.data)
     serializer = DokumentSerializer(data=request.data)
     if serializer.is_valid():

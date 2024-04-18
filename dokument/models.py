@@ -3,21 +3,24 @@ from django.db import models
 
 class Document(models.Model):
     """
-    Represents a document as part of the RAG Corpus.
+    This class represents a document object in the application.
+
     Attributes:
-        title (models.CharField): The title of the document.
-        - Source_type (models.CharField): The source type of the document,
-          with choices limited to PDF, Web, CSV, and Txt formats.
-        - Content (models.TextField): The main content of the document as String.
-        - Date_added (models.DateTimeField): When it was added to the system.
-        - Ltx (models.FloatField): To sore the LTX score (a measure of readability) for documents in a nordic language.
-        - Smog_index (models.FloatField): To sore the Smog score (a measure of readability) for documents in english.
-        - Language (models.CharField): The language of the document.
-        - Sentences (models.TextField): The sentences in the document as an array of strings.
-        - Words (models.TextField): The words in the document as an array of strings.
-        - Average_sentence_length (models.FloatField): Storing the average sentence length in the document.
-        - Word_count (models.IntegerField): Storing the Wordcount.
-        - Sentences_count (models.IntegerField): Storing the sentences count.
+        - title (CharField): The title of the document.
+        - source_type (CharField): The type of the document's source.
+        - content (TextField): The content of the document.
+        - date_added (DateTimeField): The date and time when the document was added.
+        - ltx (FloatField): The LTX value of the document.
+        - smog_index (FloatFiled): The SMOG index of the document.
+        - language (CharField): The language of the document.
+        - sentences (TextField): The sentences in the document.
+        - words (TextField): The words in the document.
+        - average_sentence_length (FloatField): The average length of the sentences in the document.
+        - word_count (IntegerField): The total number of words in the document.
+        - sentences_count (IntegerField): The total number of sentences in the document.
+
+    Methods:
+        - __str__(): Returns the title of the document as its string representation.
     """
     class Meta:
         app_label = 'think'
@@ -50,12 +53,29 @@ class Document(models.Model):
 
 class Content(models.Model):
     """
-       Represents a section or a piece of content within a document.
-       Attributes:
-           - document (models.ForeignKey): A ForeignKey linking to the Document.
-           - Heading (models.CharField): The heading of this content section.
-           - Body_text (models.TextField): The body text of this content section.
-           - Section_number (models.IntegerField): ID for a section within the document.
+    A class representing content within a document.
+
+    Attributes:
+        document (ForeignKey): The document that this content belongs to.
+        heading (CharField): The heading for this content.
+        body_text (TextField): The body text for this content.
+        section_number (IntegerField): The section number for this content.
+
+    Methods:
+        __str__(): Returns the heading of the document as its string representation.
+
+    Example usage:
+        content = Content()
+        content.document = document
+        content.heading = "Introduction"
+        content.body_text = "Lorem ipsum dolor sit amet..."
+        content.section_number = 1
+        content.save()
+
+        print(content)
+        # Output: "Introduction"
+
+    Note: This class is related to the 'think' app.
     """
     class Meta:
         app_label = 'think'
