@@ -5,7 +5,7 @@ import random
 import chromadb
 
 from .gpt_open_ai import gpt
-from .models import Document
+from dokument.models import Document
 from .serializers import ThinkSerializer
 
 
@@ -38,7 +38,7 @@ def vector_DB(validated_data):
     """
     query = validated_data.get("message")
     client = chromadb.PersistentClient(path="data/v_DB")
-    collection = client.get_collection("NorwegianGPT")
+    collection = client.get_collection("default")
     results = collection.query(query_texts=[query])
 
     if not results['ids']:

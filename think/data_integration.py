@@ -1,5 +1,5 @@
 import os
-from .models import Document, Content
+from dokument.models import Document, Content
 from .doc_pre_processor import parse_pdf, parse_csv, parse_html, pars_txt
 
 

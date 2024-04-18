@@ -1,8 +1,7 @@
-import nltk
 from django.core.management.base import BaseCommand
 from pathlib import Path
 from ...data_integration import (save_pdf_data, save_html_data, save_csv_data, save_txt_data)
-from ...models import Document
+from dokument.models import Document
 
 import chromadb
 import nltk
@@ -88,9 +87,15 @@ class Command(BaseCommand):
             client = chromadb.PersistentClient(path="data/v_DB")
             collection =client.create_collection("NorwegianGPT")
         else:
-            print("Found Database")
-            client = chromadb.PersistentClient(path="data/v_DB")
-            collection = client.get_collection("NorwegianGPT")
+            try:
+                print("Found Database")
+                client = chromadb.PersistentClient(path="data/v_DB")
+                print(client.get_collection("NorwegianGP"))
+                collection = client.get_collection("NorwegianGP")
+            except Exception as e:
+                print(str(e))
+                client = chromadb.PersistentClient(path="data/v_DB")
+                collection = client.get_collection("NorwegianGPT")
         newData = Document.objects.filter(id__in=handeledDocumnet)
 
         for doc in newData:

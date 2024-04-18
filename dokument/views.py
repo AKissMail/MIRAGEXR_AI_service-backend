@@ -5,19 +5,22 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .serializers import DokumentSerializer
-
-
-# Create your views he
+from .handelData import handelDokument
 
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def dokument(request):
+    print(request.data)
     serializer = DokumentSerializer(data=request.data)
     if serializer.is_valid():
-        print('Passt')
-        return Response(serializer.data['name'], status=status.HTTP_201_CREATED)
+        print("is valid")
+        result = handelDokument(serializer.validated_data)
+        if result:
+            return Response("Document " + serializer.validated_data['name'] + "added to " + serializer.validated_data['database'], status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error': 'Invalid file type'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

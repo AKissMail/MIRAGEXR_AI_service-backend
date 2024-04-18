@@ -6,8 +6,7 @@ from django.urls import reverse
 from rest_framework.authtoken.admin import User
 from rest_framework.test import APIClient
 
-import tests
-from think.models import Document, Content
+from dokument.models import Document, Content
 
 
 class TestViews(TestCase):
