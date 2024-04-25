@@ -57,18 +57,17 @@ def saveDocument(text, type, request):
 
     document.save()
 
-    if not (os.path.exists("vectorDB/chroma.sqlite3")):
+    if not os.path.exists("vectorDB"):
         print("Creating the Chroma DB")
         client = chromadb.PersistentClient(path="vectorDB")
         client.create_collection(request['database'])
-
     try:
-        client = chromadb.PersistentClient(path="data/v_DB")
+        client = chromadb.PersistentClient(path="vectorDB")
         collection = client.get_collection(request['database'])
         print("Found Database")
     except Exception as e:
         print(str(e))
-        client = chromadb.PersistentClient(path="data/v_DB")
+        client = chromadb.PersistentClient(path="vectorDB")
         collection = client.create_collection(request['database'])
 
     metaData = {}
