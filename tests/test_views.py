@@ -1,56 +1,63 @@
-import io
 import json
 import os
 
+from django.contrib.auth.models import User as AuthUser
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
-from rest_framework.authtoken.admin import User
+from rest_framework import status
 from rest_framework.test import APIClient
 
-from dokument.models import Document, Content
+from cfehome import settings
 
 
 class TestViews(TestCase):
-    t = ""
+    adminToken = ""
+    userToken = ""
+
+    def __init__(self, methodName: str = "runTest"):
+        super().__init__(methodName)
+        self.expected_config = [
+            {
+                "name": "listen/",
+                "models": ["whisper", "default", "whisperNBAiLab", "whisperOpenAILocal"]
+            },
+            {
+                "name": "speak/",
+                "models": ["openAI", "default"]
+            },
+            {
+                "name": "think/",
+                "models": ["gpt-3.5-turbo", "gpt-4-turbo-preview", "norwegian-on-the-web"]
+            }
+        ]
 
     def setUp(self):
-        self.client = APIClient()
+        self.admin_username = 'adminUser'
+        self.admin_password = 'adminPass'
+        self.admin_user = AuthUser.objects.create_superuser(
+            username=self.admin_username, password=self.admin_password)
+
         self.username = 'myUser'
         self.password = 'myPass'
-        self.user = User.objects.create_user(
+        self.user = AuthUser.objects.create_user(
             username=self.username, password=self.password)
 
-        file_path = os.path.join(os.path.dirname(__file__), '../config/options.json')
-        with open(file_path, 'r', encoding='utf-8') as file:
-            self.expected_config = json.load(file)
+        self.client = APIClient()
 
+        # Authenticate admin user
+        response = self.client.post(reverse('authentication'), data={
+            'username': self.admin_username,
+            'password': self.admin_password,
+        })
+        self.adminToken = response.data['token']
+
+        # Authenticate normal user
         response = self.client.post(reverse('authentication'), data={
             'username': self.username,
             'password': self.password,
         })
-        self.t = response.data['token']
-
-        self.doc1 = Document.objects.create(
-            title='Test Document',
-            source_type='pdf',
-            content='This is the content',
-            ltx=5.4,
-            smog_index=3.1,
-            language='EN',
-            sentences='["This is a sentence.", "This is another sentence."]',
-            words='["word1", "word2", "word3", "word4"]',
-            average_sentence_length=5.6,
-            word_count=10,
-            sentences_count=2
-        )
-
-        self.doc2 = Content.objects.create(
-            document=self.doc1,
-            heading='Test Heading',
-            body_text='This is the body text',
-            section_number=1
-        )
+        self.userToken = response.data['token']
 
     def test_authentication_success(self):
         response = self.client.post(reverse('authentication'), data={
@@ -73,7 +80,7 @@ class TestViews(TestCase):
         # Further usage of the error_message...
 
     def test_get_options_authenticated(self):
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.get(reverse('options'), **headers)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), self.expected_config)
@@ -95,7 +102,7 @@ class TestViews(TestCase):
                 "model": "whisper",
                 "message": file_data,
             }
-            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
             # Make the POST request, including format='multipart'
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
 
@@ -112,7 +119,7 @@ class TestViews(TestCase):
                 "model": "whisper",
                 "message": file_data,
             }
-            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
             self.assertEqual(response.status_code, 200)
 
@@ -126,7 +133,7 @@ class TestViews(TestCase):
                 "model": "default",
                 "message": file_data,
             }
-            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
             self.assertEqual(response.status_code, 200)
 
@@ -140,7 +147,7 @@ class TestViews(TestCase):
                 "model": "whisperNBAiLab",
                 "message": file_data,
             }
-            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
             self.assertEqual(response.status_code, 200)
 
@@ -154,7 +161,7 @@ class TestViews(TestCase):
                 "model": "whisperOpenAILocal",
                 "message": file_data,
             }
-            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
             self.assertEqual(response.status_code, 200)
 
@@ -168,7 +175,7 @@ class TestViews(TestCase):
                 "model": "invalid",
                 "message": file_data,
             }
-            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+            headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
             self.assertEqual(response.status_code, 200)
 
@@ -179,7 +186,7 @@ class TestViews(TestCase):
             "message": "test message",
             "context": "This is a Test"
         }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 200)
 
@@ -190,7 +197,7 @@ class TestViews(TestCase):
             "message": "test message",
             "context": "This is a Test"
         }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 200)
 
@@ -201,7 +208,7 @@ class TestViews(TestCase):
             "message": "test message",
             "context": "This is a Test"
         }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 200)
 
@@ -213,7 +220,7 @@ class TestViews(TestCase):
             "message": "test message",
             "context": "This is a Test"
         }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 200)
 
@@ -225,7 +232,7 @@ class TestViews(TestCase):
             "message": "test message",
             "context": "This is a Test"
         }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 200)
 
@@ -236,7 +243,7 @@ class TestViews(TestCase):
             "message": "test message",
             "context": "This is a Test"
         }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 400)
 
@@ -249,7 +256,7 @@ class TestViews(TestCase):
         }
 
         response = self.client.get(reverse('speak'), **headers,
-                                   HTTP_AUTHORIZATION='Token {}'.format(self.t))
+                                   HTTP_AUTHORIZATION='Token {}'.format(self.userToken))
         # Check that the status code is what you expect
         self.assertEqual(response.status_code, expected_status_code)
 
@@ -262,7 +269,6 @@ class TestViews(TestCase):
         #self.helper_test_speak_view('openAI', 200, 'audio/mpeg')
         self.helper_test_speak_view('openAI', 400, 'application/json')
 
-
     def test_speak_view_model_default(self):
         """ Test when model is default """
         #self.helper_test_speak_view('default', 200, 'audio/mpeg')
@@ -272,40 +278,107 @@ class TestViews(TestCase):
         """ Test when model is not valid """
         self.helper_test_speak_view('invalid', 400)
 
-def test_dokument_creation(self):
-    """
-        Testing the 'dokument' api endpoint for a success POST request
+    def test_dokument_creation(self):
         """
-    data = {
-        'name': 'sample_name',
-        'database': 'sample_database',
-        # include any other required fields as per your DokumentSerializer
-    }
-    headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
-    response = self.client.post(reverse('dokument'), data=data, **headers)
-    self.assertEqual(response.status_code, 201)
+            Testing the 'dokument' api endpoint for a success POST request
+            """
+        content = b'sample_content'  # bytes type content. Here it represents text data
+        document = SimpleUploadedFile('sample_file.txt', content)
 
+        data = {
+            'name': 'sample_name',
+            'document': document,
+            'database': 'sample_database',
 
-def test_dokument_invalid_request(self):
-    """
-        Testing the 'dokument' api endpoint for a bad POST request
+        }
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
+        response = self.client.post(reverse('dokument'), data=data, **headers)
+        self.assertEqual(response.status_code, 201)
+
+    def test_dokument_invalid_request(self):
         """
-    data = {
-        # Include invalid data here, which do not comply with your DokumentSerializer
-    }
-    headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.t)}
-    response = self.client.post(reverse('dokument'), data=data, **headers)
-    self.assertEqual(response.status_code, 400)
+            Testing the 'dokument' api endpoint for a bad POST request
+            """
+        data = {
+            # Include invalid data here, which do not comply with your DokumentSerializer
+        }
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
+        response = self.client.post(reverse('dokument'), data=data, **headers)
+        self.assertEqual(response.status_code, 400)
 
-
-def test_dokument_unauthorized_request(self):
-    """
-        Testing the 'dokument' api endpoint for unauthorized POST request
+    def test_dokument_unauthorized_request(self):
         """
-    data = {
-        'name': 'sample_name',
-        'database': 'sample_database',
-        # include any other required fields as per your DokumentSerializer
-    }
-    response = self.client.post(reverse('dokument'), data=data)
-    self.assertEqual(response.status_code, 401)
+            Testing the 'dokument' api endpoint for unauthorized POST request
+            """
+        data = {
+            'name': 'sample_name',
+            'database': 'sample_database',
+            # include any other required fields as per your DokumentSerializer
+        }
+        response = self.client.post(reverse('dokument'), data=data)
+        self.assertEqual(response.status_code, 401)
+
+    def test_non_admin_access(self):
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
+        databaseName = 'test1'
+        data = {
+            "update_database": False,
+            "new_database": True,
+            "delete_database": False,
+            "database_name": databaseName,
+        }
+        response = self.client.post(reverse('configuration'), data, format='json', **headers)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_create_configuration(self):
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
+        databaseName = 'test1'
+        data = {
+            "update_database": False,
+            "new_database": True,
+            "delete_database": False,
+            "database_name": databaseName,
+            "prompt_start": "start_prompt",
+            "prompt_end": "end_prompt",
+            "context_start": "start_context",
+            "context_end": "end_context",
+        }
+        response = self.client.post(reverse('configuration'), data, format='json', **headers)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertTrue(os.path.exists(os.path.join(settings.BASE_DIR, 'config', databaseName + '.json')))
+
+    def test_update_configuration(self):
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
+        databaseName = 'test1'
+        data = {
+            "update_database": True,
+            "new_database": False,
+            "delete_database": False,
+            "database_name": databaseName,
+            "prompt_start": "start_prompt_updated",
+            "prompt_end": "end_prompt_updated",
+            "context_start": "start_context_updated",
+            "context_end": "end_context_updated",
+        }
+        response = self.client.post(reverse('configuration'), data, format='json', **headers)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        with open(os.path.join(settings.BASE_DIR, 'config', databaseName + '.json')) as f:
+            config = json.load(f)
+        self.assertEqual(config.get('prompt_start'), "start_prompt_updated")
+
+    def test_delete_configuration(self):
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
+        databaseName = 'test1'
+        data = {
+            "update_database": False,
+            "new_database": False,
+            "delete_database": True,
+            "database_name": databaseName,
+            "prompt_start": "start_prompt_updated",
+            "prompt_end": "end_prompt_updated",
+            "context_start": "start_context_updated",
+            "context_end": "end_context_updated",
+        }
+        response = self.client.post(reverse('configuration'), data, format='json', **headers)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertFalse(os.path.exists(os.path.join(settings.BASE_DIR, 'config', databaseName + '.json')))

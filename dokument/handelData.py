@@ -1,7 +1,3 @@
-from numpy.lib.format import magic
-from rest_framework.response import Response
-from rest_framework import status
-from .models import Document
 from .documentParser import parse_pdf, parse_csv, parse_txt, parse_html
 from .saveDocument import saveDocument
 

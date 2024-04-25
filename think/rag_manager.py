@@ -106,7 +106,7 @@ def prompt_with_configuration(validated_data, final_document):
     """
     if isinstance(final_document, Response):
         return final_document
-    file_path = os.path.join(os.path.dirname(__file__), '../config/now.json')
+    file_path = os.path.join(os.path.dirname(__file__), '../config/'+validated_data.get("subModel")+'.json')
     with open(file_path, 'r', encoding='utf-8') as file:
         config = json.load(file)
     gpt_prompt = validated_data

@@ -16,4 +16,5 @@ urlpatterns = [
     path('options/', options_views.get_options, name='options'),
     path('authentication/', authentication_views.authentication, name='authentication'),
     path('dokument/', dokument_view.dokument, name='dokument'),
+    path('dokument/configuration', dokument_view.configuration, name='configuration'),
 ]
