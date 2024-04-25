@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from django.conf import settings
 
-from .handelData import handelDokument
+from .handelData import handelDocument
 from .serializers import DocumentSerializer, ConfigurationSerializer
 
 import json
@@ -16,7 +16,7 @@ import json
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
-def dokument(request):
+def document(request):
     """
     Create a new document.
 
@@ -31,7 +31,7 @@ def dokument(request):
     """
     serializer = DocumentSerializer(data=request.data)
     if serializer.is_valid():
-        result = handelDokument(serializer.validated_data)
+        result = handelDocument(serializer.validated_data)
         if result:
             return Response(
                 "Document " + serializer.validated_data['name'] + "added to " + serializer.validated_data['database'],

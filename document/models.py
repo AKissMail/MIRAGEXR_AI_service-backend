@@ -66,8 +66,8 @@ class Content(models.Model):
 
     Example usage:
         content = Content()
-        content.document = document
-        content.heading = "Introduction"
+        content. Document = document
+        content. Heading = "Introduction"
         content.body_text = "Lorem ipsum dolor sit amet..."
         content.section_number = 1
         content.save()

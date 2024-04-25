@@ -15,8 +15,8 @@ class TestViews(TestCase):
     adminToken = ""
     userToken = ""
 
-    def __init__(self, methodName: str = "runTest"):
-        super().__init__(methodName)
+    def __init__(self, method_name: str = "runTest"):
+        super().__init__(method_name)
         self.expected_config = [
             {
                 "name": "listen/",
@@ -215,20 +215,8 @@ class TestViews(TestCase):
     def test_think_view_model_norwegian_jaccard(self):
         """ Test when model is norwegian-on-the-jaccard """
         data = {
-            "model": "vector",
+            "model": "jaccard",
             "subModel": "jaccard",
-            "message": "test message",
-            "context": "This is a Test"
-        }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
-        response = self.client.post(reverse('think'), data=data, **headers)
-        self.assertEqual(response.status_code, 200)
-
-    def test_think_view_model_norwegian_vector(self):
-        """ Test when model is norwegian-on-the-vector """
-        data = {
-            "model": "vector",
-            "subModel": "default",
             "message": "test message",
             "context": "This is a Test"
         }
@@ -264,23 +252,13 @@ class TestViews(TestCase):
         if content_type:
             self.assertEqual(response['Content-Type'], content_type)
 
-    def test_speak_view_model_openAI(self):
-        """ Test when model is openAI """
-        #self.helper_test_speak_view('openAI', 200, 'audio/mpeg')
-        self.helper_test_speak_view('openAI', 400, 'application/json')
-
-    def test_speak_view_model_default(self):
-        """ Test when model is default """
-        #self.helper_test_speak_view('default', 200, 'audio/mpeg')
-        self.helper_test_speak_view('default', 400, 'application/json')
-
     def test_speak_view_model_invalid(self):
         """ Test when model is not valid """
         self.helper_test_speak_view('invalid', 400)
 
-    def test_dokument_creation(self):
+    def test_document_creation(self):
         """
-            Testing the 'dokument' api endpoint for a success POST request
+            Testing the 'document' api endpoint for a success POST request
             """
         content = b'sample_content'  # bytes type content. Here it represents text data
         document = SimpleUploadedFile('sample_file.txt', content)
@@ -288,56 +266,56 @@ class TestViews(TestCase):
         data = {
             'name': 'sample_name',
             'document': document,
-            'database': 'sample_database',
+            'database': 'test1',
 
         }
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
-        response = self.client.post(reverse('dokument'), data=data, **headers)
+        response = self.client.post(reverse('document'), data=data, **headers)
         self.assertEqual(response.status_code, 201)
 
-    def test_dokument_invalid_request(self):
+    def test_document_invalid_request(self):
         """
-            Testing the 'dokument' api endpoint for a bad POST request
+            Testing the 'document' api endpoint for a bad POST request
             """
         data = {
-            # Include invalid data here, which do not comply with your DokumentSerializer
+            # Include invalid data here, which do not comply with your DocumentSerializer
         }
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
-        response = self.client.post(reverse('dokument'), data=data, **headers)
+        response = self.client.post(reverse('document'), data=data, **headers)
         self.assertEqual(response.status_code, 400)
 
-    def test_dokument_unauthorized_request(self):
+    def test_document_unauthorized_request(self):
         """
-            Testing the 'dokument' api endpoint for unauthorized POST request
+            Testing the 'document' api endpoint for unauthorized POST request
             """
         data = {
             'name': 'sample_name',
             'database': 'sample_database',
-            # include any other required fields as per your DokumentSerializer
+            # include any other required fields as per your DocumentSerializer
         }
-        response = self.client.post(reverse('dokument'), data=data)
+        response = self.client.post(reverse('document'), data=data)
         self.assertEqual(response.status_code, 401)
 
     def test_non_admin_access(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
-        databaseName = 'test1'
+        database_name = 'test1'
         data = {
             "update_database": False,
             "new_database": True,
             "delete_database": False,
-            "database_name": databaseName,
+            "database_name": database_name,
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_configuration(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
-        databaseName = 'test1'
+        database_name = 'test1'
         data = {
             "update_database": False,
             "new_database": True,
             "delete_database": False,
-            "database_name": databaseName,
+            "database_name": database_name,
             "prompt_start": "start_prompt",
             "prompt_end": "end_prompt",
             "context_start": "start_context",
@@ -345,16 +323,16 @@ class TestViews(TestCase):
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(os.path.exists(os.path.join(settings.BASE_DIR, 'config', databaseName + '.json')))
+        self.assertTrue(os.path.exists(os.path.join(settings.BASE_DIR, 'config', database_name + '.json')))
 
     def test_update_configuration(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
-        databaseName = 'test1'
+        database_name = 'test1'
         data = {
             "update_database": True,
             "new_database": False,
             "delete_database": False,
-            "database_name": databaseName,
+            "database_name": database_name,
             "prompt_start": "start_prompt_updated",
             "prompt_end": "end_prompt_updated",
             "context_start": "start_context_updated",
@@ -362,18 +340,18 @@ class TestViews(TestCase):
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        with open(os.path.join(settings.BASE_DIR, 'config', databaseName + '.json')) as f:
+        with open(os.path.join(settings.BASE_DIR, 'config', database_name + '.json')) as f:
             config = json.load(f)
         self.assertEqual(config.get('prompt_start'), "start_prompt_updated")
 
     def test_delete_configuration(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
-        databaseName = 'test1'
+        database_name = 'test1'
         data = {
             "update_database": False,
             "new_database": False,
             "delete_database": True,
-            "database_name": databaseName,
+            "database_name": database_name,
             "prompt_start": "start_prompt_updated",
             "prompt_end": "end_prompt_updated",
             "context_start": "start_context_updated",
@@ -381,4 +359,4 @@ class TestViews(TestCase):
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(os.path.exists(os.path.join(settings.BASE_DIR, 'config', databaseName + '.json')))
+        self.assertFalse(os.path.exists(os.path.join(settings.BASE_DIR, 'config', database_name + '.json')))

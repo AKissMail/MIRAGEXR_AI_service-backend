@@ -7,7 +7,7 @@ from rest_framework.response import Response
 import chromadb
 
 from .gpt_open_ai import gpt
-from dokument.models import Document
+from document.models import Document
 from .serializers import ThinkSerializer
 
 
@@ -136,7 +136,7 @@ def rag_manager(data):
       """
     serializer = ThinkSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['subModel'] in 'jaccard':
+        if serializer.validated_data.get('subModel') == 'jaccard':
             return prompt_with_configuration(serializer.validated_data, get_best_document(serializer.validated_data))
         else:
             return prompt_with_configuration(serializer.validated_data, vector_DB(serializer.validated_data))

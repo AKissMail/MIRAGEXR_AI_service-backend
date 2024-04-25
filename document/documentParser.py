@@ -52,8 +52,10 @@ def parse_txt(doc):
     :return: The content of the text file as a string.
 
     """
-    with open(doc['document'], 'r') as file:
-        return file.read()
+
+    document_file = doc['document']
+    text_content = document_file.read().decode('utf-8')
+    return text_content
 
 
 def parse_html(doc):

@@ -1,11 +1,11 @@
 from django.apps import AppConfig
 
 
-class DokumentApp(AppConfig):
+class DocumentApp(AppConfig):
     """
     DokumentApp
 
-    AppConfig class for the 'dokument' app.
+    AppConfig class for the 'document' app.
 
     Attributes:
         default_auto_field (str): The default auto field for the app.
@@ -13,4 +13,4 @@ class DokumentApp(AppConfig):
 
     """
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'dokument'
+    name = 'document'

@@ -5,7 +5,7 @@ import nltk
 from langdetect import detect
 from textstat import textstat
 from nltk.tokenize import ToktokTokenizer
-from dokument.models import Document
+from document.models import Document
 
 
 def saveDocument(text, type, request):

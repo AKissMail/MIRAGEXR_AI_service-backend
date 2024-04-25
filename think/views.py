@@ -25,9 +25,7 @@ def think(request):
     if serializer.is_valid():
         if serializer.validated_data['model'] in ('gpt-3.5-turbo', 'gpt-4-turbo-preview', 'Default'):
             return gpt(serializer.validated_data)
-        if serializer.validated_data['model'] in 'vector':
+        if serializer.validated_data['model'] not in ('gpt-3.5-turbo', 'gpt-4-turbo-preview', 'Default'):
             return rag_manager(serializer.validated_data)
-        else:
-            return Response({"error": "Invalid model"}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
