@@ -6,12 +6,9 @@ on:
     branches: [ master, develop ]
   pull_request:
     branches: [ master, develop ]
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -32,7 +29,7 @@ jobs:
         if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
     - name: Run makemigrations
       run: |
-        python manage.py makemigrations
+        python manage.py python manage.py makemigrations dokument think
     - name: Run migrations
       run: |
         python manage.py migrate
@@ -44,11 +41,7 @@ jobs:
         python manage.py runserver 8000 &
     - name: Lint with flake8
       run: |
-        # Halt workflow if flake8 finds Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        # Exit-zero treats all errors as warnings. GitHub Actions will turn warnings into errors if flake8 finds anything
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Run Tests
-      run: |
-        44-naming-conventions
-        python manage.py test
+      run: pytest
