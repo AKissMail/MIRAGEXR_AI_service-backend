@@ -29,10 +29,10 @@ jobs:
         if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
     - name: Run makemigrations
       run: |
-        python3 manage.py python3 manage.py makemigrations dokument think
+        python manage.py makemigrations dokument think
     - name: Run migrations
       run: |
-        python3 manage.py migrate
+        python manage.py migrate
     - name: Lint with flake8
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
