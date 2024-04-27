@@ -3,7 +3,7 @@ from django.apps import AppConfig
 
 class DocumentApp(AppConfig):
     """
-    DokumentApp
+    DocumentApp
 
     AppConfig class for the 'document' app.
 

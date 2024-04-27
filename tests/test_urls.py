@@ -25,7 +25,7 @@ class TestUrls(SimpleTestCase):
         url = reverse("speak")
         self.assertEqual(resolve(url).func, speak)
 
-    def test_dokuments_url(self):
+    def test_documents_url(self):
         url = reverse("document")
         self.assertEqual(resolve(url).func, document)
 
