@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from django.conf import settings
 
-from .handelData import handelDocument
+from .handleData import handleData
 from .serializers import DocumentSerializer, ConfigurationSerializer
 
 import json
@@ -31,7 +31,7 @@ def document(request):
     """
     serializer = DocumentSerializer(data=request.data)
     if serializer.is_valid():
-        result = handelDocument(serializer.validated_data)
+        result = handleData(serializer.validated_data)
         if result:
             return Response(
                 "Document " + serializer.validated_data['name'] + "added to " + serializer.validated_data['database'],
