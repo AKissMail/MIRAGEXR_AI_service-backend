@@ -12,3 +12,4 @@ class ThinkSerializer(serializers.Serializer):
     model = serializers.CharField(default="gpt-3.5-turbo")
     message = serializers.CharField()
     context = serializers.CharField()
+    subModel = serializers.CharField(required=False)

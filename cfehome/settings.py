@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'speak',
     'listen',
     'think',
-    'options'
+    'options',
+    'document',
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,5 @@
 from openai import OpenAI
-
+from rest_framework import status
 from .serializers import ThinkSerializer
 from rest_framework.response import Response
 from django.http import HttpResponse
@@ -38,12 +38,13 @@ def gpt(data):
                 messages=message_template
             )
             try:
-                response =HttpResponse(response.choices[0].message.content, status=200)
+                response =HttpResponse(response.choices[0].message.content, status=status.HTTP_200_OK)
                 return response
             except Exception as e:
                 return Response({"error": str(e)}, status=500)
 
         except Exception as _:
-            return Response({"error": "An unexpected error occurred."}, status=500)
+            return Response({"error": "An unexpected error occurred."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
-        return Response({"error": "Input data is invalid.", "details": serializer.errors}, status=403)
+        return Response({"error": "Input data is invalid.", "details": serializer.errors},
+                        status=status.HTTP_400_BAD_REQUEST)

@@ -6,6 +6,7 @@ from listen import views as listen_views
 from options import views as options_views
 from authentication import views as authentication_views
 from think import views as think_views
+from document import views as document_view
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
@@ -14,4 +15,6 @@ urlpatterns = [
     path('think/', think_views.think, name='think'),
     path('options/', options_views.get_options, name='options'),
     path('authentication/', authentication_views.authentication, name='authentication'),
+    path('document/', document_view.document, name='document'),
+    path('document/configuration', document_view.configuration, name='configuration'),
 ]
