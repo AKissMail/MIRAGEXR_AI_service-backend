@@ -71,11 +71,9 @@ ChromaDB
 10. and `python manage.py migrate`.
 11. Create a superuser with `python manage.py createsuperuser`.
 12. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
-13. Deposit documents in the data folder (backend/data). This can include PDF, HTML, and CSV files.
-14. Run the data pipeline with `python manage.py data` to import and process the files
-15. Send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`. 
-A Postman collection can be found in `./postman_test_requests/MirageXR_AI_service_backend.postman_collection.json` 
-
+13. You can test the System with `python manage.py test`. 
+14. You can upload document for a RAG Model via the `/document/` endpoint and set up the Configuration use the `/document/configuration` endpoint.
+15. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
 
 ## License
 
