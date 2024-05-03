@@ -27,9 +27,7 @@ def speak_open_ai(request):
     """
     serializer = SpeakOpenAISerializer(data=request)
     if serializer.is_valid():
-        if serializer.validated_data['submodel'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer", "default"):
-            if serializer.validated_data['submodel'] == "default":
-                serializer.validated_data['submodel'] = "onyx"
+        if serializer.validated_data['model'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer"):
             url = "https://api.openai.com/v1/audio/speech"
             headers = {
                 "Authorization": f'Bearer {settings.OPENAI_API_KEY}',
@@ -37,7 +35,7 @@ def speak_open_ai(request):
             data = {
                 "model": "tts-1",
                 "input": serializer.validated_data['message'],
-                "voice": serializer.validated_data['submodel'],
+                "voice": serializer.validated_data['model'],
                 "speed": serializer.validated_data['speed']
             }
 
@@ -56,7 +54,7 @@ def speak_open_ai(request):
                 return {"error": f"Error: {response.status_code} - {response.text}"}
         else:
             return {
-                "error": "Error: Submodel not found! Options that are available are 'alloy', 'echo', 'fable', "
+                "error": "Error: Model not found! Options that are available are 'alloy', 'echo', 'fable', "
                          "'onyx', 'nova', and 'shimmer'"}
     else:
 

@@ -78,7 +78,7 @@ def listen(request):
     """
     serializer = ListenSerializer(data=request.data)
     if serializer.is_valid():
-        if serializer.validated_data['model'].strip() == "NO":
+        if serializer.validated_data['model'].strip() == "Norwegian":
             return Response(whisper_nb_ai_lab(serializer.validated_data))
         if serializer.validated_data['model'].strip() == "BinaryWhisperOpenAILocal":
             r = Response(whisper_open_ai_remote(handleBinary(serializer.validated_data)))

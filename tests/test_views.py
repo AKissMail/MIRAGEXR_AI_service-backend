@@ -1,12 +1,14 @@
 import json
 import os
 
+from unittest import mock
 from django.contrib.auth.models import User as AuthUser
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APIRequestFactory, force_authenticate
+from document.views import updateOptions
 
 from cfehome import settings
 
@@ -58,6 +60,7 @@ class TestViews(TestCase):
             'password': self.password,
         })
         self.userToken = response.data['token']
+
 
     def test_authentication_success(self):
         response = self.client.post(reverse('authentication'), data={

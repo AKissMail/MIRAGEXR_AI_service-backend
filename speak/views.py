@@ -23,14 +23,13 @@ def speak(request):
        """
 
     data = {
-        'model': request.headers.get('model', "openAI"),
-        'submodel': request.headers.get('submodel', 'onyx'),
+        'model': request.headers.get('model'),
         'message': request.headers.get('message'),
         'speed': request.headers.get('speed', 1)
     }
     serializer = SpeakSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['model'] in ("openAI", "default"):
+        if serializer.validated_data['model'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer"):
             r = speak_open_ai(data)
             if isinstance(r, dict):
                 return Response(r, status=500)
