@@ -27,6 +27,7 @@ def speak_open_ai(request):
     """
     serializer = SpeakOpenAISerializer(data=request)
     if serializer.is_valid():
+        print(serializer.validated_data)
         if serializer.validated_data['model'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer"):
             url = "https://api.openai.com/v1/audio/speech"
             headers = {

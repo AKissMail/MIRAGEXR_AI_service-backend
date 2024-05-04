@@ -37,6 +37,4 @@ def speak(request):
         else:
             return Response({"message": "'model' not found"}, status=400)
     else:
-        return Response({"message": "Data is not correctly formatted. Follow this pattern: "
-                                    "'message': $Content, 'submodel': $preferred voice or 'default', "
-                                    "'model': $preferred model or 'default', 'speed': $speech speed"}, status=400)
+        return Response(serializer.errors, status=400)

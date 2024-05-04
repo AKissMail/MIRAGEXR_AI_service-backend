@@ -17,5 +17,5 @@ urlpatterns = [
     path('authentication/', authentication_views.authentication, name='authentication'),
     path('document/', document_view.document, name='document'),
     path('document/configuration', document_view.configuration, name='configuration'),
-    path('document/options', document_view.updateOptions, name='options')
+    path('document/options', document_view.updateOptions, name='update_options')
 ]

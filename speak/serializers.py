@@ -16,3 +16,5 @@ class SpeakSerializer(serializers.Serializer):
 class SpeakOpenAISerializer(serializers.Serializer):
 
     speed = serializers.FloatField(default=1, min_value=0.25, max_value=4)
+    message = serializers.CharField(required=True)
+    model = serializers.CharField(required=True)
