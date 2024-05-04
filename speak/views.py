@@ -36,13 +36,8 @@ def speak(request):
             if isinstance(r, dict):
                 return Response(r, status=500)
             return StreamingHttpResponse(r, content_type='audio/mpeg')
-        if serializer.validated_data['model'] in ("google"):
-            r = speak_google(data)
-            #if isinstance(r, dict):
-            #    return Response(r, status=500)
-            print(r)
-            return Response(r, content_type='audio/mpeg')
-
+        if serializer.validated_data['model'] in "Greek":
+            return speak_google(data)
         else:
             return Response({"message": "'model' not found"}, status=400)
     else:
