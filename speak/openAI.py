@@ -1,6 +1,9 @@
 import requests
 from django.http import StreamingHttpResponse
 from django.conf import settings
+from rest_framework import status
+from rest_framework.response import Response
+
 from .serializers import SpeakOpenAISerializer
 
 '''
@@ -59,4 +62,4 @@ def speak_open_ai(request):
                          "'onyx', 'nova', and 'shimmer'"}
     else:
 
-        return serializer.errors + request
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

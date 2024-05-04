@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse
 from .openAI import speak_open_ai
+from .googleCloud import speak_google
+
 
 
 @api_view(['GET'])
@@ -34,6 +36,13 @@ def speak(request):
             if isinstance(r, dict):
                 return Response(r, status=500)
             return StreamingHttpResponse(r, content_type='audio/mpeg')
+        if serializer.validated_data['model'] in ("google"):
+            r = speak_google(data)
+            #if isinstance(r, dict):
+            #    return Response(r, status=500)
+            print(r)
+            return Response(r, content_type='audio/mpeg')
+
         else:
             return Response({"message": "'model' not found"}, status=400)
     else:
