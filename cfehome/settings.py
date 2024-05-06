@@ -19,6 +19,7 @@ BACKEND_API_KEY = os.getenv('BACKEND_API_KEY')
 DJANGO_BASE_KEY = os.getenv('DJANGO_BASE_KEY')
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 GOOGLE_TTS_ENDPOINT = os.getenv('GOOGLE_TTS_ENDPOINT')
+VECTOR_DB = os.getenv('VECTOR_DB')
 
 
 # Setting for the Tokenizer

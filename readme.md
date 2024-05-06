@@ -83,6 +83,8 @@ ChromaDB
 
 `GOOGLE_TTS_ENDPOINT=https://texttospeech.googleapis.com/v1/text:synthesize`
 
+`VECTOR_DB=$path to vectorDB`
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

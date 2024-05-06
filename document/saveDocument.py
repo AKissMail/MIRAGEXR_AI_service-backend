@@ -7,6 +7,8 @@ from rest_framework import status
 from rest_framework.response import Response
 from textstat import textstat
 from nltk.tokenize import ToktokTokenizer
+
+from cfehome import settings
 from document.models import Document
 
 
@@ -62,12 +64,12 @@ def saveDocument(text, type, request):
     if not os.path.exists("vectorDB"):
         return Response("Database does not exist. Please create it first.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     try:
-        client = chromadb.PersistentClient(path="vectorDB")
+        client = chromadb.PersistentClient(path=settings.VECTOR_DB)
         collection = client.get_collection(request['database'])
         print("Found Database")
     except Exception as e:
         print(str(e))
-        client = chromadb.PersistentClient(path="vectorDB")
+        client = chromadb.PersistentClient(path=settings.VECTOR_DB)
         collection = client.create_collection(request['database'])
 
     metaData = {}
