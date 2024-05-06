@@ -64,7 +64,7 @@ ChromaDB
 3. Run python -m venv venv in the project directory
 4. Activate the Virtual Environment -- On Windows: .\venv\Scripts\activate -- On macOS or Linux: source venv/bin/activate
 5. Install with pip all the dependencies: `pip install -r requirements.txt`
-6. Set up an environment: Create a `backend/.env` file with the field `OPENAI_API_KEY=$your_key`.
+6. Set up an environment as shown in section `.env`
 7. `cd backend`
 8. Run the Django server with `python manage.py runserver 8000 &`.
 9. Set up the database with `python manage.py makemigrations think` and `python manage.py makemigrations document`
@@ -74,6 +74,14 @@ ChromaDB
 13. You can test the System with `python manage.py test`. 
 14. You can upload document for a RAG Model via the `/document/` endpoint and set up the Configuration use the `/document/configuration` endpoint.
 15. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
+
+### .env
+
+`OPENAI_API_KEY=$your_key`
+
+`GOOGLE_API_KEY=$your_key`
+
+`GOOGLE_TTS_ENDPOINT=https://texttospeech.googleapis.com/v1/text:synthesize`
 
 ## License
 
