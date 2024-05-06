@@ -2,14 +2,73 @@
 [
   {
     "name": "listen/",
-    "models": ["whisper", "default", "whisperNBAiLab", "whisperOpenAILocal"]
+    "models": [
+      "Danish",
+      "Dutch",
+      "English",
+      "French",
+      "German",
+      "Greek",
+      "Italian",
+      "Norwegian",
+      "Portuguese",
+      "Spanish",
+      "Swedish"
+    ]
   },
   {
     "name": "speak/",
-    "models": ["openAI", "default"]
+    "models": [
+      {
+        "name":"Alloy",
+        "Description": "Female human voice",
+        "apiName": "alloy"
+      },
+      {
+        "name":"Echo",
+        "Description": "Male human voice",
+        "apiName": "echo"
+      },
+      {
+        "name":"Fable",
+        "Description": "Female human voice",
+        "apiName": "fable"
+      },
+      {
+        "name":"Onyx",
+        "Description": "Male human voice",
+        "apiName": "onyx"
+      },
+      {
+        "name":"Nova",
+        "Description": "Female human voice",
+        "apiName": "nova"
+      },
+      {
+        "name":"Shimmer",
+        "Description": "Female human voice",
+        "apiName": "shimmer"
+      }
+    ]
   },
   {
     "name": "think/",
-    "models": ["gpt-3.5-turbo", "gpt-4-turbo-preview", "norwegian-on-the-web"]
+    "models": [
+      {
+        "name":"GPT 3.5",
+        "Description": "GPT 3.5 is ideally suited for dialog interaction on a diverse range of topics. It is fast, can answer everyday questions, give homework help, and support basic content creation.",
+        "apiName": "gpt-3.5-turbo"
+      },
+      {
+        "name":"GPT 4.0",
+        "Description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
+        "apiName": "gpt-4-turbo-preview"
+      },
+        {
+        "name":"Norwegian GPT",
+        "Description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
+        "apiName": "norwegian-gpt"
+      }
+    ]
   }
 ]

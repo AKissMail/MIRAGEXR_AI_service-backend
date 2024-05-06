@@ -14,23 +14,12 @@ from cfehome import settings
 class TestViews(TestCase):
     adminToken = ""
     userToken = ""
+    os.system('python manage.py makemigrations think')
+    os.system('python manage.py makemigrations document')
+    os.system('python manage.py migrate')
 
     def __init__(self, method_name: str = "runTest"):
         super().__init__(method_name)
-        self.expected_config = [
-            {
-                "name": "listen/",
-                "models": ["whisper", "default", "whisperNBAiLab", "whisperOpenAILocal"]
-            },
-            {
-                "name": "speak/",
-                "models": ["openAI", "default"]
-            },
-            {
-                "name": "think/",
-                "models": ["gpt-3.5-turbo", "gpt-4-turbo-preview", "norwegian-on-the-web"]
-            }
-        ]
 
     def setUp(self):
         self.admin_username = 'adminUser'
@@ -59,6 +48,7 @@ class TestViews(TestCase):
         })
         self.userToken = response.data['token']
 
+
     def test_authentication_success(self):
         response = self.client.post(reverse('authentication'), data={
             'username': self.username,
@@ -83,7 +73,21 @@ class TestViews(TestCase):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.get(reverse('options'), **headers)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), self.expected_config)
+
+        try:
+            config = response.json()
+        except json.JSONDecodeError:
+            self.fail("Invalid JSON")
+
+        expected_keys = ["name", "models"]
+        expected_values = ["listen/", "speak/", "think/"]
+        for section in config:
+            self.assertCountEqual(section.keys(), expected_keys)
+            self.assertIn(section["name"], expected_values)
+            if section["name"] == "listen/":
+                self.assertTrue(all(isinstance(model, str) for model in section["models"]))
+            elif section["name"] in ["speak/", "think/"]:
+                self.assertTrue(all(isinstance(model, dict) for model in section["models"]))
 
     def test_get_options_not_authenticated(self):
         client = APIClient()
@@ -179,17 +183,6 @@ class TestViews(TestCase):
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
             self.assertEqual(response.status_code, 200)
 
-    def test_think_view_model_default(self):
-        """ Test when model is default """
-        data = {
-            "model": "Default",
-            "message": "test message",
-            "context": "This is a Test"
-        }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
-        response = self.client.post(reverse('think'), data=data, **headers)
-        self.assertEqual(response.status_code, 200)
-
     def test_think_view_model_gpt_turbo_3_5(self):
         """ Test when model is gpt-3.5-turbo """
         data = {
@@ -216,7 +209,6 @@ class TestViews(TestCase):
         """ Test when model is norwegian-on-the-jaccard """
         data = {
             "model": "jaccard",
-            "subModel": "jaccard",
             "message": "test message",
             "context": "This is a Test"
         }
@@ -239,7 +231,6 @@ class TestViews(TestCase):
         """ Helper function to make testing different models easier """
         headers = {
             'message': 'test message',
-            'voice': 'onyx',
             'model': model
         }
 

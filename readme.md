@@ -67,7 +67,7 @@ ChromaDB
 6. Set up an environment: Create a `backend/.env` file with the field `OPENAI_API_KEY=$your_key`.
 7. `cd backend`
 8. Run the Django server with `python manage.py runserver 8000 &`.
-9. Set up the database with `python manage.py makemigrations`
+9. Set up the database with `python manage.py makemigrations think` and `python manage.py makemigrations document`
 10. and `python manage.py migrate`.
 11. Create a superuser with `python manage.py createsuperuser`.
 12. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
