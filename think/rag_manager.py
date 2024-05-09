@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.response import Response
 import chromadb
 
+from cfehome import settings
 from .gpt_open_ai import gpt
 from document.models import Document
 from .serializers import ThinkSerializer
@@ -40,7 +41,7 @@ def vector_DB(validated_data):
     """
 
     query = validated_data.get("message")
-    client = chromadb.PersistentClient(path="data/v_DB")
+    client = chromadb.PersistentClient(path=settings.VECTOR_DB)
     try:
         collection = client.get_collection(validated_data.get("model"))
     except Exception as e:

@@ -79,15 +79,15 @@ class TestViews(TestCase):
         except json.JSONDecodeError:
             self.fail("Invalid JSON")
 
-        expected_keys = ["name", "models"]
-        expected_values = ["listen/", "speak/", "think/"]
+        required_keys = ["endpointName", "name"]
+        optional_keys = ["description", "apiName"]
+        endpoint_values = ["listen/", "speak/", "think/"]
         for section in config:
-            self.assertCountEqual(section.keys(), expected_keys)
-            self.assertIn(section["name"], expected_values)
-            if section["name"] == "listen/":
-                self.assertTrue(all(isinstance(model, str) for model in section["models"]))
-            elif section["name"] in ["speak/", "think/"]:
-                self.assertTrue(all(isinstance(model, dict) for model in section["models"]))
+            # Check that all required keys are present
+            self.assertTrue(all(key in section for key in required_keys))
+            # Check that no unexpected keys are present
+            self.assertTrue(all(key in required_keys + optional_keys for key in section))
+            self.assertIn(section["endpointName"], endpoint_values)
 
     def test_get_options_not_authenticated(self):
         client = APIClient()
