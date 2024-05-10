@@ -10,32 +10,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.12
-        cache: 'pip'
-    - name: Create API key file
-      env:
-        OPENAI_API_KEY : ${{ secrets.OPENAIKEY }}
-      run: |
-        echo $OPENAIKEY > .env
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
-    - name: Run makemigrations
-      run: |
-        python manage.py makemigrations dokument think
-    - name: Run migrations
-      run: |
-        python manage.py migrate
-    - name: Lint with flake8
-      run: |
-        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Run Tests
-      run:  python manage.py test
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.12
+      - name: Create API key file
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAIKEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          VECTOR_DB: ${{ secrets.VECTOR_DB }}
+        run: |
+          echo OPENAI_API_KEY=$OPENAI_API_KEY > .env
+          echo GOOGLE_API_KEY=$GOOGLE_API_KEY >> .env
+          echo VECTOR_DB=$VECTOR_DB >> .env
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
+      - name: Run makemigrations
+        run: |
+          python manage.py makemigrations dokument think
+      - name: Run migrations
+        run: |
+          python manage.py migrate
+      - name: Lint with flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Run Tests
+        run:  python manage.py test
