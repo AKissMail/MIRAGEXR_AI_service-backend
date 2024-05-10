@@ -19,6 +19,7 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAIKEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_TTS_ENDPOINT: ${{ secrets.GOOGLE_URL }}
           VECTOR_DB: ${{ secrets.VECTOR_DB }}
         run: |
           echo OPENAI_API_KEY=$OPENAI_API_KEY > .env
