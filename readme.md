@@ -60,19 +60,28 @@ ChromaDB
 
 ### Set up
 1. Clone the project.
-2. Install with pip all the dependencies: `pip install -r requirements.txt`
-3. Set up an environment: Create a `backend/.env` file with the field `OPENAI_API_KEY=$your_key`.
-4. `cd backend`
-5. Run the Django server with `python manage.py runserver 8000 &`.
-6. Set up the database with `python manage.py makemigrations`
-7. and `python manage.py migrate`.
-8. Create a superuser with `python manage.py createsuperuser`.
-9. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
-10. Deposit documents in the data folder (backend/data). This can include PDF, HTML, and CSV files.
-11. Run the data pipeline with `python manage.py data` to import and process the files
-12. Send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`. 
-A Postman collection can be found in `./postman_test_requests/MirageXR_AI_service_backend.postman_collection.json` 
+2. If not done install pip
+3. Run python -m venv venv in the project directory
+4. Activate the Virtual Environment -- On Windows: .\venv\Scripts\activate -- On macOS or Linux: source venv/bin/activate
+5. Install with pip all the dependencies: `pip install -r requirements.txt`
+6. Set up an environment as shown in section `.env`
+7. `cd backend`
+8. Run the Django server with `python manage.py runserver 8000 &`.
+9. Set up the database with `python manage.py makemigrations think` and `python manage.py makemigrations document`
+10. and `python manage.py migrate`.
+11. Create a superuser with `python manage.py createsuperuser`.
+12. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
+13. You can test the System with `python manage.py test`. 
+14. You can upload document for a RAG Model via the `/document/` endpoint and set up the Configuration use the `/document/configuration` endpoint.
+15. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
 
+### .env
+
+`OPENAI_API_KEY=$your_key`
+
+`GOOGLE_API_KEY=$your_key`
+
+`GOOGLE_TTS_ENDPOINT=https://texttospeech.googleapis.com/v1/text:synthesize`
 
 ## License
 

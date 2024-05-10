@@ -3,9 +3,11 @@ import os
 import chromadb
 import nltk
 from langdetect import detect
+from rest_framework import status
+from rest_framework.response import Response
 from textstat import textstat
 from nltk.tokenize import ToktokTokenizer
-from dokument.models import Document
+from document.models import Document
 
 
 def saveDocument(text, type, request):
@@ -57,18 +59,15 @@ def saveDocument(text, type, request):
 
     document.save()
 
-    if not (os.path.exists("vectorDB/chroma.sqlite3")):
-        print("Creating the Chroma DB")
-        client = chromadb.PersistentClient(path="vectorDB")
-        client.create_collection(request['database'])
-
+    if not os.path.exists("vectorDB"):
+        return Response("Database does not exist. Please create it first.", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     try:
-        client = chromadb.PersistentClient(path="data/v_DB")
+        client = chromadb.PersistentClient(path="vectorDB")
         collection = client.get_collection(request['database'])
         print("Found Database")
     except Exception as e:
         print(str(e))
-        client = chromadb.PersistentClient(path="data/v_DB")
+        client = chromadb.PersistentClient(path="vectorDB")
         collection = client.create_collection(request['database'])
 
     metaData = {}

@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse
 from .openAI import speak_open_ai
+from .googleCloud import speak_google
+
 
 
 @api_view(['GET'])
@@ -23,21 +25,20 @@ def speak(request):
        """
 
     data = {
-        'model': request.headers.get('model', "openAI"),
-        'submodel': request.headers.get('submodel', 'onyx'),
+        'model': request.headers.get('model'),
         'message': request.headers.get('message'),
         'speed': request.headers.get('speed', 1)
     }
     serializer = SpeakSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['model'] in ("openAI", "default"):
+        if serializer.validated_data['model'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer"):
             r = speak_open_ai(data)
             if isinstance(r, dict):
                 return Response(r, status=500)
             return StreamingHttpResponse(r, content_type='audio/mpeg')
+        if serializer.validated_data['model'] in "Greek":
+            return speak_google(data)
         else:
             return Response({"message": "'model' not found"}, status=400)
     else:
-        return Response({"message": "Data is not correctly formatted. Follow this pattern: "
-                                    "'message': $Content, 'submodel': $preferred voice or 'default', "
-                                    "'model': $preferred model or 'default', 'speed': $speech speed"}, status=400)
+        return Response(serializer.errors, status=400)

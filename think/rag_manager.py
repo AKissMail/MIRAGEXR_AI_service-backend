@@ -7,7 +7,7 @@ from rest_framework.response import Response
 import chromadb
 
 from .gpt_open_ai import gpt
-from dokument.models import Document
+from document.models import Document
 from .serializers import ThinkSerializer
 
 
@@ -42,9 +42,9 @@ def vector_DB(validated_data):
     query = validated_data.get("message")
     client = chromadb.PersistentClient(path="data/v_DB")
     try:
-        collection = client.get_collection(validated_data.get("subModel"))
+        collection = client.get_collection(validated_data.get("model"))
     except Exception as e:
-        return Response("Couldn't retrieve the subModel. {}".format(e), status=status.HTTP_400_BAD_REQUEST)
+        return Response("Couldn't retrieve the Model. {}".format(e), status=status.HTTP_400_BAD_REQUEST)
 
     results = collection.query(query_texts=[query])
 
@@ -106,7 +106,7 @@ def prompt_with_configuration(validated_data, final_document):
     """
     if isinstance(final_document, Response):
         return final_document
-    file_path = os.path.join(os.path.dirname(__file__), '../config/'+validated_data.get("subModel")+'.json')
+    file_path = os.path.join(os.path.dirname(__file__), '../config/'+validated_data.get("model")+'.json')
     with open(file_path, 'r', encoding='utf-8') as file:
         config = json.load(file)
     gpt_prompt = validated_data
@@ -136,7 +136,7 @@ def rag_manager(data):
       """
     serializer = ThinkSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['subModel'] in 'jaccard':
+        if serializer.validated_data.get('model') == 'jaccard':
             return prompt_with_configuration(serializer.validated_data, get_best_document(serializer.validated_data))
         else:
             return prompt_with_configuration(serializer.validated_data, vector_DB(serializer.validated_data))

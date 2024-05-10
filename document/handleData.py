@@ -2,7 +2,7 @@ from .documentParser import parse_pdf, parse_csv, parse_txt, parse_html
 from .saveDocument import saveDocument
 
 
-def handelDokument(request):
+def handleData(request):
 
     document_file = request.get('document')
     if isinstance(document_file, list):

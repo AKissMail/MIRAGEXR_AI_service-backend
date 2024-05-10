@@ -2,14 +2,85 @@
 [
   {
     "name": "listen/",
-    "models": ["whisper", "default", "whisperNBAiLab", "whisperOpenAILocal"]
+    "models": [
+      "Danish",
+      "Dutch",
+      "English",
+      "French",
+      "German",
+      "Greek",
+      "Italian",
+      "Norwegian",
+      "Portuguese",
+      "Spanish",
+      "Swedish"
+    ]
   },
   {
     "name": "speak/",
-    "models": ["openAI", "default"]
+    "models": [
+      {
+        "name":"Alloy",
+        "description": "Female human voice",
+        "apiName": "alloy"
+      },
+      {
+        "name":"Echo",
+        "description": "Male human voice",
+        "isMale": true,
+        "apiName": "echo"
+      },
+      {
+        "name":"Fable",
+        "description": "Female human voice",
+        "isMale": false,
+        "apiName": "fable"
+      },
+      {
+        "name":"Onyx",
+        "description": "Male human voice",
+        "isMale": true,
+        "apiName": "onyx"
+      },
+      {
+        "name":"Nova",
+        "description": "Female human voice",
+        "isMale": false,
+        "apiName": "nova"
+      },
+      {
+        "name":"Shimmer",
+        "description": "Female human voice",
+        "isMale": false,
+        "apiName": "shimmer"
+      },
+      {
+        "name":"Greek google standard voice",
+        "description": "Female human voice for Greek",
+        "isMale": false,
+        "apiName": "Greek"
+      }
+    ]
+
   },
   {
     "name": "think/",
-    "models": ["gpt-3.5-turbo", "gpt-4-turbo-preview", "norwegian-on-the-web"]
+    "models": [
+      {
+        "name":"GPT 3.5",
+        "description": "GPT 3.5 is ideally suited for dialog interaction on a diverse range of topics. It is fast, can answer everyday questions, give homework help, and support basic content creation.",
+        "apiName": "gpt-3.5-turbo"
+      },
+      {
+        "name":"GPT 4.0",
+        "description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
+        "apiName": "gpt-4-turbo-preview"
+      },
+        {
+        "name":"Norwegian GPT",
+        "description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
+        "apiName": "norwegian-gpt"
+      }
+    ]
   }
 ]
