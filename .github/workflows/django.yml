@@ -33,7 +33,7 @@ jobs:
           if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
       - name: Run makemigrations
         run: |
-          python manage.py makemigrations dokument think
+          python manage.py makemigrations document think
       - name: Run migrations
         run: |
           python manage.py migrate
