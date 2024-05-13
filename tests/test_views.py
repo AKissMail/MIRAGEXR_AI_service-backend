@@ -232,20 +232,17 @@ class TestViews(TestCase):
         """ Helper function to make testing different models easier """
         testString = "Hello World"
 
-        # Bereiten Sie die Header vor
         headers = {
             'HTTP_MESSAGE': base64.b64encode(testString.encode('utf-8')).decode('utf-8'),
             'HTTP_MODEL': model,
             'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)
         }
-
-        # Führen Sie die GET-Anfrage aus
         response = self.client.get(reverse('speak'), **headers)
 
-        # Überprüfen Sie den Statuscode
+
         self.assertEqual(response.status_code, expected_status_code)
 
-        # Überprüfen Sie, ob der Content-Type mit dem erwarteten Wert übereinstimmt
+
         if content_type:
             self.assertEqual(response['Content-Type'], content_type)
 
