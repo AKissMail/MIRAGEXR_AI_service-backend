@@ -1,3 +1,5 @@
+import base64
+
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import SpeakSerializer
@@ -26,7 +28,7 @@ def speak(request):
 
     data = {
         'model': request.headers.get('model'),
-        'message': request.headers.get('message'),
+        'message': base64.b64decode(request.headers.get('message')).decode('utf-8'),
         'speed': request.headers.get('speed', 1)
     }
     serializer = SpeakSerializer(data=data)

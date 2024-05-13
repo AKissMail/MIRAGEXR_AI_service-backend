@@ -1,5 +1,6 @@
 import json
 import os
+import base64
 
 from django.contrib.auth.models import User as AuthUser
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -229,17 +230,19 @@ class TestViews(TestCase):
 
     def helper_test_speak_view(self, model, expected_status_code, content_type=None):
         """ Helper function to make testing different models easier """
-        headers = {
-            'message': 'test message',
-            'model': model
-        }
+        testString = "Hello World"
 
-        response = self.client.get(reverse('speak'), **headers,
-                                   HTTP_AUTHORIZATION='Token {}'.format(self.userToken))
-        # Check that the status code is what you expect
+        headers = {
+            'HTTP_MESSAGE': base64.b64encode(testString.encode('utf-8')).decode('utf-8'),
+            'HTTP_MODEL': model,
+            'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)
+        }
+        response = self.client.get(reverse('speak'), **headers)
+
+
         self.assertEqual(response.status_code, expected_status_code)
 
-        # Check if Content-Type matches expected value
+
         if content_type:
             self.assertEqual(response['Content-Type'], content_type)
 
