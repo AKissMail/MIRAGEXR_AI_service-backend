@@ -22,6 +22,8 @@ def whisper_open_ai_remote(data):
     serializer = WhisperOpenAiRemoteSerializer(data=data)
     if serializer.is_valid():
         audio_file = serializer.validated_data['message']
+        if audio_file.content_type not in ['audio/flac', 'audio/m4a', 'audio/mp3', 'audio/mp4', 'audio/mpeg', 'audio/mpga', 'audio/oga', 'audio/ogg', 'audio/wav', 'audio/webm']:
+            raise Exception(f"Invalid file format: {audio_file.content_type}")
         if isinstance(audio_file, InMemoryUploadedFile):
             file_extension = os.path.splitext(audio_file.name)[1]
             if not file_extension:

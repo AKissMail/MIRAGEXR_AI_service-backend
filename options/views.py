@@ -3,6 +3,7 @@ import os
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework import status
 
 
 @api_view(['GET'])
@@ -24,6 +25,6 @@ def get_options(request):
         file_path = os.path.join(os.path.dirname(__file__), '../config/options.json')
         with open(file_path, 'r', encoding='utf-8') as file:
             config = json.load(file)
-        return Response(config, status=200)
+        return Response(config, status=status.HTTP_200_OK)
     else:
-        return Response({"message": "GET-Request only!"}, status=401)
+        return Response({"message": "GET-Request only!"}, status=status.HTTP_400_BAD_REQUEST)

@@ -1,7 +1,6 @@
 import base64
-
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework import status
 from .serializers import SpeakSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -36,11 +35,11 @@ def speak(request):
         if serializer.validated_data['model'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer"):
             r = speak_open_ai(data)
             if isinstance(r, dict):
-                return Response(r, status=500)
+                return Response(r, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return StreamingHttpResponse(r, content_type='audio/mpeg')
         if serializer.validated_data['model'] in "Greek":
             return speak_google(data)
         else:
-            return Response({"message": "'model' not found"}, status=400)
+            return Response({"message": "'model' not found"}, status=status.HTTP_400_BAD_REQUEST)
     else:
-        return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
