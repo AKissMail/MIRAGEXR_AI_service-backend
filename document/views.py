@@ -1,6 +1,5 @@
 import os
-from typing import Dict, Any
-
+from typing import Any
 from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
