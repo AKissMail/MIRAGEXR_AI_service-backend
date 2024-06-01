@@ -98,8 +98,21 @@
   },
   {
     "endpointName": "think/",
-    "name": "Norwegian GPT",
-    "description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
-    "apiName": "norwegian-gpt"
+    "name": "Norwegian GPT A",
+    "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
+    "apiName": "norwegian-gpt-A"
+  },
+  {
+    "endpointName": "think/",
+    "name": "Norwegian GPT B",
+    "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
+    "apiName": "norwegian-gpt-B"
+  },
+  {
+    "endpointName": "think/",
+    "name": "Norwegian GPT C",
+    "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
+    "apiName": "norwegian-gpt-C"
   }
+
 ]
