@@ -8,7 +8,7 @@ numpy==1.26.4
 openai==1.25.1
 pdfplumber==0.11.0
 python-dotenv==1.0.1
-Requests==2.31.0
+Requests>=2.32.0
 soundfile==0.12.1
 textstat==0.7.3
 transformers==4.38.2
