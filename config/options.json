@@ -1,47 +1,70 @@
  [
   {
     "endpointName": "listen/",
-    "name": "Danish"
+    "name": "Danish",
+    "description": "Danish",
+    "apiName": "Danish"
+
   },
   {
     "endpointName": "listen/",
-    "name": "Dutch"
+    "name": "Dutch",
+    "description": "Dutch",
+    "apiName": "Dutch"
   },
   {
     "endpointName": "listen/",
-    "name": "English"
+    "name": "English",
+    "description": "English",
+    "apiName": "English"
   },
   {
     "endpointName": "listen/",
-    "name": "French"
+    "name": "French",
+    "description": "French",
+    "apiName": "French"
   },
   {
     "endpointName": "listen/",
-    "name": "German"
+    "name": "German",
+    "description": "German",
+    "apiName": "German"
   },
   {
     "endpointName": "listen/",
-    "name": "Greek"
+    "name": "Greek",
+    "description": "Greek",
+    "apiName": "Greek"
   },
   {
     "endpointName": "listen/",
-    "name": "Italian"
+    "name": "Italian",
+    "description": "Italian",
+    "apiName": "Italian"
   },
   {
     "endpointName": "listen/",
-    "name": "Norwegian"
+    "name": "Norwegian",
+    "description": "Norwegian",
+    "apiName": "Norwegian"
   },
   {
     "endpointName": "listen/",
-    "name": "Portuguese"
+    "name": "Portuguese",
+    "description": "Portuguese",
+    "apiName": "Portuguese"
   },
   {
     "endpointName": "listen/",
-    "name": "Spanish"
+    "name": "Spanish",
+    "description": "Spanish",
+    "apiName": "Spanish"
   },
   {
     "endpointName": "listen/",
-    "name": "Swedish"
+    "name": "Swedish",
+    "description": "Swedish",
+    "apiName": "Swedish"
   },
    {
     "endpointName": "speak/",

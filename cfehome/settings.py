@@ -36,7 +36,7 @@ SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # todo set to false before deployment
 
-ALLOWED_HOSTS = ['192.168.0.103', '0.0.0.0', '127.0.0.1']  # Todo update before deployment
+ALLOWED_HOSTS = ['192.168.0.103', '0.0.0.0', '127.0.0.1', 'localhost']  # Todo update before deployment
 
 # Application definition
 

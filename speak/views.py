@@ -13,6 +13,7 @@ from .googleCloud import speak_google
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def speak(request):
+
     """
        Processes GET requests sent to the speak endpoint, validates the request data, and uses the specified
        speech synthesis model to generate speech from text.
@@ -30,6 +31,7 @@ def speak(request):
         'message': base64.b64decode(request.headers.get('message')).decode('utf-8'),
         'speed': request.headers.get('speed', 1)
     }
+    print(data)
     serializer = SpeakSerializer(data=data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer"):

@@ -38,10 +38,12 @@ def gpt(data):
                 messages=message_template
             )
             try:
-                response =HttpResponse(response.choices[0].message.content, status=status.HTTP_200_OK)
+                msg_content = response.choices[0].message.content
+                response = HttpResponse(msg_content, status=status.HTTP_200_OK)
+                print(msg_content)
                 return response
             except Exception as e:
-                return Response({"error": str(e)}, status=500)
+                raise
 
         except Exception as _:
             return Response({"error": "An unexpected error occurred."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

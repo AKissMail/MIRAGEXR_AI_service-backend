@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -21,15 +22,18 @@ def think(request):
        - Response: A REST framework response object containing the generated response from the AI model or
          an error message.
     """
+    print(request.data)
     serializer = ThinkSerializer(data=request.data)
     if serializer.is_valid():
-        if serializer.validated_data['model'] in ('gpt-3.5-turbo', 'gpt-4-turbo-preview'):
-            r = gpt(serializer.validated_data)
-            print(r)
-            return r
-        if serializer.validated_data['model'] not in ('gpt-3.5-turbo', 'gpt-4-turbo-preview'):
-            r = rag_manager(serializer.validated_data)
-            print(r)
-            return r
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            if serializer.validated_data['model'] in ("['gpt-3.5-turbo']", "['gpt-4-turbo-preview']"):
+                r = gpt(serializer.validated_data)
+                print(r)
+                return HttpResponse(r['message'], status=status.HTTP_200_OK)
+            else:
+                r = gpt(serializer.validated_data)
+                print(r)
+                return r
+        except Exception as e:
+            print(e)
+            return Response({"error": str(e)}, status=500)
