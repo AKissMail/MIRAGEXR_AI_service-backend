@@ -85,6 +85,13 @@ ChromaDB
 
 `VECTOR_DB=$path to vectorDB`
 
+### Todos prior to the deployment
+1. Update manage.py
+   1. Update the SECRET_KEY - For development purposes, a SECRET_KEY is in the manage.py. This key has to be changed!
+   2. Disable the DEBUG variable.
+   3. Update the list of ALLOWED_HOSTS and remove the IPs that are used for development.
+   4. Set the CORS_ORIGIN_ALLOW_ALL to false and set this up properly.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

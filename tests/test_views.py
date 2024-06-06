@@ -35,14 +35,12 @@ class TestViews(TestCase):
 
         self.client = APIClient()
 
-        # Authenticate admin user
         response = self.client.post(reverse('authentication'), data={
             'username': self.admin_username,
             'password': self.admin_password,
         })
         self.adminToken = response.data['token']
 
-        # Authenticate normal user
         response = self.client.post(reverse('authentication'), data={
             'username': self.username,
             'password': self.password,
@@ -68,7 +66,6 @@ class TestViews(TestCase):
         error_message = response.data['error']
         self.assertEqual(error_message, 'Login data not valid')
 
-        # Further usage of the error_message...
 
     def test_get_options_authenticated(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
@@ -84,9 +81,7 @@ class TestViews(TestCase):
         optional_keys = ["description", "apiName"]
         endpoint_values = ["listen/", "speak/", "think/"]
         for section in config:
-            # Check that all required keys are present
             self.assertTrue(all(key in section for key in required_keys))
-            # Check that no unexpected keys are present
             self.assertTrue(all(key in required_keys + optional_keys for key in section))
             self.assertIn(section["endpointName"], endpoint_values)
 
@@ -97,28 +92,22 @@ class TestViews(TestCase):
         self.assertEqual(response.json(), {'detail': 'Authentication credentials were not provided.'})
 
     def test_listen_view_with_file_upload(self):
-        # Define the path to your file
         file_path = os.path.join(os.path.dirname(__file__), 'audio_king.mp3')
 
-        # Open the file in binary mode
         with open(file_path, 'rb') as file_data:
-            # Define the data for the POST request, including the file
             data = {
                 "model": "whisper",
                 "message": file_data,
             }
             headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
-            # Make the POST request, including format='multipart'
             response = self.client.post(reverse('listen'), data=data, **headers, format='multipart')
 
-        # Check that the status code is what you expect
         self.assertEqual(response.status_code, 200)
 
     def test_listen_view_model_whisper(self):
         """ Test when model is whisper """
         file_path = os.path.join(os.path.dirname(__file__), 'audio_king.mp3')
 
-        # Open the file in binary mode
         with open(file_path, 'rb') as file_data:
             data = {
                 "model": "whisper",
@@ -132,7 +121,6 @@ class TestViews(TestCase):
         """ Test when model is default """
         file_path = os.path.join(os.path.dirname(__file__), 'audio_king.mp3')
 
-        # Open the file in binary mode
         with open(file_path, 'rb') as file_data:
             data = {
                 "model": "default",
@@ -146,7 +134,6 @@ class TestViews(TestCase):
         """ Test when model is whisperNBAiLab """
         file_path = os.path.join(os.path.dirname(__file__), 'audio_king.mp3')
 
-        # Open the file in binary mode
         with open(file_path, 'rb') as file_data:
             data = {
                 "model": "whisperNBAiLab",
@@ -160,7 +147,6 @@ class TestViews(TestCase):
         """ Test when model is whisperOpenAILocal """
         file_path = os.path.join(os.path.dirname(__file__), 'audio_king.mp3')
 
-        # Open the file in binary mode
         with open(file_path, 'rb') as file_data:
             data = {
                 "model": "whisperOpenAILocal",
@@ -174,7 +160,6 @@ class TestViews(TestCase):
         """ Test when model is not valid """
         file_path = os.path.join(os.path.dirname(__file__), 'audio_king.mp3')
 
-        # Open the file in binary mode
         with open(file_path, 'rb') as file_data:
             data = {
                 "model": "invalid",
@@ -187,7 +172,7 @@ class TestViews(TestCase):
     def test_think_view_model_gpt_turbo_3_5(self):
         """ Test when model is gpt-3.5-turbo """
         data = {
-            "model": "gpt-3.5-turbo",
+            "model": "['gpt-3.5-turbo']",
             "message": "test message",
             "context": "This is a Test"
         }
@@ -198,7 +183,7 @@ class TestViews(TestCase):
     def test_think_view_model_gpt_turbo_4_preview(self):
         """ Test when model is gpt-4-turbo-preview """
         data = {
-            "model": "gpt-4-turbo-preview",
+            "model": "['gpt-4-turbo-preview']",
             "message": "test message",
             "context": "This is a Test"
         }
@@ -254,7 +239,7 @@ class TestViews(TestCase):
         """
             Testing the 'document' api endpoint for a success POST request
             """
-        content = b'sample_content'  # bytes type content. Here it represents text data
+        content = b'sample_content'
         document = SimpleUploadedFile('sample_file.txt', content)
 
         data = {
@@ -272,7 +257,6 @@ class TestViews(TestCase):
             Testing the 'document' api endpoint for a bad POST request
             """
         data = {
-            # Include invalid data here, which do not comply with your DocumentSerializer
         }
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
         response = self.client.post(reverse('document'), data=data, **headers)
@@ -285,7 +269,6 @@ class TestViews(TestCase):
         data = {
             'name': 'sample_name',
             'database': 'sample_database',
-            # include any other required fields as per your DocumentSerializer
         }
         response = self.client.post(reverse('document'), data=data)
         self.assertEqual(response.status_code, 401)

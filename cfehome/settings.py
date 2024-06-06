@@ -21,7 +21,6 @@ GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 GOOGLE_TTS_ENDPOINT = os.getenv('GOOGLE_TTS_ENDPOINT')
 VECTOR_DB = os.getenv('VECTOR_DB')
 
-
 # Setting for the Tokenizer
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -32,12 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+' # todo set a new one!
+SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+'  # todo set a new one!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # todo set to false before deployment
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.103', '0.0.0.0', '127.0.0.1', 'localhost']  # Todo update before deployment
 
 # Application definition
 
