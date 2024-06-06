@@ -29,9 +29,9 @@ def think(request):
             if serializer.validated_data['model'] in ("['gpt-3.5-turbo']", "['gpt-4-turbo-preview']"):
                 r = gpt(serializer.validated_data)
                 print(r)
-                return HttpResponse(r['message'], status=status.HTTP_200_OK)
+                return HttpResponse(r, status=status.HTTP_200_OK)
             else:
-                r = gpt(serializer.validated_data)
+                r = rag_manager(serializer.validated_data)
                 print(r)
                 return r
         except Exception as e:
