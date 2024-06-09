@@ -8,7 +8,7 @@ from django.http import StreamingHttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 
-from .serializers import SpeakGoogleSerializer
+from speak.serializers import SpeakGoogleSerializer
 
 
 def speak_google(request):

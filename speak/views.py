@@ -5,8 +5,8 @@ from .serializers import SpeakSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse
-from .openAI import speak_open_ai
-from .googleCloud import speak_google
+from speak.models.openAI import speak_open_ai
+from speak.models.googleCloud import speak_google
 
 
 

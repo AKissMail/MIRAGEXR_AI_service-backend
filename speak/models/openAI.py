@@ -4,7 +4,7 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 
-from .serializers import SpeakOpenAISerializer
+from speak.serializers import SpeakOpenAISerializer
 
 
 def speak_open_ai(request):

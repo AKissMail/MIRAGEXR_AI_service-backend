@@ -1,6 +1,6 @@
 from transformers import pipeline
-from .audio_transformator import AudioTransformator
-from .serializers import WhisperNBAiLabSerializer
+from listen.audio_utility.audio_transformator import AudioTransformator
+from listen.serializers import WhisperNBAiLabSerializer
 
 
 def whisper_nb_ai_lab(data):
