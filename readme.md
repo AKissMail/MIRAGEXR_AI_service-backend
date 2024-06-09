@@ -54,9 +54,9 @@ In the project, two databases are utilized:
 
 
 Django DB 
-![DjangoDB.png](DjangoDB.png)
+![DjangoDB.png](readMe/DjangoDB.png)
 ChromaDB
-![chromaDB.png](chromaDB.png)
+![chromaDB.png](readMe/chromaDB.png)
 
 ### Set up
 1. Clone the project.
@@ -94,4 +94,4 @@ ChromaDB
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](readMe/License.md) file for details.
