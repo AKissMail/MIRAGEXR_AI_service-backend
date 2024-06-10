@@ -1,9 +1,9 @@
 import csv
-import os
+
 import pdfplumber
 from bs4 import BeautifulSoup
 from django.core.files.uploadedfile import InMemoryUploadedFile
-import codecs
+
 
 def parse_pdf(doc):
     """

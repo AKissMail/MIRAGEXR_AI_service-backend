@@ -9,11 +9,9 @@ from speak.models.openAI import speak_open_ai
 from speak.models.googleCloud import speak_google
 
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def speak(request):
-
     """
        Processes GET requests sent to the speak endpoint, validates the request data, and uses the specified
        speech synthesis model to generate speech from text.

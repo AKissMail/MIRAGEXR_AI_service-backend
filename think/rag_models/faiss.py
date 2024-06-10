@@ -16,7 +16,8 @@ def get_embedding(text):
     :rtype: numpy.ndarray
     """
     ft_model = apps.get_app_config('think').ft_model
-    return ft_model.get_sentence_vector(text)
+    preprocessed_text = text.replace('\n', ' ')
+    return ft_model.get_sentence_vector(preprocessed_text)
 
 
 def query_faiss_embeddings(query_text):

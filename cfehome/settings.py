@@ -31,12 +31,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+'  # todo set a new one!
+# todo set a new one  before deployment
+SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+'
 
+# todo set to false before deployment
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # todo set to false before deployment
-
-ALLOWED_HOSTS = ['192.168.0.103', '0.0.0.0', '127.0.0.1', 'localhost']  # Todo update before deployment
+DEBUG = True
+# Todo update before deployment
+ALLOWED_HOSTS = ['192.168.0.103', '0.0.0.0', '127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -127,7 +129,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-CORS_ORIGIN_ALLOW_ALL = True  # todo remove before deployment
+# todo remove before deployment
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

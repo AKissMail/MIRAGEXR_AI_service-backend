@@ -65,15 +65,17 @@ ChromaDB
 4. Activate the Virtual Environment -- On Windows: .\venv\Scripts\activate -- On macOS or Linux: source venv/bin/activate
 5. Install with pip all the dependencies: `pip install -r requirements.txt`
 6. Set up an environment as shown in section `.env`
-7. `cd backend`
-8. Run the Django server with `python manage.py runserver 8000 &`.
-9. Set up the database with `python manage.py makemigrations think` and `python manage.py makemigrations document`
-10. and `python manage.py migrate`.
-11. Create a superuser with `python manage.py createsuperuser`.
-12. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
-13. You can test the System with `python manage.py test`. 
-14. You can upload document for a RAG Model via the `/document/` endpoint and set up the Configuration use the `/document/configuration` endpoint.
-15. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
+7. Download the classifiers model from fastText and place it in the root directory. Either download cc.no.300.bin model 
+or update the think/apps.py with you prefer model.
+8. `cd backend`
+9. Run the Django server with `python manage.py runserver 8000 &`.
+10. Set up the database with `python manage.py makemigrations think` and `python manage.py makemigrations document`
+11. and `python manage.py migrate`.
+12. Create a superuser with `python manage.py createsuperuser`.
+13. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
+14. You can test the System with `python manage.py test`. 
+15. You can upload document for a RAG Model via the `/document/` endpoint and set up the Configuration use the `/document/configuration` endpoint.
+16. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
 
 ### .env
 
@@ -84,6 +86,24 @@ ChromaDB
 `GOOGLE_TTS_ENDPOINT=https://texttospeech.googleapis.com/v1/text:synthesize`
 
 `VECTOR_DB=$path to vectorDB`
+
+### struckter of a RAG model configuration
+The configuration of an RAG model is done via JSON file in the config/think folder. Each JSON file provides some settings 
+and the possibility to create a prompt around the User input. The need parameter are listed below together with the legal 
+values. The name of the file name must be "apiName" + ".json". 
+
+` {
+  "provider": ["openai"],
+  "model": ["gpt-4", "gpt-4-turbo-preview", "gpt-3.5-turbo"],
+  "rag_function": ["jaccard", "chromadb", "faiss"],
+  "rag_function_call": ["jaccard_index", "vector_chromadb", "query_faiss_embeddings"],
+  "apiName": "Can be chosen freely, but must be unique",
+  "prompt_start": "This string is at the beginning of the prompt",
+  "prompt_end": "This string is at the end of the prompt",
+  "context_start": "This string is at the beginning of the context",
+  "context_end": "This string is at the end of the context"
+}
+`
 
 ### Todos prior to the deployment
 1. Update manage.py

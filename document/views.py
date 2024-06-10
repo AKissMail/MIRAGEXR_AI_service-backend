@@ -104,14 +104,17 @@ def configuration(request):
 def updateOptions(request):
     """
 
-    This method updates the options in the 'options.json' file. It accepts a POST request and requires admin user permission.
+    This method updates the options in the 'options.json' file. It accepts a POST request and requires admin user
+    permission.
 
     Parameters:
         - request: The HTTP request object.
 
     Returns:
-        - If the serializer is valid and the options are successfully updated, it returns a Response object with the updated options and a status code of HTTP_201_CREATED.
-        - If there is an error while updating the options or the serializer is not valid, it returns a Response object with an error message and a status code of HTTP_500_INTERNAL_SERVER_ERROR.
+        - If the serializer is valid and the options are successfully updated, it returns a Response object with the
+        updated options and a status code of HTTP_201_CREATED.
+        - If there is an error while updating the options or the serializer is not valid, it returns a Response object
+        with an error message and a status code of HTTP_500_INTERNAL_SERVER_ERROR.
 
     Example Usage:
     ```python

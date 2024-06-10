@@ -122,26 +122,26 @@
    {
     "endpointName": "think/",
     "name": "GPT 4.o",
-    "description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
+    "description": "GPT 4.o is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, with the speed of GPT 3.5",
     "apiName": "gpt-4o"
   },
   {
     "endpointName": "think/",
-    "name": "Norwegian GPT A",
+    "name": "Norwegian GPT Jaccard",
     "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
-    "apiName": "norwegian-gpt-A"
+    "apiName": "jaccard"
   },
   {
     "endpointName": "think/",
-    "name": "Norwegian GPT B",
+    "name": "Norwegian GPT Chromadb",
     "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
-    "apiName": "norwegian-gpt-B"
+    "apiName": "norwegian-gpt-chromadb"
   },
   {
     "endpointName": "think/",
-    "name": "Norwegian GPT C",
+    "name": "Norwegian GPT Faiss",
     "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
-    "apiName": "norwegian-gpt-C"
+    "apiName": "norwegian-gpt-faiss"
   }
 
 ]
