@@ -1,13 +1,12 @@
 {
   "provider": "openai",
   "model": "gpt-3.5-turbo",
-  "rag_function": "vector_chromadb",
+  "rag_function": "chromadb",
+   "rag_function_call": "vector_chromadb",
+  "apiName": "norwegian-gpt-A",
+
   "prompt_start": "Using the user input provided as 'User Input', along with the surrounding 'User Context', your task is to generate a comprehensive response as a Norwegian Teacher. Leverage information from the 'Databases Document' field. This document contains details from a worksheet with three tasks and specific grammatical background that are relevant to the user's query. It's imperative to accurately incorporate these details into your response. Ensure that the information from the specified tasks and grammatical background is clearly referenced and seamlessly integrated into your answer. Aim to provide a well-rounded and informed response that directly addresses the user's initial query within 400 characters.\\n\\n",
   "prompt_end": "Please incorporate the above details into your response, focusing on extracting and utilizing the most relevant information from the specified sections of the worksheet to address the user's needs effectively. Your answer must be in Norwegian or in English depending on the User Message language. Default to Norwegian unless the User Message is in English.",
   "context_start": "In this task, you are required to synthesize information from multiple sources to provide a detailed and relevant response to the user's query within 400 characters. The user has provided specific input that outlines their question or need. Accompanying this is a contextual background that gives additional insight into the user's situation or the nature of their inquiry. Furthermore, you have access to a document containing key information pertinent to addressing the user's query. This document includes critical details from a worksheet with three tasks and specific grammatical background, which are especially relevant to the user's request. Your response should integrate the user's input, the contextual background, and the targeted information from the document. It is essential to accurately reference and incorporate the relevant details from the worksheet. This comprehensive approach will ensure that the generated response is not only well-informed and precise but also tailored to the user's specific context and query. The goal is to utilize the synthesis of these elements to provide a clear, concise, and informative answer that directly addresses the user's needs within 400 characters.",
-  "context_end": "",
-  "endpointName": "think/",
-  "name": "Norwegian GPT A",
-  "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
-  "apiName": "norwegian-gpt-A"
+  "context_end": ""
   }

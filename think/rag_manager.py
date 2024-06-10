@@ -40,7 +40,6 @@ def prompt_with_configuration(validated_data, final_document, config):
         response = openai_gpt(gpt_prompt)
     else:
         return Response("Error: Unknown provider specified in configuration.", status=status.HTTP_400_BAD_REQUEST)
-
     return response
 
 
@@ -59,10 +58,12 @@ def rag_manager(data):
         except ValueError as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
+        print(config["rag_function"])
         try:
             rag_function_module = import_module(f'think.rag_models.{config["rag_function"]}')
-            rag_function = getattr(rag_function_module, config["rag_function"])
+            rag_function = getattr(rag_function_module, config["rag_function_call"])
         except (ImportError, AttributeError) as e:
+            print(e)
             return Response(f"Error: Could not find specified RAG function '{config['rag_function']}'. {str(e)}",
                             status=status.HTTP_400_BAD_REQUEST)
 

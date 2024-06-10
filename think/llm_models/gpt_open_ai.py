@@ -43,7 +43,7 @@ def gpt(data):
                 msg_content = response.choices[0].message.content
                 response = HttpResponse(msg_content, status=status.HTTP_200_OK)
                 return response
-            except Exception as e:
+            except Exception:
                 raise
 
         except Exception as _:

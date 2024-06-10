@@ -20,6 +20,7 @@ class ThinkModelFactory:
         prompt_end = config.get('prompt_end', '')
         context_start = config.get('context_start', '')
         context_end = config.get('context_end', '')
+        rag_function_call = config.get('rag_function_call')
 
         if not provider or not model:
             raise ValueError("The configuration file must specify both 'provider' and 'model'.")
@@ -32,4 +33,5 @@ class ThinkModelFactory:
             'prompt_end': prompt_end,
             'context_start': context_start,
             'context_end': context_end,
+            'rag_function_call': rag_function_call,
         }

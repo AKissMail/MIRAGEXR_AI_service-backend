@@ -31,14 +31,14 @@ def jaccard_index(validated_data):
               document, or if no document was found with a score higher than 0 the sting "No document found".
       """
     prompt = validated_data.get("message")
-    best_document = [" ", 0]
+    best_document = ["", 0]
     best_jaccard = {
         'user_prompt': prompt,
         'best_jaccard_score': 0,
         'best_document_text': "No document found"
     }
 
-    for document in Document.objects.all():
+    for document in Document.objects.filter(model_type='jaccard'):
         current_score = get_best_document(prompt, document.content)
         if best_document[1] < current_score:
             best_document = [document.content, current_score]
@@ -47,5 +47,5 @@ def jaccard_index(validated_data):
                 'best_jaccard_score': best_document[1],
                 'best_document_text': best_document[0],
             }
-
+    print(best_jaccard['best_document_text'])
     return best_jaccard['best_document_text']

@@ -27,7 +27,8 @@ def speak_google(request):
     A streaming HTTP response object containing the generated audio in the 'audio/mpeg' format.
 
     Example usage:
-    request = {
+    request =
+    {
         'model': 'en-US-Wavenet-D',
         'message': 'Hello, how are you?'
     }

@@ -1,42 +1,44 @@
+import json
 import os
 from typing import Any
+
+from django.conf import settings
 from django.http import HttpResponse
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
-from django.conf import settings
 
-from .handleData import handleData
-from .serializers import DocumentSerializer, ConfigurationSerializer, OptionSerializer
-
-import json
+from .handleData import handle_data
+from .serializers import ConfigurationSerializer, OptionSerializer
+from .serializers import DocumentSerializer
 
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def document(request):
     """
-    Create a new document.
+    Create a new document with the specified configuration.
 
     Parameters:
     - request: HTTP request object
 
     Returns:
     - Response object
-
-    Raises:
-    - None
     """
     serializer = DocumentSerializer(data=request.data)
     if serializer.is_valid():
-        result = handleData(serializer.validated_data)
+        config_name = serializer.validated_data.get('config_name')
+        if not config_name:
+            return Response({'error': 'Config name is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+        result = handle_data(serializer.validated_data, config_name)
         if result:
             return Response(
-                "Document " + serializer.validated_data['name'] + "added to " + serializer.validated_data['database'],
+                f"Document {serializer.validated_data['name']} added to {serializer.validated_data['database']}",
                 status=status.HTTP_201_CREATED)
         else:
-            return Response({'error': 'Invalid file type'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Invalid file type or processing error'}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

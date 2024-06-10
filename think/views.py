@@ -24,13 +24,12 @@ def think(request):
     """
     serializer = ThinkSerializer(data=request.data)
     if serializer.is_valid():
-        try:
             if serializer.validated_data['model'] in (
                     "['gpt-3.5-turbo']", "['gpt-4-turbo-preview']", "gpt-3.5-turbo", "gpt-4-turbo-preview"):
                 r = gpt(serializer.validated_data)
-                return HttpResponse(r, status=status.HTTP_200_OK)
             else:
                 r = rag_manager(serializer.validated_data)
-                return r
-        except Exception:
-            return Response("Error: Model dose not exist", status=status.HTTP_400_BAD_REQUEST)
+
+            return HttpResponse(r, status=status.HTTP_200_OK)
+
+
