@@ -42,6 +42,12 @@ class ConfigurationSerializer(serializers.Serializer):
     update_database = serializers.BooleanField()
     new_database = serializers.BooleanField()
     delete_database = serializers.BooleanField()
+    provider = serializers.CharField()
+    model = serializers.CharField()
+    rag_function = serializers.CharField()
+    rag_function_call = serializers.CharField()
+    apiName = serializers.CharField()
+
 
 
 class OptionSerializer(serializers.Serializer):

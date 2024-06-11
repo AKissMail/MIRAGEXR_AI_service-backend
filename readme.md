@@ -75,7 +75,8 @@ or update the think/apps.py with you prefer model.
 13. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
 14. You can test the System with `python manage.py test`. 
 15. You can upload document for a RAG Model via the `/document/` endpoint and set up the Configuration use the `/document/configuration` endpoint.
-16. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
+16. Don't forget CORS_ORIGIN_WHITELIST in the settings.py or suffer like me for 1 hour. 
+17. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
 
 ### .env
 
@@ -87,7 +88,7 @@ or update the think/apps.py with you prefer model.
 
 `VECTOR_DB=$path to vectorDB`
 
-### struckter of a RAG model configuration
+### Configuration of a RAG model configuration
 The configuration of an RAG model is done via JSON file in the config/think folder. Each JSON file provides some settings 
 and the possibility to create a prompt around the User input. The need parameter are listed below together with the legal 
 values. The name of the file name must be "apiName" + ".json". 

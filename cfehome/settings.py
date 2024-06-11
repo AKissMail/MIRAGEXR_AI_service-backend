@@ -38,7 +38,7 @@ SECRET_KEY = 'django-insecure-@!j^%^@=3w9-4*iio^+5=e$m1o3dm=l1!gr1c@pi&+u!oi4l*+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 # Todo update before deployment
-ALLOWED_HOSTS = ['192.168.0.103', '0.0.0.0', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['192.168.0.103', '0.0.0.0', '127.0.0.1', 'localhost', '192.168.2.100', '203.0.113.1', '192.168.0.199']
 
 # Application definition
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'authentication',
     'speak',
     'listen',
@@ -67,6 +68,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 
 ]
 
@@ -131,6 +134,11 @@ USE_TZ = True
 
 # todo remove before deployment
 CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = [
+    'http://192.168.0.199:8000',
+    # Andere URLs
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

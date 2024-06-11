@@ -74,9 +74,14 @@ def configuration(request):
                         'prompt_end': serializer.validated_data['prompt_end'],
                         'context_start': serializer.validated_data['context_start'],
                         'context_end': serializer.validated_data['context_end'],
+                        "provider": serializer.validated_data['provider'],
+                        "model": serializer.validated_data['model'],
+                        "rag_function": serializer.validated_data['rag_function'],
+                        "rag_function_call": serializer.validated_data['rag_function_call'],
+                        "apiName": serializer.validated_data['apiName']
                     }
                     configurationJson = json.dumps(config)
-                    configurationJsonPath = os.path.join(os.path.join(settings.BASE_DIR, 'config'),
+                    configurationJsonPath = os.path.join(os.path.join(settings.BASE_DIR, 'config', 'think',),
                                                          serializer.validated_data['database_name'] + '.json')
                     with open(configurationJsonPath, mode='w') as file:
                         file.write(configurationJson)
@@ -86,7 +91,7 @@ def configuration(request):
 
             if serializer.validated_data['delete_database']:
                 try:
-                    os.remove(os.path.join(settings.BASE_DIR, 'config', serializer.validated_data['database_name'] +
+                    os.remove(os.path.join(settings.BASE_DIR, 'config', 'think', serializer.validated_data['database_name'] +
                                            '.json'))
                     return Response({'delete Config': True}, status=status.HTTP_200_OK)
                 except Exception as e:

@@ -57,8 +57,6 @@ def rag_manager(data):
             config = ThinkModelFactory.create_model(serializer.validated_data.get('model'))
         except ValueError as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
-
-        print(config["rag_function"])
         try:
             rag_function_module = import_module(f'think.rag_models.{config["rag_function"]}')
             rag_function = getattr(rag_function_module, config["rag_function_call"])

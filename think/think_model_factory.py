@@ -1,6 +1,8 @@
 import json
 import os
+from http import HTTPStatus
 
+from django.http import HttpResponse
 
 class ThinkModelFactory:
     """
@@ -10,8 +12,11 @@ class ThinkModelFactory:
     @staticmethod
     def create_model(config_name):
         file_path = os.path.join(os.path.dirname(__file__), '../config/think/' + config_name + '.json')
-        with open(file_path, 'r', encoding='utf-8') as file:
-            config = json.load(file)
+        try:
+            with open(file_path, 'r', encoding='utf-8') as file:
+                config = json.load(file)
+        except FileNotFoundError:
+            return HttpResponse("Config file not found.", status=HTTPStatus.BAD_REQUEST)
 
         provider = config.get('provider')
         model = config.get('model')
