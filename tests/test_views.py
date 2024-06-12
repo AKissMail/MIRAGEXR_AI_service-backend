@@ -312,7 +312,7 @@ class TestViews(TestCase):
             'name': 'sample_name',
             'document': document,
             'database': 'jaccard',
-            'config_name': 'test1'
+            'config_name': 'jaccard'
         }
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
         response = self.client.post(reverse('document'), data=data, **headers)

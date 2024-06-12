@@ -1,5 +1,6 @@
 from importlib import import_module
 
+from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -57,6 +58,10 @@ def rag_manager(data):
             config = ThinkModelFactory.create_model(serializer.validated_data.get('model'))
         except ValueError as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+        if not all(key in config for key in ('rag_function', 'rag_function_call')):
+            return "'error': 'Configuration is missing required keys.'"
+
         try:
             rag_function_module = import_module(f'think.rag_models.{config["rag_function"]}')
             rag_function = getattr(rag_function_module, config["rag_function_call"])

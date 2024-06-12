@@ -38,7 +38,10 @@ def document(request):
                 f"Document {serializer.validated_data['name']} added to {serializer.validated_data['database']}",
                 status=status.HTTP_201_CREATED)
         else:
-            return Response({'error': 'Invalid file type or processing error'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {'error': 'Invalid file type, processing error or Configuration not found '},
+                status=status.HTTP_400_BAD_REQUEST
+            )
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -81,7 +84,7 @@ def configuration(request):
                         "apiName": serializer.validated_data['apiName']
                     }
                     configurationJson = json.dumps(config)
-                    configurationJsonPath = os.path.join(os.path.join(settings.BASE_DIR, 'config', 'think',),
+                    configurationJsonPath = os.path.join(os.path.join(settings.BASE_DIR, 'config', 'think', ),
                                                          serializer.validated_data['database_name'] + '.json')
                     with open(configurationJsonPath, mode='w') as file:
                         file.write(configurationJson)
@@ -91,8 +94,9 @@ def configuration(request):
 
             if serializer.validated_data['delete_database']:
                 try:
-                    os.remove(os.path.join(settings.BASE_DIR, 'config', 'think', serializer.validated_data['database_name'] +
-                                           '.json'))
+                    os.remove(
+                        os.path.join(settings.BASE_DIR, 'config', 'think', serializer.validated_data['database_name'] +
+                                     '.json'))
                     return Response({'delete Config': True}, status=status.HTTP_200_OK)
                 except Exception as e:
                     print(e)

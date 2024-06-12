@@ -28,7 +28,7 @@ def handle_data(request_data, config_name):
         with open(config_path, 'r') as config_file:
             config = json.load(config_file)
     else:
-        print("Fail to load config")
+        print("Fail to load config with " + config_path + " and " + config_name)
         return False
 
     document_file = request_data.get('document')
