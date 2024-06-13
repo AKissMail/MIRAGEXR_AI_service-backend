@@ -1,5 +1,9 @@
+import os
+import json
+from http import HTTPStatus
+
 import requests
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, HttpResponse
 from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
@@ -45,15 +49,16 @@ def speak_open_ai(request):
 def valid_openai_voices():
     """
     Returns a tuple of valid voices for OpenAI.
-
-    Returns:
-        Tuple[str]: A tuple containing valid voices for OpenAI.
-
-    Example:
-        >>> valid_openai_voices()
-        ('alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer')
     """
-    return "alloy", "echo", "fable", "onyx", "nova", "shimmer"
+    file_path = os.path.join(settings.BASE_DIR, 'config', 'speak', 'openai.json')
+    print(file_path)
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            config = json.load(file)
+            voices = tuple(config['valid_openai_voices'])
+            return voices
+    except FileNotFoundError:
+        return HttpResponse("Config file not found.", status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def fetch_openai_response(serializer):

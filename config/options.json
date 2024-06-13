@@ -104,10 +104,17 @@
   },
   {
     "endpointName": "speak/",
-    "name": "Greek google standard voice",
-    "description": "Female human voice for Greek",
+    "name": "Greek voice",
+    "description": "Fast human voice for Greek",
     "apiName": "Greek"
-  }, {
+  },
+   {
+    "endpointName": "speak/",
+    "name": "Norwegian voice",
+    "description": "Fast human voice for Norwegian",
+    "apiName": "Norwegian"
+  },
+   {
     "endpointName": "think/",
     "name": "GPT 3.5",
     "description": "GPT 3.5 is ideally suited for dialog interaction on a diverse range of topics. It is fast, can answer everyday questions, give homework help, and support basic content creation.",

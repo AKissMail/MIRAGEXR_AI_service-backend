@@ -25,11 +25,16 @@ def think(request):
     serializer = ThinkSerializer(data=request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in (
-                "['gpt-3.5-turbo']", "['gpt-4-turbo-preview']", "gpt-3.5-turbo", "gpt-4-turbo-preview"):
+                "['gpt-3.5-turbo']",
+                "['gpt-4-turbo-preview']",
+                "gpt-3.5-turbo",
+                "gpt-4-turbo-preview",
+                "['gpt-4o']",
+                "gpt-4o"
+        ):
             r = gpt(serializer.validated_data)
         else:
             r = rag_manager(serializer.validated_data)
-            print(r)
             if r == "'error': 'Configuration is missing required keys.'":
                 return HttpResponse(r, status=status.HTTP_400_BAD_REQUEST)
 
