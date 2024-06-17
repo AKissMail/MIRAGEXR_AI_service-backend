@@ -46,7 +46,7 @@ def speak_open_ai(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def valid_openai_voices():
+def valid_openai_voices(default):
     """
     Returns a tuple of valid voices for OpenAI.
     """
@@ -55,11 +55,13 @@ def valid_openai_voices():
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             config = json.load(file)
-            voices = tuple(config['valid_openai_voices'])
+            if default:
+                voices = tuple(config['valid_openai_voices'])
+            else:
+                voices = tuple(config['valid_openai_defaults_voices'])
             return voices
     except FileNotFoundError:
         return HttpResponse("Config file not found.", status=HTTPStatus.INTERNAL_SERVER_ERROR)
-
 
 def fetch_openai_response(serializer):
     """

@@ -38,6 +38,7 @@ def prompt_with_configuration(validated_data, final_document, config):
     gpt_prompt['model'] = config['model']
 
     if config['provider'] == 'openai':
+        print(gpt_prompt)
         response = openai_gpt(gpt_prompt)
     else:
         return Response("Error: Unknown provider specified in configuration.", status=status.HTTP_400_BAD_REQUEST)
@@ -57,7 +58,14 @@ def rag_manager(data):
         try:
             config = ThinkModelFactory.create_model(serializer.validated_data.get('model'))
         except ValueError as e:
-            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+            default = {
+                "model": "gpt-4o",
+                "prompt_start": "",
+                "prompt_end": "",
+                "context_start": "",
+                "context_end": "",
+            }
+            return prompt_with_configuration(serializer.validated_data, '', default)
 
         if not all(key in config for key in ('rag_function', 'rag_function_call')):
             return "'error': 'Configuration is missing required keys.'"

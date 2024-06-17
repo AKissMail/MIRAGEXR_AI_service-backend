@@ -32,7 +32,7 @@ def speak(request):
     print(data)
     serializer = SpeakSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['model'] in valid_openai_voices():
+        if serializer.validated_data['model'] in valid_openai_voices(True):
             r = speak_open_ai(data)
             if isinstance(r, dict):
                 return Response(r, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -40,6 +40,15 @@ def speak(request):
         if serializer.validated_data['model'] in valid_google_voices():
             return speak_google(data)
         else:
-            return Response({"message": "'model' not found"}, status=status.HTTP_400_BAD_REQUEST)
+            defaultdata = {
+                'model': valid_openai_voices(False),
+                'message': base64.b64decode(request.headers.get('message')).decode('utf-8'),
+                'speed': request.headers.get('speed', 1)
+            }
+            r = speak_open_ai(defaultdata)
+            if isinstance(r, dict):
+                return Response(r, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return StreamingHttpResponse(r, content_type='audio/mpeg')
+
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
