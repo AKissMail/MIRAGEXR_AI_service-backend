@@ -34,7 +34,7 @@ def speak_open_ai(request):
     serializer = SpeakOpenAISerializer(data=request)
     if serializer.is_valid():
         model = serializer.validated_data['model']
-        if model in valid_openai_voices():
+        if model in valid_openai_voices(True):
             response = fetch_openai_response(serializer)
             if response is not None:
                 return response

@@ -220,7 +220,7 @@ class TestViews(TestCase):
 
     def test_speak_view_model_invalid(self):
         """ Test when model is not valid """
-        self.helper_test_speak_view('invalid', 400)
+        self.helper_test_speak_view('invalid', 200)
 
     def test_document_invalid_request(self):
         """

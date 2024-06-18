@@ -33,22 +33,33 @@ def speak(request):
     serializer = SpeakSerializer(data=data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in valid_openai_voices(True):
-            r = speak_open_ai(data)
-            if isinstance(r, dict):
-                return Response(r, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            return StreamingHttpResponse(r, content_type='audio/mpeg')
+            response = speak_open_ai(data)
+            if isinstance(response, dict):
+                return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            elif response is None:
+                return Response({"detail": "Could not fetch response from OpenAI"},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            elif isinstance(response, StreamingHttpResponse):
+                return response
+
         if serializer.validated_data['model'] in valid_google_voices():
             return speak_google(data)
         else:
             defaultdata = {
-                'model': valid_openai_voices(False),
+                'model': valid_openai_voices(False)[0],
                 'message': base64.b64decode(request.headers.get('message')).decode('utf-8'),
                 'speed': request.headers.get('speed', 1)
             }
-            r = speak_open_ai(defaultdata)
-            if isinstance(r, dict):
-                return Response(r, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            return StreamingHttpResponse(r, content_type='audio/mpeg')
+            response = speak_open_ai(defaultdata)
+            if isinstance(response, dict):
+                return Response(response, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            elif response is None:
+                return Response({"detail": "Could not fetch response from OpenAI"},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            elif isinstance(response, StreamingHttpResponse):
+                return response
+            else:
+                return Response({"detail": "Unknown error"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
