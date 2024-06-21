@@ -1,3 +1,4 @@
 {
-  "valid_openai_voices": ["alloy", "echo", "fable", "onyx", "nova", "shimmer" ]
+  "valid_openai_voices": ["alloy", "echo", "fable", "onyx", "nova", "shimmer" ],
+  "valid_openai_defaults_voices": ["alloy"]
 }

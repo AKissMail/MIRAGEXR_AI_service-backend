@@ -117,6 +117,7 @@ def listen(request):
                 response_data = whisper_nb_ai_lab(validated_data)
             elif validated_data['model'].strip() == "BinaryWhisperOpenAILocal":
                 response_data = whisper_open_ai_remote(handleBinary(validated_data))
+                print(response_data)
             else:
                 response_data = whisper_open_ai_remote(validated_data)
             return Response(response_data)

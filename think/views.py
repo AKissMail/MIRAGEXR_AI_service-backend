@@ -23,6 +23,7 @@ def think(request):
          an error message.
     """
     serializer = ThinkSerializer(data=request.data)
+    print(request.data)
     if serializer.is_valid():
         if serializer.validated_data['model'] in (
                 "['gpt-3.5-turbo']",
