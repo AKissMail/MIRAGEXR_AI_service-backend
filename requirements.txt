@@ -12,3 +12,5 @@ Requests>=2.32.0
 soundfile==0.12.1
 textstat==0.7.3
 transformers==4.38.2
+torch~=2.2.1
+fasttext~=0.9.2

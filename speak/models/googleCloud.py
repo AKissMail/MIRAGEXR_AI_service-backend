@@ -1,14 +1,16 @@
 import base64
 import json
+import os
+from http import HTTPStatus
 from io import BytesIO
 
 import requests
 from django.conf import settings
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, HttpResponse
 from rest_framework import status
 from rest_framework.response import Response
 
-from .serializers import SpeakGoogleSerializer
+from speak.serializers import SpeakGoogleSerializer
 
 
 def speak_google(request):
@@ -27,7 +29,8 @@ def speak_google(request):
     A streaming HTTP response object containing the generated audio in the 'audio/mpeg' format.
 
     Example usage:
-    request = {
+    request =
+    {
         'model': 'en-US-Wavenet-D',
         'message': 'Hello, how are you?'
     }
@@ -39,7 +42,9 @@ def speak_google(request):
 
     language_code, ssml_gender = get_language_and_gender(serializer.validated_data.get('model'))
     if language_code is None:
-        return Response({"error": "Model must be Greek"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"Error": "Invalid model specified. Model must be one of the following: {0}".format(valid_google_voices())},
+            status=status.HTTP_400_BAD_REQUEST)
 
     key = settings.GOOGLE_API_KEY
     headers = {'Content-Type': 'application/json'}
@@ -74,9 +79,17 @@ def get_language_and_gender(model):
         >>> get_language_and_gender("English")
         (None, None)
     """
-    if model == "Greek":
-        return "el-GR", "FEMALE"
-    return None, None
+    file_path = os.path.join(settings.BASE_DIR, 'config', 'speak', 'google.json')
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            config = json.load(file)
+            if model in config['Voice_details']:
+                language, gender = config['Voice_details'][model]
+                return language, gender
+            else:
+                return None, None
+    except FileNotFoundError:
+        return None, None
 
 
 def compose_request_data(language_code, ssml_gender, message):
@@ -152,3 +165,17 @@ def generate_chunked_audio_stream(audio_content):
         if not chunk:
             break
         yield chunk
+
+
+def valid_google_voices():
+    """
+    Returns a tuple of valid voices for Google API:
+    """
+    file_path = os.path.join(settings.BASE_DIR, 'config', 'speak', 'google.json')
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            config = json.load(file)
+            voices = tuple(config['valid_openai_voices'])
+            return voices
+    except FileNotFoundError:
+        return HttpResponse("Config file not found.", status=HTTPStatus.INTERNAL_SERVER_ERROR)

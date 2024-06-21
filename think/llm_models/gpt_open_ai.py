@@ -1,6 +1,6 @@
 from openai import OpenAI
 from rest_framework import status
-from .serializers import ThinkSerializer
+from think.serializers import ThinkSerializer
 from rest_framework.response import Response
 from django.http import HttpResponse
 
@@ -27,8 +27,10 @@ def gpt(data):
             {"role": "system", "content": serializer.validated_data["context"]},
             {"role": "user", "content": serializer.validated_data["message"]}
         ]
-        if serializer.validated_data["model"] in ["gpt-4-turbo-preview"]:
-            model = "gpt-4-turbo-preview"
+        if serializer.validated_data["model"] in ("gpt-4-turbo-preview", "['gpt-4-turbo-preview']"):
+            model = "gpt-4-turbo"
+        elif serializer.validated_data["model"] in ("gpt-4o", "['gpt-4o']"):
+            model = "gpt-4o"
         else:
             model = "gpt-3.5-turbo"
         try:
@@ -40,9 +42,8 @@ def gpt(data):
             try:
                 msg_content = response.choices[0].message.content
                 response = HttpResponse(msg_content, status=status.HTTP_200_OK)
-                print(msg_content)
                 return response
-            except Exception as e:
+            except Exception:
                 raise
 
         except Exception as _:

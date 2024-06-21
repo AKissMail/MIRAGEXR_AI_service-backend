@@ -8,8 +8,8 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import ListenSerializer
-from .whisperNBAiLab import whisper_nb_ai_lab
-from .whisperOpenAI import whisper_open_ai_remote, wisper_open_ai_local
+from listen.models.whisperNBAiLab import whisper_nb_ai_lab
+from listen.models.whisperOpenAI import whisper_open_ai_remote
 
 
 def handleBinary(validated_data):

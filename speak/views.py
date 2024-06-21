@@ -5,15 +5,13 @@ from .serializers import SpeakSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.http import StreamingHttpResponse
-from .openAI import speak_open_ai
-from .googleCloud import speak_google
-
+from speak.models.openAI import speak_open_ai, valid_openai_voices
+from speak.models.googleCloud import speak_google, valid_google_voices
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def speak(request):
-
     """
        Processes GET requests sent to the speak endpoint, validates the request data, and uses the specified
        speech synthesis model to generate speech from text.
@@ -34,12 +32,12 @@ def speak(request):
     print(data)
     serializer = SpeakSerializer(data=data)
     if serializer.is_valid():
-        if serializer.validated_data['model'] in ("alloy", "echo", "fable", "onyx", "nova", "shimmer"):
+        if serializer.validated_data['model'] in valid_openai_voices():
             r = speak_open_ai(data)
             if isinstance(r, dict):
                 return Response(r, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             return StreamingHttpResponse(r, content_type='audio/mpeg')
-        if serializer.validated_data['model'] in "Greek":
+        if serializer.validated_data['model'] in valid_google_voices():
             return speak_google(data)
         else:
             return Response({"message": "'model' not found"}, status=status.HTTP_400_BAD_REQUEST)

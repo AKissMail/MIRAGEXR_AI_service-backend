@@ -47,7 +47,6 @@ class TestViews(TestCase):
         })
         self.userToken = response.data['token']
 
-
     def test_authentication_success(self):
         response = self.client.post(reverse('authentication'), data={
             'username': self.username,
@@ -65,7 +64,6 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 401)
         error_message = response.data['error']
         self.assertEqual(error_message, 'Login data not valid')
-
 
     def test_get_options_authenticated(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
@@ -202,16 +200,7 @@ class TestViews(TestCase):
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 200)
 
-    def test_think_view_model_invalid(self):
-        """ Test when model is not valid """
-        data = {
-            "model": "invalid",
-            "message": "test message",
-            "context": "This is a Test"
-        }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
-        response = self.client.post(reverse('think'), data=data, **headers)
-        self.assertEqual(response.status_code, 400)
+
 
     def helper_test_speak_view(self, model, expected_status_code, content_type=None):
         """ Helper function to make testing different models easier """
@@ -224,9 +213,7 @@ class TestViews(TestCase):
         }
         response = self.client.get(reverse('speak'), **headers)
 
-
         self.assertEqual(response.status_code, expected_status_code)
-
 
         if content_type:
             self.assertEqual(response['Content-Type'], content_type)
@@ -234,23 +221,6 @@ class TestViews(TestCase):
     def test_speak_view_model_invalid(self):
         """ Test when model is not valid """
         self.helper_test_speak_view('invalid', 400)
-
-    def test_document_creation(self):
-        """
-            Testing the 'document' api endpoint for a success POST request
-            """
-        content = b'sample_content'
-        document = SimpleUploadedFile('sample_file.txt', content)
-
-        data = {
-            'name': 'sample_name',
-            'document': document,
-            'database': 'test1',
-
-        }
-        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
-        response = self.client.post(reverse('document'), data=data, **headers)
-        self.assertEqual(response.status_code, 201)
 
     def test_document_invalid_request(self):
         """
@@ -297,10 +267,15 @@ class TestViews(TestCase):
             "prompt_end": "end_prompt",
             "context_start": "start_context",
             "context_end": "end_context",
+            "provider": "openai",
+            "model": "gpt-4o",
+            "rag_function": "jaccard",
+            "rag_function_call": "jaccard",
+            "apiName": "test1",
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertTrue(os.path.exists(os.path.join(settings.BASE_DIR, 'config', database_name + '.json')))
+        self.assertTrue(os.path.exists(os.path.join(settings.BASE_DIR, 'config', 'think', database_name + '.json')))
 
     def test_update_configuration(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
@@ -314,12 +289,45 @@ class TestViews(TestCase):
             "prompt_end": "end_prompt_updated",
             "context_start": "start_context_updated",
             "context_end": "end_context_updated",
+            "provider": "openai",
+            "model": "gpt-4o",
+            "rag_function": "jaccard",
+            "rag_function_call": "jaccard",
+            "apiName": "test1",
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        with open(os.path.join(settings.BASE_DIR, 'config', database_name + '.json')) as f:
+        with open(os.path.join(settings.BASE_DIR, 'config', 'think', database_name + '.json')) as f:
             config = json.load(f)
         self.assertEqual(config.get('prompt_start'), "start_prompt_updated")
+
+    def test_document_creation(self):
+        """
+            Testing the 'document' api endpoint for a success POST request
+            """
+        content = b'sample_content'
+        document = SimpleUploadedFile('sample_file.txt', content)
+
+        data = {
+            'name': 'sample_name',
+            'document': document,
+            'database': 'jaccard',
+            'config_name': 'jaccard'
+        }
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
+        response = self.client.post(reverse('document'), data=data, **headers)
+        self.assertEqual(response.status_code, 201)
+
+    def test_think_view_model_invalid(self):
+        """ Test when model is not valid """
+        data = {
+            "model": "invalid",
+            "message": "test message",
+            "context": "This is a Test"
+        }
+        headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
+        response = self.client.post(reverse('think'), data=data, **headers)
+        self.assertEqual(response.status_code, 400)
 
     def test_delete_configuration(self):
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
@@ -333,7 +341,12 @@ class TestViews(TestCase):
             "prompt_end": "end_prompt_updated",
             "context_start": "start_context_updated",
             "context_end": "end_context_updated",
+            "provider": "openai",
+            "model": "gpt-4o",
+            "rag_function": "jaccard",
+            "rag_function_call": "jaccard",
+            "apiName": "test1",
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(os.path.exists(os.path.join(settings.BASE_DIR, 'config', database_name + '.json')))
+        self.assertFalse(os.path.exists(os.path.join(settings.BASE_DIR, 'config', 'think', database_name + '.json')))

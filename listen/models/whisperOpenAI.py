@@ -1,11 +1,11 @@
 import os
 import tempfile
 from openai import OpenAI
-from .serializers import WhisperOpenAiRemoteSerializer, WhisperOpenAiLocalSerializer
+from listen.serializers import WhisperOpenAiRemoteSerializer, WhisperOpenAiLocalSerializer
 from transformers import pipeline
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from .audio_transformator import AudioTransformator
+from listen.audio_utility.audio_transformator import AudioTransformator
 
 
 def whisper_open_ai_remote(data):

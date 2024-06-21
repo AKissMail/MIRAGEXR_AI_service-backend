@@ -1,0 +1,7 @@
+{
+  "valid_openai_voices":["Greek", "Norwegian"],
+  "Voice_details": {
+    "Greek": ["el-GR", "FEMALE"],
+    "Norwegian": ["nb-NO", "FEMALE"]
+  }
+}

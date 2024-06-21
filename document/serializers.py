@@ -11,11 +11,13 @@ class DocumentSerializer(serializers.Serializer):
         document: A `serializers.FileField` field for the document file.
         name: A `serializers.CharField` field for the name of the document.
         database: A `serializers.CharField` field for the database the document is associated with.
+         config_name: The name of the targeted RAG configuration
 
     """
     document = serializers.FileField()
     name = serializers.CharField()
     database = serializers.CharField()
+    config_name = serializers.CharField()
 
 
 class ConfigurationSerializer(serializers.Serializer):
@@ -40,6 +42,12 @@ class ConfigurationSerializer(serializers.Serializer):
     update_database = serializers.BooleanField()
     new_database = serializers.BooleanField()
     delete_database = serializers.BooleanField()
+    provider = serializers.CharField()
+    model = serializers.CharField()
+    rag_function = serializers.CharField()
+    rag_function_call = serializers.CharField()
+    apiName = serializers.CharField()
+
 
 
 class OptionSerializer(serializers.Serializer):

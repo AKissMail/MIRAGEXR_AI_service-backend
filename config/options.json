@@ -104,10 +104,17 @@
   },
   {
     "endpointName": "speak/",
-    "name": "Greek google standard voice",
-    "description": "Female human voice for Greek",
+    "name": "Greek voice",
+    "description": "Fast human voice for Greek",
     "apiName": "Greek"
-  }, {
+  },
+   {
+    "endpointName": "speak/",
+    "name": "Norwegian voice",
+    "description": "Fast human voice for Norwegian",
+    "apiName": "Norwegian"
+  },
+   {
     "endpointName": "think/",
     "name": "GPT 3.5",
     "description": "GPT 3.5 is ideally suited for dialog interaction on a diverse range of topics. It is fast, can answer everyday questions, give homework help, and support basic content creation.",
@@ -119,23 +126,29 @@
     "description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
     "apiName": "gpt-4-turbo-preview"
   },
-  {
+   {
     "endpointName": "think/",
-    "name": "Norwegian GPT A",
-    "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
-    "apiName": "norwegian-gpt-A"
+    "name": "GPT 4.o",
+    "description": "GPT 4.o is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, with the speed of GPT 3.5",
+    "apiName": "gpt-4o"
   },
   {
     "endpointName": "think/",
-    "name": "Norwegian GPT B",
+    "name": "Norwegian GPT Jaccard",
     "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
-    "apiName": "norwegian-gpt-B"
+    "apiName": "jaccard"
   },
   {
     "endpointName": "think/",
-    "name": "Norwegian GPT C",
+    "name": "Norwegian GPT Chromadb",
     "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
-    "apiName": "norwegian-gpt-C"
+    "apiName": "norwegian-gpt-chromadb"
+  },
+  {
+    "endpointName": "think/",
+    "name": "Norwegian GPT Faiss",
+    "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
+    "apiName": "norwegian-gpt-faiss"
   }
 
 ]

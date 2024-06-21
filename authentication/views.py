@@ -9,6 +9,9 @@ from rest_framework import status
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def authentication(request):
+    """
+    API View for user authentication.
+    """
     username = request.data.get('username')
     password = request.data.get('password')
 

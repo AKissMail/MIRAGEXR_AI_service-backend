@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+import fasttext
 
 
 class ThinkConfig(AppConfig):
@@ -12,3 +13,7 @@ class ThinkConfig(AppConfig):
     """
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'think'
+    ft_model = None
+
+    def ready(self):
+        self.ft_model = fasttext.load_model('./cc.no.300.bin')

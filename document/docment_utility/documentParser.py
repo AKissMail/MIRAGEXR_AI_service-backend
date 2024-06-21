@@ -1,6 +1,8 @@
 import csv
+
 import pdfplumber
 from bs4 import BeautifulSoup
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 def parse_pdf(doc):
@@ -14,9 +16,13 @@ def parse_pdf(doc):
     Returns:
     - str: The extracted text content from the PDF document.
     """
-    with pdfplumber.open(doc['document']) as pdf:
-        text = ' '.join(page.extract_text() for page in pdf.pages if page.extract_text())
-        return text
+    with open('/tmp/temp.pdf', 'wb+') as destination:
+        for chunk in doc.chunks():
+            destination.write(chunk)
+
+    with pdfplumber.open('/tmp/temp.pdf') as pdf:
+        s = ''.join(page.extract_text() for page in pdf.pages)
+        return s
 
 
 def parse_csv(doc):
@@ -33,12 +39,13 @@ def parse_csv(doc):
     - text (str): The concatenated text from the CSV file.
 
     """
-    with open(doc['document'], 'r', encoding='utf-8', errors='replace') as csvfile:
-        csv_reader = csv.reader(csvfile)
-        text = ''
-        for row in csv_reader:
-            text += ', '.join(row) + '\n'
-        return text
+    text = ''
+    file_data = doc.read().decode('utf-8')
+    file_data = file_data.split('\n')
+    csv_file = csv.reader(file_data)
+    for row in csv_file:
+        text += ', '.join(row) + '\n'
+    return text
 
 
 def parse_txt(doc):
@@ -53,9 +60,9 @@ def parse_txt(doc):
 
     """
 
-    document_file = doc['document']
-    text_content = document_file.read().decode('utf-8')
-    return text_content
+    if isinstance(doc, InMemoryUploadedFile):
+        content = doc.read().decode('utf-8')
+        return content
 
 
 def parse_html(doc):
@@ -67,11 +74,10 @@ def parse_html(doc):
 
     :return: Extracted text content from the HTML document.
     """
-    with open(doc['document'], 'r') as file:
-        content = file.read()
-        soup = BeautifulSoup(content, 'html.parser')
-        for script_or_style in soup(["script", "style"]):
-            script_or_style.decompose()
+    content = doc.read().decode('utf-8')
+    soup = BeautifulSoup(content, 'html.parser')
+    for script_or_style in soup(["script", "style"]):
+        script_or_style.decompose()
 
-        text = ' '.join(soup.get_text().split())
-        return text
+    text = ' '.join(soup.stripped_strings)
+    return text
