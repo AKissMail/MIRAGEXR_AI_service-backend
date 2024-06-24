@@ -12,6 +12,7 @@ from rest_framework.response import Response
 from .handleData import handle_data
 from .serializers import ConfigurationSerializer, OptionSerializer
 from .serializers import DocumentSerializer
+from .config_utility import compose_cofig
 
 
 @api_view(['POST'])
@@ -50,7 +51,7 @@ def document(request):
 @permission_classes([IsAdminUser])
 def configuration(request):
     """
-    Saves or deletes configuration based on the given parameters.
+    Saves or deletes configuration based on the given parameters and updates the option.json file
 
     Parameters:
         request (Request): The HTTP request object.
@@ -81,13 +82,16 @@ def configuration(request):
                         "model": serializer.validated_data['model'],
                         "rag_function": serializer.validated_data['rag_function'],
                         "rag_function_call": serializer.validated_data['rag_function_call'],
-                        "apiName": serializer.validated_data['apiName']
+                        "apiName": serializer.validated_data['apiName'],
+                        "name": serializer.validated_data['name'],
+                        "description": serializer.validated_data['description']
                     }
                     configurationJson = json.dumps(config)
                     configurationJsonPath = os.path.join(os.path.join(settings.BASE_DIR, 'config', 'think', ),
                                                          serializer.validated_data['database_name'] + '.json')
                     with open(configurationJsonPath, mode='w') as file:
                         file.write(configurationJson)
+                    compose_cofig.update_options_json()
                     return Response({'configurationJson': configurationJsonPath}, status=status.HTTP_201_CREATED)
                 except Exception as e:
                     return HttpResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -97,58 +101,13 @@ def configuration(request):
                     os.remove(
                         os.path.join(settings.BASE_DIR, 'config', 'think', serializer.validated_data['database_name'] +
                                      '.json'))
+                    compose_cofig.update_options_json()
                     return Response({'delete Config': True}, status=status.HTTP_200_OK)
                 except Exception as e:
                     print(e)
-                    return HttpResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return HttpResponse('Error: Database dose not exist!', status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response({'message': 'Invalid booleans, exactly one boolean should be True.'},
                             status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['POST'])
-@permission_classes([IsAdminUser])
-def updateOptions(request):
-    """
-
-    This method updates the options in the 'options.json' file. It accepts a POST request and requires admin user
-    permission.
-
-    Parameters:
-        - request: The HTTP request object.
-
-    Returns:
-        - If the serializer is valid and the options are successfully updated, it returns a Response object with the
-        updated options and a status code of HTTP_201_CREATED.
-        - If there is an error while updating the options or the serializer is not valid, it returns a Response object
-        with an error message and a status code of HTTP_500_INTERNAL_SERVER_ERROR.
-
-    Example Usage:
-    ```python
-    @api_view(['POST'])
-    @permission_classes([IsAdminUser])
-    def updateOptions(request):
-        serializer = OptionSerializer(data=request.data)
-        if serializer.is_valid():
-            try:
-                configurationJsonPath = os.path.join(os.path.join(settings.BASE_DIR, 'config'), 'options.json')
-                with open(configurationJsonPath, mode='w') as file:
-                    file.write(serializer.validated_data['data'])
-                return Response({'Options are now': serializer.validated_data['data']}, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                return HttpResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    ```
-    """
-    serializer = OptionSerializer(data=request.data)
-    if serializer.is_valid():
-        try:
-            configurationJsonPath = os.path.join(os.path.join(settings.BASE_DIR, 'config'), 'options.json')
-            with open(configurationJsonPath, mode='w') as file:
-                file.write(serializer.validated_data['data'])
-            return Response({'Options are now': serializer.validated_data['data']}, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return HttpResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -78,10 +78,28 @@ class TestViews(TestCase):
         required_keys = ["endpointName", "name"]
         optional_keys = ["description", "apiName"]
         endpoint_values = ["listen/", "speak/", "think/"]
+
         for section in config:
-            self.assertTrue(all(key in section for key in required_keys))
-            self.assertTrue(all(key in required_keys + optional_keys for key in section))
-            self.assertIn(section["endpointName"], endpoint_values)
+            if "ragConfig" in section:
+                self.assertIn("models", section["ragConfig"])
+                self.assertIsInstance(section["ragConfig"]["models"], list)
+                self.assertGreater(len(section["ragConfig"]["models"]), 0)
+
+                for model in section["ragConfig"]["models"]:
+                    self.assertIn("provider", model)
+                    self.assertIn("model", model)
+
+                self.assertIn("rag_functions", section["ragConfig"])
+                self.assertIsInstance(section["ragConfig"]["rag_functions"], list)
+                self.assertGreater(len(section["ragConfig"]["rag_functions"]), 0)
+
+                for func in section["ragConfig"]["rag_functions"]:
+                    self.assertIn("rag_function", func)
+                    self.assertIn("rag_function_call", func)
+            else:
+                self.assertTrue(all(key in section for key in required_keys))
+                self.assertTrue(all(key in required_keys + optional_keys for key in section))
+                self.assertIn(section["endpointName"], endpoint_values)
 
     def test_get_options_not_authenticated(self):
         client = APIClient()
@@ -200,8 +218,6 @@ class TestViews(TestCase):
         response = self.client.post(reverse('think'), data=data, **headers)
         self.assertEqual(response.status_code, 200)
 
-
-
     def helper_test_speak_view(self, model, expected_status_code, content_type=None):
         """ Helper function to make testing different models easier """
         testString = "Hello World"
@@ -272,6 +288,8 @@ class TestViews(TestCase):
             "rag_function": "jaccard",
             "rag_function_call": "jaccard",
             "apiName": "test1",
+            "name": "test",
+            "description": "test"
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -294,6 +312,8 @@ class TestViews(TestCase):
             "rag_function": "jaccard",
             "rag_function_call": "jaccard",
             "apiName": "test1",
+            "name": "test",
+            "description": "test"
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -346,6 +366,8 @@ class TestViews(TestCase):
             "rag_function": "jaccard",
             "rag_function_call": "jaccard",
             "apiName": "test1",
+            "name": "test",
+            "description": "test"
         }
         response = self.client.post(reverse('configuration'), data, format='json', **headers)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

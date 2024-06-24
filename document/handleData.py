@@ -4,6 +4,7 @@ from document.docment_utility.documentParser import parse_pdf, parse_csv, parse_
 from document.saveRAG.saveFaiss import save_faiss_document
 from document.saveRAG.saveChromaDB import save_chromadb_document
 from document.saveRAG.saveJaccard import save_jaccard_document
+from document.docment_utility.chunking import create_text_chunks
 
 
 def handle_data(request_data, config_name):
@@ -47,12 +48,18 @@ def handle_data(request_data, config_name):
     else:
         return False
 
+    chunks = create_text_chunks(text)
+
     rag_function = config['rag_function']
     if rag_function == 'faiss':
-        return save_faiss_document(text, file_type, request_data)
+        for chunk in chunks:
+            save_faiss_document(chunk, file_type, request_data)
     elif rag_function == 'chromadb':
-        return save_chromadb_document(text, file_type, request_data, config)
+        for chunk in chunks:
+            save_chromadb_document(chunk, file_type, request_data, config)
     elif rag_function == 'jaccard':
-        return save_jaccard_document(text, file_type, request_data)
+        for chunk in chunks:
+            save_jaccard_document(chunk, file_type, request_data)
     else:
         return False
+    return True

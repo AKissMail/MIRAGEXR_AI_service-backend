@@ -1,0 +1,35 @@
+[
+  {
+    "endpointName": "think/",
+    "name": "GPT 3.5",
+    "description": "GPT 3.5 is ideally suited for dialog interaction on a diverse range of topics. It is fast, can answer everyday questions, give homework help, and support basic content creation.",
+    "apiName": "gpt-3.5-turbo"
+  },
+  {
+    "endpointName": "think/",
+    "name": "GPT 4.0",
+    "description": "GPT 4.0 is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, but at the cost of slower response speeds than GPT 3.5.",
+    "apiName": "gpt-4-turbo-preview"
+  },
+  {
+    "endpointName": "think/",
+    "name": "GPT 4.o",
+    "description": "GPT 4.o is best for complex dialog interaction on topics like text completion, summation, and translation. It offers responses that mimic human reasoning, with the speed of GPT 3.5.",
+    "apiName": "gpt-4o"
+  },
+
+  {
+    "ragConfig": {
+      "models": [
+        {"provider": "openai", "model": "gpt-4o"},
+        {"provider": "openai", "model": "gpt-3.5-turbo"},
+        {"provider": "openai", "model": "gpt-4-turbo-preview"}
+      ],
+      "rag_functions": [
+        {"rag_function": "jaccard", "rag_function_call": "jaccard"},
+        {"rag_function": "chromadb", "rag_function_call": "vector_chromadb"},
+        {"rag_function": "faiss", "rag_function_call": "query_faiss_embeddings"}
+      ]
+    }
+  }
+]
