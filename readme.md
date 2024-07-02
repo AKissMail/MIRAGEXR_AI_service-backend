@@ -61,22 +61,21 @@ ChromaDB
 ### Set up
 1. Clone the project.
 2. If not done install pip
-3. Run python -m venv venv in the project directory
-4. Activate the Virtual Environment -- On Windows: .\venv\Scripts\activate -- On macOS or Linux: source venv/bin/activate
+3. Set up an environment by running `python -m venv venv` in the project root directory
+4. Activate the Virtual Environment -- On Windows: `.\venv\Scripts\activate` -- On macOS or Linux: `source venv/bin/activate`
 5. Install with pip all the dependencies: `pip install -r requirements.txt`
-6. Set up an environment as shown in section `.env`
-7. Download the classifiers model from fastText and place it in the root directory. Either download cc.no.300.bin model 
-or update the think/apps.py with you prefer model.
+7. Download the classifiers model from fastText and place it in the root directory. Download cc.no.300.bin model (Norwegian!) 
+or update the think/apps.py with any other model you prefer.
 8. `cd backend`
-9. Run the Django server with `python manage.py runserver 8000 &`.
-10. Set up the database with `python manage.py makemigrations think` and `python manage.py makemigrations document`
-11. and `python manage.py migrate`.
-12. Create a superuser with `python manage.py createsuperuser`.
-13. Access the backend via `http://127.0.0.1:8000/admin/`, and create a new user (optional) and an authentication token, to be used with the API request.
+9. Set up the database with `python manage.py makemigrations think` and `python manage.py makemigrations document`
+10. and `python manage.py migrate`.
+11. Create a superuser with `python manage.py createsuperuser`.
+12. Run the Django server with `python manage.py runserver 8000 &`.
+13. Access the backend via `http://127.0.0.1:8000/admin/`, and create additional users (optional) and an authentication token, to be used with the API request.
 14. You can test the System with `python manage.py test`. 
-15. You can upload document for a RAG Model via the `/document/` endpoint and set up the Configuration use the `/document/configuration` endpoint.
+15. You can upload documents for a RAG Model via the `/document/` endpoint and set up use with the `/document/configuration` endpoint.
 16. Don't forget CORS_ORIGIN_WHITELIST in the settings.py or suffer like me for 1 hour. 
-17. To send your request (e.g., via Postman) and include the key in the header with the line key `Authorization` set to `Token $key`.
+17. To send your request (e.g., via Postman), include the key in the header with the line key `Authorization` set to `Token $key`.
 
 ### .env
 
