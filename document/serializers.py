@@ -16,7 +16,6 @@ class DocumentSerializer(serializers.Serializer):
     """
     document = serializers.FileField()
     name = serializers.CharField()
-    database = serializers.CharField()
     config_name = serializers.CharField()
 
 

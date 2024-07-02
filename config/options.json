@@ -165,12 +165,6 @@
     },
     {
         "endpointName": "think/",
-        "name": "test",
-        "description": "test",
-        "apiName": "test1"
-    },
-    {
-        "endpointName": "think/",
         "name": "Norwegian GPT Chromadb",
         "description": "Get personalized assistance while learning Norwegian with concise, helpful responses tailored to your specific questions. Perfect for A2 level students looking to improve their language skills efficiently.",
         "apiName": "norwegian-gpt-chromadb"

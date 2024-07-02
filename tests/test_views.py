@@ -286,7 +286,7 @@ class TestViews(TestCase):
             "provider": "openai",
             "model": "gpt-4o",
             "rag_function": "jaccard",
-            "rag_function_call": "jaccard",
+            "rag_function_call": "jaccard_index",
             "apiName": "test1",
             "name": "test",
             "description": "test"
@@ -310,7 +310,7 @@ class TestViews(TestCase):
             "provider": "openai",
             "model": "gpt-4o",
             "rag_function": "jaccard",
-            "rag_function_call": "jaccard",
+            "rag_function_call": "jaccard_index",
             "apiName": "test1",
             "name": "test",
             "description": "test"
@@ -364,7 +364,7 @@ class TestViews(TestCase):
             "provider": "openai",
             "model": "gpt-4o",
             "rag_function": "jaccard",
-            "rag_function_call": "jaccard",
+            "rag_function_call": "jaccard_index",
             "apiName": "test1",
             "name": "test",
             "description": "test"

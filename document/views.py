@@ -92,7 +92,7 @@ def configuration(request):
                     with open(configurationJsonPath, mode='w') as file:
                         file.write(configurationJson)
                     compose_cofig.update_options_json()
-                    return Response({'configurationJson': configurationJsonPath}, status=status.HTTP_201_CREATED)
+                    return Response({'Configuration is created!'}, status=status.HTTP_201_CREATED)
                 except Exception as e:
                     return HttpResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
