@@ -1,0 +1,70 @@
+ [
+  {
+    "endpointName": "listen/",
+    "name": "Danish",
+    "description": "Danish",
+    "apiName": "Danish"
+
+  },
+  {
+    "endpointName": "listen/",
+    "name": "Dutch",
+    "description": "Dutch",
+    "apiName": "Dutch"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "English",
+    "description": "English",
+    "apiName": "English"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "French",
+    "description": "French",
+    "apiName": "French"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "German",
+    "description": "German",
+    "apiName": "German"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "Greek",
+    "description": "Greek",
+    "apiName": "Greek"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "Italian",
+    "description": "Italian",
+    "apiName": "Italian"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "Norwegian",
+    "description": "Norwegian",
+    "apiName": "Norwegian"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "Portuguese",
+    "description": "Portuguese",
+    "apiName": "Portuguese"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "Spanish",
+    "description": "Spanish",
+    "apiName": "Spanish"
+  },
+  {
+    "endpointName": "listen/",
+    "name": "Swedish",
+    "description": "Swedish",
+    "apiName": "Swedish"
+  }
+
+]

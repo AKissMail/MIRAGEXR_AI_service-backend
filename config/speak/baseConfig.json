@@ -1,0 +1,50 @@
+ [
+   {
+    "endpointName": "speak/",
+    "name": "Alloy",
+    "description": "Female human voice",
+    "apiName": "alloy"
+  },
+  {
+    "endpointName": "speak/",
+    "name": "Echo",
+    "description": "Male human voice",
+    "apiName": "echo"
+  },
+  {
+    "endpointName": "speak/",
+    "name": "Fable",
+    "description": "Female human voice",
+    "apiName": "fable"
+  },
+  {
+    "endpointName": "speak/",
+    "name": "Onyx",
+    "description": "Male human voice",
+    "apiName": "onyx"
+  },
+  {
+    "endpointName": "speak/",
+    "name": "Nova",
+    "description": "Female human voice",
+    "apiName": "nova"
+  },
+  {
+    "endpointName": "speak/",
+    "name": "Shimmer",
+    "description": "Female human voice",
+    "apiName": "shimmer"
+  },
+  {
+    "endpointName": "speak/",
+    "name": "Greek voice",
+    "description": "Fast human voice for Greek",
+    "apiName": "Greek"
+  },
+   {
+    "endpointName": "speak/",
+    "name": "Norwegian voice",
+    "description": "Fast human voice for Norwegian",
+    "apiName": "Norwegian"
+  }
+]

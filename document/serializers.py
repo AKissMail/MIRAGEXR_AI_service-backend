@@ -47,6 +47,8 @@ class ConfigurationSerializer(serializers.Serializer):
     rag_function = serializers.CharField()
     rag_function_call = serializers.CharField()
     apiName = serializers.CharField()
+    name = serializers.CharField()
+    description = serializers.CharField()
 
 
 

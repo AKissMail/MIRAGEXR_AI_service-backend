@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-
+from .config_utility.compose_cofig import update_options_json
 
 class DocumentApp(AppConfig):
     """
@@ -14,3 +14,6 @@ class DocumentApp(AppConfig):
     """
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'document'
+
+    def ready(self):
+        update_options_json()
