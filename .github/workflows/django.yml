@@ -31,6 +31,7 @@ jobs:
           pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ $? -ne 0 ]; then echo "Dependencies failed to install"; exit 1; fi
+          python -c "import fasttext.util; fasttext.util.download_model('no', if_exists='ignore')"
       - name: Run makemigrations
         run: |
           python manage.py makemigrations document think
