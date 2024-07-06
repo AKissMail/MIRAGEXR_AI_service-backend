@@ -56,7 +56,7 @@ class AudioTransformator:
         if validated_data['message']:
             header = validated_data['message'].read(4)
             validated_data['message'].seek(0)
-            mp3_data = convert_wav_to_mp3(validated_data['message'])
+            mp3_data = AudioTransformator.convert_wav_to_mp3(validated_data['message'])
             base64_encoded = base64.b64encode(mp3_data).decode()
             content_file = ContentFile(base64.b64decode(base64_encoded), name="demo.mp3")
             validated_data['message'] = content_file
