@@ -33,7 +33,7 @@ class AudioTransformator:
         return data
 
     @staticmethod
-    def handleBinary(validated_data):  # todo das auch!
+    def handleBinary(validated_data):
         """
         Handle binary data.
 
@@ -66,7 +66,7 @@ class AudioTransformator:
             return validated_data
 
     @staticmethod
-    def convert_wav_to_mp3(wav_input):  # todo das gehört in die Audio ufillitys !
+    def convert_wav_to_mp3(wav_input):
         """
         Converts a WAV audio file to an MP3 audio file using FFmpeg.
         """
