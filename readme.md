@@ -1,12 +1,13 @@
 # MirageXR AI Services
 
-This server backend implements a facade to AI services, providing a wrapper to [MirageXR](https://github.com/WEKIT-ECS/MIRAGE-XR), 
-specifically to facilitate dialogue interaction with Large Language Models (LLMs) using Speech-To-Text (STT) and Text-To-Speech 
-(TTS) services. LLM interaction follows the Retrieval-Augmented Generation (RAG) pattern, see [Lewis et al.](https://arxiv.org/abs/2005.11401),
-and manages a data pipeline for storing documents as corpora, enhancing the dialogue experience in eXtended Reality settings.
-A minimal frontend for the setup of an agent and the document upload it also provide by us. Your can find it 
-[here](https://github.com/AKissMail/MIRAGEXR_AgentBuilder). The frontend is still a work in progress, so expect bug and 
-be so kind to report them here. 
+This server backend implements a facade for AI services, providing a wrapper for [MirageXR](https://github.com/WEKIT-ECS/MIRAGE-XR). Specifically, it 
+facilitates dialogue interaction with Large Language Models (LLMs) using Speech-To-Text (STT) and Text-To-Speech (TTS) 
+services. LLM interaction follows the Retrieval-Augmented Generation (RAG) pattern, see 
+[Lewis et al.](https://arxiv.org/abs/2005.11401). It manages a data pipeline for storing documents as corpora, 
+enhancing the dialogue experience in eXtended Reality settings. We also provide a minimal frontend for setting up 
+an agent and uploading documents [here](https://github.com/AKissMail/MIRAGEXR_AgentBuilder). The frontend is still a 
+work in progress, so expect bugs and kindly report them here. Please read the instructions before starting the server. 
+In addition to the code, some models have to be downloaded manually. This could also be the reason for a failed test. 
 
 ## Table of Contents
 
@@ -16,15 +17,15 @@ be so kind to report them here.
 
 ## Introduction
 
-The MirageXR AI service backend extends the capabilities of the MirageXR project by adding a wrapper to external AI services 
-for advanced dialogue functionalities. It serves as a facade to different LLMs, STT, and TTS models, providing endpoints 
-that incorporate RAG patterns for dynamic conversation flow that is context aware. The backend also includes a data 
-pipeline to manage and store various documents within a corpus, making it a versatile tool for dialogue management in 
-XR environments. The Backend can process PDF, TXT, HTML and CSV files. We recommend to use PDF, HTML and TXT since the 
-CSV feacher is an experimental and can lead to unexpected outputs.
+The MirageXR AI service backend extends the capabilities of the MirageXR project by adding a wrapper for external AI 
+services for advanced dialogue functionalities. It serves as a facade for different LLMs, STT, and TTS models, providing 
+endpoints that incorporate RAG patterns for a dynamic, context-aware conversation flow. The backend also includes a 
+data pipeline to manage and store various documents within a corpus, making it a versatile tool for dialogue management
+in XR environments. The backend can process PDF, TXT, HTML, and CSV files. We recommend using PDF, HTML, and TXT, as 
+the CSV feature is experimental and can lead to unexpected outputs.
 
-At the moment the Project has an focus otn the use case of second language aqustion for Norwegan leaners. With that focus 
-some fetchers are included the datapiplien that mai dose not work well in other lunagedeges like a LTX score.  
+The project currently focuses on the use case of second language acquisition for Norwegian learners. With that focus, 
+some features are included in the data pipeline that might not work well with other languages, such as an LTX score. 
 
 ## Features
 
@@ -49,17 +50,16 @@ some fetchers are included the datapiplien that mai dose not work well in other 
 
 ### Data Pipeline:
 
-- Processes and stores content from PDF, TXT, HTML, and CSV files in a database, making it accessible for RAG. 
-- We extract the content of the document out of the provided fiel and dived them in to chunks with around 200 characters. 
-- Depending on the chooses RAG model embedded will be calculated and the document will add to the database.
+- Processes and stores content from PDF, TXT, HTML, and CSV files in a database, making it accessible for RAG.
+- We extract the content of the document out of the provided file and divide them into chunks of around 200 characters.
+- Depending on the chosen RAG model, embeddings will be calculated, and the document will be added to the database.
 
-### # Project Databases Configuration
+### Project Databases Configuration
 
 In the project, two databases are utilized:
 
 1. **Django's Default Database**: This database is used to store information from documents and embedding for the FAISS 
-and Jaccard RAG model. It leverages Django's out-of-the-box database management capabilities to handle data persistence 
-and retrieval efficiently.
+and Jaccard RAG model.
 2. **Chroma Framework Database**: For managing embeddings, an additional database generated by the Chroma framework is 
 used. This specialized database is designed to optimize the storage and querying of embedding vectors, enhancing the 
 project's performance in handling complex data operations providing a simular prominences as FAISS. 

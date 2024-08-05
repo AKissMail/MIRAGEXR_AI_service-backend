@@ -61,7 +61,6 @@ def listen(request):
                 response_data = whisper_nb_ai_lab(validated_data)
             elif validated_data['model'].strip() == "BinaryWhisperOpenAILocal":
                 response_data = wisper_open_ai_local(AudioTransformator.handleBinary(validated_data))
-                print(response_data)
             else:
                 response_data = whisper_open_ai_remote(validated_data)
             return Response(response_data)
@@ -69,5 +68,6 @@ def listen(request):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response({
-                            "error": "Data is not correctly formatted. Follow this pattern: 'model': $preferred model or 'default', 'message': your payload as mp3, wav or ogg"},
+                            "error": "Data is not correctly formatted. Follow this pattern: 'model': $preferred model "
+                                     "or 'default', 'message': your payload as mp3, wav or ogg"},
                         status=status.HTTP_400_BAD_REQUEST)

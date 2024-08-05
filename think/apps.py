@@ -23,7 +23,8 @@ class ThinkConfig(AppConfig):
         try:
             with warnings.catch_warnings():
                 warnings.filterwarnings('ignore', category=UserWarning,
-                                        message='`load_model` does not return WordVectorModel or SupervisedModel any more, but a `FastText` object which is very similar.')
+                                        message='`load_model` does not return WordVectorModel or SupervisedModel any '
+                                                'more, but a `FastText` object which is very similar.')
                 self.ft_model = fasttext.load_model('./cc.no.300.bin')
             print("FastText model loaded successfully.")
         except Exception as e:

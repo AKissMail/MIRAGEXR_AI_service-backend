@@ -4,6 +4,15 @@ from document.models import Embedding, Document
 
 
 class DocumentModelTest(TestCase):
+    """
+
+    The DocumentModelTest class is a test case class that tests the functionality of the Document models. The SetUp()`
+    method is called before each test method to set up the necessary objects and data required for testing.
+    In this case, it creates a new Document object with the specified attributes. Subsequently, the
+    `self.assertEqual()` method  is used to compare the expected values with the actual values obtained from the
+    Document object.
+
+    """
     def setUp(self):
         self.document = Document.objects.create(
             title='Test Document',
@@ -61,7 +70,20 @@ class DocumentModelTest(TestCase):
 
 
 class TestEmbedding(TestCase):
+    """
 
+    TestEmbedding (TestCase)
+
+    This class is responsible for testing the TestEmbedding class functionality.
+
+    Methods:
+        - setUp(): Setup function to create a test embedding instance.
+        - test_str_representation(): Test string representation of Embedding instance.
+        - test_binary_embedding_field(): Test binary data are saved correctly in `embedding` attribute.
+        - test_metadata_field(): Test JSON data are saved correctly in `metadata` attribute.
+        - test_document_field(): Test document field is saved correctly.
+
+    """
     def setUp(self):
         """
         Setup function to create a test embedding instance.

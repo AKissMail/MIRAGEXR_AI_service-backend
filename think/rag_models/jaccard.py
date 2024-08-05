@@ -47,5 +47,4 @@ def jaccard_index(validated_data):
                 'best_jaccard_score': best_document[1],
                 'best_document_text': best_document[0],
             }
-    print(best_jaccard['best_document_text'])
     return best_jaccard['best_document_text']

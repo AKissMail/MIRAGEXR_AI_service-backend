@@ -30,7 +30,8 @@ def parse_csv(doc):
 
     Parse CSV File
 
-    This method takes a dictionary as an argument and parses a CSV file specified in the dictionary's 'document' key. It reads the CSV file, concatenates the values of each row with a comma separator, and returns the resulting text.
+    This method takes a dictionary as an argument and parses a CSV file specified in the dictionary's 'document' key.
+    It reads the CSV file, concatenates the values of each row with a comma separator, and returns the resulting text.
 
     Parameters:
     - doc (dict): A dictionary containing the path of the CSV file to be parsed.

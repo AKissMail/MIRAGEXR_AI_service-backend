@@ -40,7 +40,7 @@ def query_faiss_embeddings(query_text):
     index = faiss.IndexFlatL2(dimension)
     index.add(np.array(embedding_list))
     query_embedding = get_embedding(query_text['message'])
-    D, I = index.search(np.array([query_embedding]), k=2)
-    I = I[0].astype(int)
-    nearest_sentences = [metadata_list[i]['sentences'] for i in I]
+    distances_to_nearest, indices_of_nearest = index.search(np.array([query_embedding]), k=2)
+    indices_of_nearest = indices_of_nearest[0].astype(int)
+    nearest_sentences = [metadata_list[i]['sentences'] for i in indices_of_nearest]
     return nearest_sentences

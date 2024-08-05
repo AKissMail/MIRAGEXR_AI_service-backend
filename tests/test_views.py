@@ -23,6 +23,10 @@ class TestViews(TestCase):
         super().__init__(method_name)
 
     def setUp(self):
+        """ Set up the necessary data and client for testing. This method sets up the necessary data and client for
+        testing. It creates a superuser with the username and password specified by the admin_username and
+        admin_password parameters. It also creates a regular user with the username and password specified by the
+        username and password parameters. It initializes an APIClient for making API requests."""
         self.admin_username = 'adminUser'
         self.admin_password = 'adminPass'
         self.admin_user = AuthUser.objects.create_superuser(
@@ -48,6 +52,7 @@ class TestViews(TestCase):
         self.userToken = response.data['token']
 
     def test_authentication_success(self):
+        """This method is used to test the success of authentication"""
         response = self.client.post(reverse('authentication'), data={
             'username': self.username,
             'password': self.password,
@@ -56,6 +61,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_authentication_failure(self):
+        """Test case for checking authentication endpoint with invalid login credentials."""
         response = self.client.post(reverse('authentication'), data={
             'username': self.username,
             'password': 'invalid',
@@ -66,6 +72,9 @@ class TestViews(TestCase):
         self.assertEqual(error_message, 'Login data not valid')
 
     def test_get_options_authenticated(self):
+        """Test method to check the behavior of the get_options_authenticated method. This method sends a GET request
+        to the 'options' endpoint with authentication headers, and checks if the response status code is 200 and if the
+        JSON is in the expected from."""
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.userToken)}
         response = self.client.get(reverse('options'), **headers)
         self.assertEqual(response.status_code, 200)
@@ -102,12 +111,14 @@ class TestViews(TestCase):
                 self.assertIn(section["endpointName"], endpoint_values)
 
     def test_get_options_not_authenticated(self):
+        """Test case for checking the behavior of get_options_not_authenticated method when not authenticated."""
         client = APIClient()
         response = client.get(reverse('options'))
         self.assertEqual(response.status_code, 401)
         self.assertEqual(response.json(), {'detail': 'Authentication credentials were not provided.'})
 
     def test_listen_view_with_file_upload(self):
+        """Test the listen view with file upload. Therefore, audio_king.mp3 is needed!"""
         file_path = os.path.join(os.path.dirname(__file__), 'audio_king.mp3')
 
         with open(file_path, 'rb') as file_data:
@@ -239,9 +250,7 @@ class TestViews(TestCase):
         self.helper_test_speak_view('invalid', 200)
 
     def test_document_invalid_request(self):
-        """
-            Testing the 'document' api endpoint for a bad POST request
-            """
+        """Testing the 'document' api endpoint for a bad POST request"""
         data = {
         }
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
@@ -249,9 +258,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_document_unauthorized_request(self):
-        """
-            Testing the 'document' api endpoint for unauthorized POST request
-            """
+        """Testing the 'document' api endpoint for unauthorized POST request"""
         data = {
             'name': 'sample_name',
             'database': 'sample_database',
@@ -260,6 +267,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_non_admin_access(self):
+        """tests the access control for non-admin users by making a POST request."""
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
         database_name = 'test1'
         data = {
@@ -272,6 +280,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_configuration(self):
+        """ Test creating a configuration """
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
         database_name = 'test1'
         data = {
@@ -296,6 +305,7 @@ class TestViews(TestCase):
         self.assertTrue(os.path.exists(os.path.join(settings.BASE_DIR, 'config', 'think', database_name + '.json')))
 
     def test_update_configuration(self):
+        """ Test when configuration is updated """
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
         database_name = 'test1'
         data = {
@@ -322,9 +332,7 @@ class TestViews(TestCase):
         self.assertEqual(config.get('prompt_start'), "start_prompt_updated")
 
     def test_document_creation(self):
-        """
-            Testing the 'document' api endpoint for a success POST request
-            """
+        """Testing the 'document' api endpoint for a success POST request"""
         content = b'sample_content'
         document = SimpleUploadedFile('sample_file.txt', content)
 
@@ -350,6 +358,7 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_delete_configuration(self):
+        """ Testing the 'delete_configuration' endpoint for a success POST request"""
         headers = {'HTTP_AUTHORIZATION': 'Token {}'.format(self.adminToken)}
         database_name = 'test1'
         data = {

@@ -1,6 +1,5 @@
 from importlib import import_module
 
-from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 

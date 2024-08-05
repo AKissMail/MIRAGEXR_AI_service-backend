@@ -35,7 +35,6 @@ def save_chromadb_document(text, file_type, request_data, config):
         smog_index=metadata.get('smog_index'),
         model_type='chromadb'
     )
-    document.save()
 
     client = chromadb.PersistentClient(path=settings.VECTOR_DB)
     try:
