@@ -6,7 +6,7 @@ django-cors-headers>=4.4.0
 django_extensions>=3.2.3
 faiss-cpu>=1.8.0
 langdetect==1.0.9
-nltk==3.9
+nltk==3.10.3
 numpy==1.26.4
 openai==1.25.1
 pdfplumber==0.11.0
